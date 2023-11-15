@@ -11,10 +11,11 @@ datasource db {
 }
 
 model user {
-  id           Int     @id @default(autoincrement())
+  id           String  @id @default(cuid())
   email        String  @unique
   password     String
   isAdmin      Boolean @default(false)
+  role         String  @default("user")
   isClient     Boolean @default(false)
   isRepairman  Boolean @default(false)
   isProgrammer Boolean @default(false)
