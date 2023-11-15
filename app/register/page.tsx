@@ -1,7 +1,12 @@
 import React from "react";
+import Details from "./details/page";
 
 const page = () => {
-  return <div>Register page</div>;
+  return (
+    <div>
+      <Details />
+    </div>
+  );
 };
 
 export default page;
