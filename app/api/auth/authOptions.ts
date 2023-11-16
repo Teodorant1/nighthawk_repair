@@ -49,12 +49,12 @@ export const authOptions = {
   ],
   callbacks: {
     async jwt({ token, user, session }: any) {
-      console.log("jwt callback", { token, user, session });
+      // console.log("jwt callback", { token, user, session });
       if (user) token.role = user.role;
       return token;
     },
     async session({ session, token, user }: any) {
-      console.log("sesh callback", { token, user, session });
+      // console.log("sesh callback", { token, user, session });
       if (session?.user) session.user.role = token.role;
       return session;
     },

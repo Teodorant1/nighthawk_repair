@@ -1,3 +1,10 @@
 export default function Home() {
-  return <main> Hello World </main>;
+  function MyJobsRedux() {
+    return <></>;
+  }
+  function Advert_for_MobileApp() {
+    return <></>;
+  }
+
+  return <main> Main page </main>;
 }
