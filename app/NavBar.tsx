@@ -86,7 +86,7 @@ const NavBar = () => {
           <div>
             <Link
               href='/FindaTrade'
-              className='ml-3 outline text-center font-bold py-2 px-4 rounded-full my-5 center'
+              className='ml-3 outline text-center font-bold  py-2 px-4 rounded-full my-5 center'
             >
               {" "}
               Find a Trade
@@ -99,30 +99,54 @@ const NavBar = () => {
               Ask
             </Link>
             <Link
-              href='/TrendsReport'
+              href='/Advice'
               className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5'
             >
-              Trends Report
+              Advice
             </Link>{" "}
             <Link
-              href='/FindaTrade'
+              href='/LIVELEADS'
               className='ml-3 outline text-center font-bold py-2 px-4 rounded-full my-5 center'
             >
               {" "}
-              Find a Trade
+              LIVE LEADS
             </Link>
             <Link
-              href='/Ask'
+              href='/MYLEADS'
               className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5'
             >
               {" "}
-              Ask
+              MY LEADS
             </Link>
             <Link
-              href='/TrendsReport'
+              href='/PROFILE'
               className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5'
             >
-              Trends Report
+              PROFILE{" "}
+            </Link>{" "}
+            <Link
+              href='/MY RATINGS'
+              className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5'
+            >
+              MY RATINGS
+            </Link>{" "}
+            <Link
+              href='/ASKANEXPERT'
+              className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5'
+            >
+              ASK AN EXPERT{" "}
+            </Link>{" "}
+            <Link
+              href='/HELP'
+              className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5'
+            >
+              HELP{" "}
+            </Link>{" "}
+            <Link
+              href='/CHAT'
+              className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5'
+            >
+              CHAT{" "}
             </Link>{" "}
           </div>
         )}
@@ -138,7 +162,7 @@ const NavBar = () => {
           <div>
             <Link
               href='/FindaTrade'
-              className='ml-3 outline  text-center font-bold py-3 px-8 rounded-full my-5 center'
+              className='ml-3 outline  text-center font-bold py-2  px-8 rounded-full my-5 center'
             >
               {" "}
               Find a Trade
@@ -146,21 +170,27 @@ const NavBar = () => {
 
             <Link
               href='/Ask'
-              className='ml-3 center outline  text-center font-bold py-3 px-8 rounded-full my-5'
+              className='ml-3 center outline  text-center font-bold py-2  px-8 rounded-full my-5'
             >
               {" "}
               Ask
             </Link>
             <Link
               href='/TrendsReport'
-              className='ml-3 center outline  text-center font-bold py-3 px-8 rounded-full my-5'
+              className='ml-3 center outline  text-center font-bold py-2  px-8 rounded-full my-5'
             >
               Trends Report
+            </Link>
+            <Link
+              href='/Advice'
+              className='ml-3 center outline  text-center font-bold py-2  px-8 rounded-full my-5'
+            >
+              Advice
             </Link>
 
             <Link
               href='/MYJOBS'
-              className='ml-3 outline  text-center font-bold py-3 px-8 rounded-full my-5 center'
+              className='ml-3 outline  text-center font-bold py-2  px-8 rounded-full my-5 center'
             >
               {" "}
               MY JOBS{" "}
@@ -168,14 +198,14 @@ const NavBar = () => {
 
             <Link
               href='/TRADESPEOPLE'
-              className='ml-3 center outline  text-center font-bold py-3 px-8 rounded-full my-5'
+              className='ml-3 center outline  text-center font-bold py-2  px-8 rounded-full my-5'
             >
               {" "}
               TRADESPEOPLE
             </Link>
             <Link
               href='/CHAT'
-              className='ml-3 center outline  text-center font-bold py-3 px-8 rounded-full my-5'
+              className='ml-3 center outline  text-center font-bold py-2  px-8 rounded-full my-5'
             >
               CHAT{" "}
             </Link>
@@ -188,7 +218,7 @@ const NavBar = () => {
 
   return (
     <div className=''>
-      <div className='flex text-white bg-slate-900  h-fit w-[100%] right-0 top-0'>
+      <div className='flex text-white bg-blue-700  h-fit w-[100%] right-0 top-0'>
         {" "}
         <Link
           href='/'

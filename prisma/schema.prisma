@@ -20,3 +20,39 @@ model user {
   isRepairman  Boolean @default(false)
   isProgrammer Boolean @default(false)
 }
+
+model Category {
+  id   String @id @default(cuid())
+  name String @unique
+}
+
+model Sub_Category {
+  id            String @id @default(cuid())
+  name          String @unique
+  category_CUID String
+  questions     Json?
+}
+
+model Question {
+  id            String @id @default(cuid())
+  text_Question String
+  answers       Json?
+}
+
+model Answer {
+  id          String @id @default(cuid())
+  text_answer String
+  //gbp
+  moneycost   Int
+  //days
+  timecost  Int
+  // question Question[]
+}
+
+model FINAL_Quote {
+  id          String @id @default(cuid())
+  text_answer String
+  moneycost   Int
+  timecost_   Int
+  // question Question[]
+}
