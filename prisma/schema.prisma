@@ -27,25 +27,30 @@ model Category {
 }
 
 model Sub_Category {
-  id            String @id @default(cuid())
-  name          String @unique
-  category_CUID String
-  questions     Json?
+  id         String @id @default(cuid())
+  name       String @unique
+  categoryID String
+  questions  Json?
 }
 
 model Question {
-  id            String @id @default(cuid())
-  text_Question String
-  answers       Json?
+  id             String @id @default(cuid())
+  text_Question  String
+  sub_categoryID String
+  categoryID     String
+  answers        Json?
 }
 
 model Answer {
-  id          String @id @default(cuid())
-  text_answer String
+  id             String @id @default(cuid())
+  sub_categoryID String
+  categoryID     String
+  questionID     String
+  text_answer    String
   //gbp
-  moneycost   Int
+  moneycost      Int
   //days
-  timecost  Int
+  timecost       Int
   // question Question[]
 }
 

@@ -9,6 +9,8 @@ const QuizzMaker = () => {
   const [answers, setanswers] = useState<Answer[]>();
   const [Sub_Category, setSub_Category] = useState<Sub_Category>();
 
+  function PersistToSQUEALdb(escalationlevel: number) {}
+
   return (
     <div>
       QuizzMaker
@@ -20,6 +22,12 @@ const QuizzMaker = () => {
           id='Subcategory'
           placeholder='Subcategory Goes Here'
         />{" "}
+        <button
+          className=' bg-blue-500 hover:bg-blue-700 text-white font-bold my-5 py-2 px-4 rounded-full '
+          onClick={() => {}}
+        >
+          Click To Add Subcategory
+        </button>{" "}
         / Category name:{" "}
         <input
           type='text'
@@ -27,6 +35,12 @@ const QuizzMaker = () => {
           id='Category'
           placeholder='Category Goes Here'
         />{" "}
+        <button
+          className=' bg-blue-500 hover:bg-blue-700 text-white font-bold my-5 py-2 px-4 rounded-full '
+          onClick={() => {}}
+        >
+          Click To Add Category
+        </button>{" "}
       </div>
       <div>
         Question:{" "}
@@ -36,6 +50,12 @@ const QuizzMaker = () => {
           id='Question'
           placeholder='Question Goes Here'
         />{" "}
+        <button
+          className=' bg-blue-500 hover:bg-blue-700 text-white font-bold my-5 py-2 px-4 rounded-full '
+          onClick={() => {}}
+        >
+          Click To Add Category
+        </button>{" "}
       </div>
       <div>
         :Answers <div></div>{" "}
