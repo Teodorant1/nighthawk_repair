@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import axios, { Axios } from "axios";
+import axios from "axios";
 import { env } from "process";
 
 async function registerAccount(role: string) {

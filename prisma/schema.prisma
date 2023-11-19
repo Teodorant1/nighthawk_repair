@@ -23,30 +23,30 @@ model user {
 
 model Category {
   id   String @id @default(cuid())
-  name String @unique
+  name String @unique 
 }
 
 model Sub_Category {
   id         String @id @default(cuid())
   name       String @unique
-  categoryID String
+  categoryID String @db.Text
   questions  Json?
 }
 
 model Question {
   id             String @id @default(cuid())
-  text_Question  String
-  sub_categoryID String
-  categoryID     String
+  text_Question  String @db.Text
+  sub_categoryID String @db.Text
+  categoryID     String @db.Text
   answers        Json?
 }
 
 model Answer {
   id             String @id @default(cuid())
-  sub_categoryID String
-  categoryID     String
-  questionID     String
-  text_answer    String
+  sub_categoryID String @db.Text
+  categoryID     String @db.Text
+  questionID     String @db.Text
+  text_answer    String @db.Text
   //gbp
   moneycost      Int
   //days
@@ -56,7 +56,7 @@ model Answer {
 
 model FINAL_Quote {
   id          String @id @default(cuid())
-  text_answer String
+  text_answer String @db.Text
   moneycost   Int
   timecost_   Int
   // question Question[]
