@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { Category, Sub_Category, Question, Answer } from "@prisma/client";
 import axios from "axios";
 
 const QuizzMaker = () => {
@@ -39,10 +38,9 @@ const QuizzMaker = () => {
 
     axios
       .post("/api/QImaker", parcel)
-      // .then((resp) => {
-      //   const receivedinfo = resp.data;
-      //   console.log(receivedinfo);
-      // })
+      .then((resp) => {
+        console.log("managed to post");
+      })
       .catch((error) => console.log(error));
   }
 
@@ -74,7 +72,9 @@ const QuizzMaker = () => {
         />{" "}
         <button
           className=' bg-blue-500 hover:bg-blue-700 text-white font-bold my-5 py-2 px-4 rounded-full '
-          onClick={() => {}}
+          onClick={() => {
+            PersistToSQUEALdb(2);
+          }}
         >
           Click To Add Subcategory
         </button>{" "}
@@ -89,7 +89,9 @@ const QuizzMaker = () => {
         />{" "}
         <button
           className=' bg-blue-500 hover:bg-blue-700 text-white font-bold my-5 py-2 px-4 rounded-full '
-          onClick={() => {}}
+          onClick={() => {
+            PersistToSQUEALdb(3);
+          }}
         >
           Click To Add Question
         </button>{" "}
@@ -107,20 +109,22 @@ const QuizzMaker = () => {
           type='number'
           className='outline text-center font-bold py-2 px-4 rounded-full my-5'
           id='timecost'
-          placeholder='Answer Goes Here'
+          placeholder='1'
         />{" "}
         Money Cost:{" "}
         <input
           type='number'
           className='outline text-center font-bold py-2 px-4 rounded-full my-5'
           id='moneycost'
-          placeholder='Answer Goes Here'
+          placeholder='1'
         />{" "}
         <button
           className=' bg-blue-500 hover:bg-blue-700 text-white font-bold my-5 py-2 px-4 rounded-full '
-          onClick={() => {}}
+          onClick={() => {
+            PersistToSQUEALdb(4);
+          }}
         >
-          Click To Add Question
+          Click To Add Answer
         </button>{" "}
       </div>
     </div>

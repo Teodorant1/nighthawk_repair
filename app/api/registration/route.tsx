@@ -15,7 +15,6 @@ const schema = z.object({
 // }
 
 export async function POST(req: NextRequest) {
-  console.log("paloki");
   const body = await req.json();
   const validation = schema.safeParse(body);
   if (!validation) {

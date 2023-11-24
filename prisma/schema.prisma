@@ -21,19 +21,19 @@ model user {
   isProgrammer Boolean @default(false)
 }
 
-model Category {
+model category {
   id   String @id @default(cuid())
   name String @unique 
 }
 
-model Sub_Category {
+model sub_category {
   id         String @id @default(cuid())
   name       String @unique
   categoryID String @db.Text
   questions  Json?
 }
 
-model Question {
+model question {
   id             String @id @default(cuid())
   text_Question  String @db.Text
   sub_categoryID String @db.Text
@@ -41,7 +41,7 @@ model Question {
   answers        Json?
 }
 
-model Answer {
+model answer {
   id             String @id @default(cuid())
   sub_categoryID String @db.Text
   categoryID     String @db.Text
@@ -54,7 +54,7 @@ model Answer {
   // question Question[]
 }
 
-model FINAL_Quote {
+model final_quote {
   id          String @id @default(cuid())
   text_answer String @db.Text
   moneycost   Int
