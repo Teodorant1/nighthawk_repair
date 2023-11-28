@@ -23,7 +23,7 @@ model user {
 
 model category {
   id   String @id @default(cuid())
-  name String @unique 
+  name String @unique
 }
 
 model sub_category {
@@ -52,6 +52,20 @@ model answer {
   //days
   timecost       Int
   // question Question[]
+}
+
+model submitted_job {
+  id                String   @id @default(cuid())
+  sub_categoryID    String   @db.Text
+  categoryID        String   @db.Text
+  answeredQuestions String   @db.Text
+  isVisible         Boolean  @default(false)
+  submittterEmail   String
+  date_created      DateTime @default(now())
+  extrainfo         String?  @db.Text
+  timecost          Int      
+  moneycost         Int      
+
 }
 
 model final_quote {

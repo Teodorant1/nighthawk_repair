@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { question, answer, category, sub_category } from "@prisma/client";
-import { useParams } from "next/navigation";
 
 const QIZZTAKER = () => {
   const [stage, setstage] = useState<number>(1);
@@ -14,15 +13,12 @@ const QIZZTAKER = () => {
     useState<sub_category[]>();
   const [Question_Array, setQuestion_Array] = useState<question[]>([]);
   //odgovorena pitanja
-  const [Answer_Array, setanswer_Array] = useState<answer[]>([]);
   const [AnsweredQuestionsArray, setAnsweredQuestionsArray] = useState<
     String[]
   >([]);
-  // const [AnswerIndex_Array, setanswerIndex_Array] = useState<number[]>([]);
-
-  // class answered_question {
-
-  // }
+  const [AnsweredQuestionsArray1, setAnsweredQuestionsArray1] = useState<
+    answer[]
+  >([]);
 
   interface parcel {
     escalationlevel: Number;
@@ -33,17 +29,10 @@ const QIZZTAKER = () => {
     timecost?: Number;
     moneycost?: Number;
     method?: String;
+    answeredquestions?: answer[];
+    extrainfo?: String;
   }
-  // interface parcel2 {
-  //   method: String;
-  //   escalationlevel: Number;
-  //   category?: String;
-  //   subcategory?: String;
-  //   question?: String;
-  //   answer?: String;
-  //   timecost?: Number;
-  //   moneycost?: Number;
-  // }
+
   const parcel1: parcel = {
     escalationlevel: 1,
   };
@@ -59,7 +48,7 @@ const QIZZTAKER = () => {
   //     setsub_category_Array(resp.data);
   //   });
   // }, [category]);
-  async function GetData(escalationlevel: number, labelToChange: String) {
+  async function GetData(escalationlevel: number, labelToChange?: String) {
     switch (escalationlevel) {
       case 1:
         axios.post("/api/qizztaker", parcel1).then((resp) => {
@@ -86,6 +75,32 @@ const QIZZTAKER = () => {
           console.log(resp.data);
           setQuestion_Array(resp.data);
         });
+      // case 4 is in answerbox
+      case 5:
+        const extrainfo = (
+          document.getElementById("ExtraDetails") as HTMLInputElement
+        )?.value;
+        if (extrainfo) {
+          let parcel4: parcel = {
+            escalationlevel: escalationlevel,
+            category: AnsweredQuestionsArray1.at(0)?.categoryID,
+            subcategory: AnsweredQuestionsArray1.at(0)?.sub_categoryID,
+            answeredquestions: AnsweredQuestionsArray1,
+            extrainfo: extrainfo,
+            method: "createjobpost",
+          };
+          axios.post("/api/qizztaker", parcel4);
+        } else {
+          let parcel4: parcel = {
+            escalationlevel: escalationlevel,
+            category: AnsweredQuestionsArray1.at(0)?.categoryID,
+            subcategory: AnsweredQuestionsArray1.at(0)?.sub_categoryID,
+            answeredquestions: AnsweredQuestionsArray1,
+
+            method: "createjobpost",
+          };
+          axios.post("/api/qizztaker", parcel4);
+        }
     }
   }
 
@@ -140,7 +155,7 @@ const QIZZTAKER = () => {
   function QuestionBOX() {
     return (
       <div>
-        <div> A list of questions we have for you </div>
+        <div> Questionare Stage</div>
         {true && (
           <>
             {" "}
@@ -201,18 +216,6 @@ const QIZZTAKER = () => {
       });
     }, []);
 
-    async function handle_answer_question(answer: answer) {
-      setanswer_Array((current) => [...current, answer]);
-      // const newarray = Answer_Array.slice();
-      // newarray.push(answer);
-      // setanswer_Array(newarray);
-    }
-    // useEffect(() => {
-    //   axios.post("/api/qizztaker", parcel1).then((resp) => {
-    //     setanswer_Array((current) => [...current, pickedanswer!]);
-    //     SetIsClicked(true);
-    //   });
-    // }, [pickedanswer]);
     return (
       <div>
         {AnsweredQuestionsArray.includes(question.id) === false && (
@@ -225,15 +228,15 @@ const QIZZTAKER = () => {
                   <div> Pick an answer from one of the following</div>
                   {answers?.map((answer) => (
                     <div
-                      onClick={async () => {
-                        // SetIsClicked(!IsClicked);
-                        setanswer_Array((current) => [...current, answer]);
+                      onClick={() => {
                         setAnsweredQuestionsArray((current) => [
                           ...current,
                           question.id,
                         ]);
-                        // await handle_answer_question(answer);
-                        //  SetIsClicked((prevState) => !prevState);
+                        setAnsweredQuestionsArray1((current) => [
+                          ...current,
+                          answer,
+                        ]);
                       }}
                       key={answer.text_answer}
                       className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5'
@@ -261,7 +264,33 @@ const QIZZTAKER = () => {
   }
 
   function SubmitBox() {
-    return <div>{AnsweredQuestionsArray.length > 0 && <>{}</>}</div>;
+    return (
+      <div>
+        {AnsweredQuestionsArray.length > 0 && (
+          <>
+            {AnsweredQuestionsArray.length === Question_Array.length && (
+              <>
+                {" "}
+                <input
+                  type='text'
+                  className='mx-[20%] w-[50%] h-[10%] outline text-center font-bold py-10 px-10  my-5'
+                  id='ExtraDetails'
+                  placeholder='Extra details go here'
+                />{" "}
+                <div
+                  onClick={() => {
+                    GetData(5);
+                  }}
+                  className=' bg-blue-600  hover:bg-blue-900 ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
+                >
+                  CLICK HERE TO SUBMIT{" "}
+                </div>
+              </>
+            )}
+          </>
+        )}
+      </div>
+    );
   }
 
   return (
@@ -269,7 +298,7 @@ const QIZZTAKER = () => {
       {stage === 1 && <CategoryBOX />}
       {stage === 2 && <SubcategoryBOX />}
       {stage === 3 && <QuestionBOX />}
-      {}
+      {stage === 3 && <SubmitBox />}
     </div>
   );
 };

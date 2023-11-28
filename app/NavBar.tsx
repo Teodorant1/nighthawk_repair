@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useState } from "react";
 import Image from "next/image";
-import logo from "@/public/images/chrome_vVJBDHpnMT.png";
+import logo from "@/public/images/IQTlogo.png";
 
 const NavBar = () => {
   const { status, data: session } = useSession();
@@ -217,24 +217,25 @@ const NavBar = () => {
   }
 
   return (
-    <div className=''>
-      <div className='flex text-white bg-blue-700  h-fit w-[100%] right-0 top-0'>
-        {" "}
-        <Link
-          href='/'
-          className='mr-5'
-        >
+    <div className='flex text-white bg-blue-700  h-fit w-[100%] right-0 top-0'>
+      {" "}
+      <Link
+        href='/'
+        className='mr-5 w-[10%] h-[10%]'
+      >
+        <div className='w-[100%]'>
+          {" "}
           <Image
             src={logo}
-            width={150}
-            height={150}
+            // width={250}
+            // height={250}
             alt='Picture of the author'
           />
-        </Link>
-        <USERBOX />
-        <BUYERBOX />
-        <MyAccount />
-      </div>
+        </div>
+      </Link>
+      <USERBOX />
+      <BUYERBOX />
+      <MyAccount />
     </div>
   );
 };

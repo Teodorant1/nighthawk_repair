@@ -1,5 +1,4 @@
 import CredentialsProvider from "next-auth/providers/credentials";
-import { user } from "@prisma/client";
 import bcrypt from "bcrypt";
 import prisma from "@/prisma/client";
 

@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/client";
-import { category, question, sub_category, answer } from "@prisma/client";
+import {
+  category,
+  question,
+  sub_category,
+  answer,
+  submitted_job,
+} from "@prisma/client";
 
 interface parcel2 {
-  method: String;
   escalationlevel: Number;
   category?: String;
   subcategory?: String;
@@ -11,11 +16,14 @@ interface parcel2 {
   answer?: String;
   timecost?: Number;
   moneycost?: Number;
+  method?: String;
+  answeredquestions?: answer[];
+  extrainfo?: String;
 }
 export async function POST(req: NextRequest) {
   const body = await req.json();
   const parcel1: parcel2 = body;
-  console.log(parcel1);
+  console.log(parcel1, "you are using v2 of the api");
 
   switch (parcel1.escalationlevel) {
     case 1:
@@ -30,24 +38,20 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(subcategories);
 
     case 3:
-      const questions: question[] = await prisma.question.findMany({
-        where: {
-          categoryID: String(parcel1.category),
-          sub_categoryID: String(parcel1.subcategory),
-        },
-      });
-
-      return NextResponse.json(questions);
-
-    case 4:
-      const answers: answer[] = await prisma.answer.findMany({
-        where: {
-          categoryID: String(parcel1.category),
-          sub_categoryID: String(parcel1.subcategory),
-          questionID: String(parcel1.question),
-        },
-      });
-      return NextResponse.json(answers);
+      const submitted_jobs: submitted_job[] =
+        await prisma.submitted_job.findMany({
+          orderBy: [
+            {
+              date_created: "desc",
+            },
+          ],
+          where: {
+            categoryID: String(parcel1.category),
+            sub_categoryID: String(parcel1.subcategory),
+            isVisible: true,
+          },
+        });
+      return NextResponse.json(submitted_jobs);
   }
   //  return NextResponse.json({ email: "newuser.email" });
 }
