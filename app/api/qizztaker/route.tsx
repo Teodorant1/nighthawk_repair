@@ -53,6 +53,7 @@ export async function POST(req: NextRequest) {
           questionID: String(parcel1.question),
         },
       });
+
       return NextResponse.json(answers);
 
     case 5:
@@ -63,6 +64,10 @@ export async function POST(req: NextRequest) {
         const tc: answer = await prisma.answer.findFirstOrThrow({
           where: {
             id: String(parcel1.answeredquestions![i].id),
+            categoryID: String(parcel1.category),
+            sub_categoryID: String(parcel1.subcategory),
+            questionID: String(parcel1.answeredquestions![i].questionID),
+            // id: "String(parcel1.answeredquestions![i].id",
           },
         });
         timecost = timecost + tc.timecost;
