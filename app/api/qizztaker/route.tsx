@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/client";
 import { category, question, sub_category, answer } from "@prisma/client";
-import { authOptions1 } from "../auth/[...nextauth]/route";
+import { authOptions } from "../auth/authOptions";
 import { getServerSession } from "next-auth";
 import { time } from "console";
 
@@ -18,7 +18,7 @@ interface parcel {
   extrainfo?: String;
 }
 export async function POST(req: NextRequest) {
-  const session = await getServerSession(authOptions1);
+  const session = await getServerSession(authOptions);
   const body = await req.json();
   const parcel1: parcel = body;
   // console.log(parcel1);

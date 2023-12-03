@@ -49,60 +49,23 @@ export const authOptions = {
   callbacks: {
     async jwt({ token, user, session }: any) {
       // console.log("jwt callback", { token, user, session });
-      if (user) token.role = user.role;
+      if (user) {
+        token.role = user.role;
+        token.isClient = user.isClient;
+        token.isAdmin = user.isAdmin;
+        token.isRepairman = user.isRepairman;
+      }
       return token;
     },
     async session({ session, token, user }: any) {
       // console.log("sesh callback", { token, user, session });
-      if (session?.user) session.user.role = token.role;
+      if (session?.user) {
+        session.user.role = token.role;
+        session.user.isClient = token.isClient;
+        session.user.isAdmin = token.isAdmin;
+        session.user.isRepairman = token.isRepairman;
+      }
       return session;
     },
   },
 };
-
-// import prisma from "@/prisma/client";
-// import { PrismaAdapter } from "@next-auth/prisma-adapter";
-// import { NextAuthOptions } from "next-auth";
-// import CredentialsProvider from "next-auth/providers/credentials";
-// import bcrypt from "bcrypt";
-
-// export const authOptions: NextAuthOptions = {
-//   adapter: PrismaAdapter(prisma),
-//   providers: [
-//     CredentialsProvider({
-//       name: "Credentials",
-//       credentials: {
-//         email: {
-//           label: "Email",
-//           type: "email",
-//           placeholder: "Email",
-//         },
-//         password: {
-//           label: "Password",
-//           type: "password",
-//           placeholder: "Password",
-//         },
-//       },
-
-//       async authorize(credentials, req) {
-//         if (!credentials?.email || !credentials.password) return null;
-
-//         const user = await prisma.user.findUnique({
-//           where: { email: credentials.email },
-//         });
-
-//         if (!user) return null;
-
-//         const passwordsMatch = await bcrypt.compare(
-//           credentials.password,
-//           user.password!
-//         );
-
-//         return passwordsMatch ? user : null;
-//       },
-//     }),
-//   ],
-//   session: {
-//     strategy: "jwt",
-//   },
-// };
