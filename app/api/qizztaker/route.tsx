@@ -16,6 +16,9 @@ interface parcel {
   method?: String;
   answeredquestions?: answer[];
   extrainfo?: String;
+  lat?: Number;
+  long?: Number;
+  email?: String;
 }
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -28,11 +31,13 @@ export async function POST(req: NextRequest) {
       const categories: category[] = await prisma.category.findMany();
       return NextResponse.json(categories);
     case 2:
-      const subcategories: sub_category[] = await prisma.sub_category.findMany({
+      const subcategories: any[] = await prisma.sub_category.findMany({
         where: {
           categoryID: String(parcel1.category),
         },
+        select: { id: true, name: true, categoryID: true, questions: false },
       });
+
       return NextResponse.json(subcategories);
 
     case 3:
@@ -45,15 +50,26 @@ export async function POST(req: NextRequest) {
 
       return NextResponse.json(questions);
 
+    //  id
+    //  sub_categoryID
+    //  categoryID
+    //  questionID
+    //  text_answer
     case 4:
-      const answers: answer[] = await prisma.answer.findMany({
+      const answers: any[] = await prisma.answer.findMany({
         where: {
           categoryID: String(parcel1.category),
           sub_categoryID: String(parcel1.subcategory),
           questionID: String(parcel1.question),
         },
+        select: {
+          id: true,
+          sub_categoryID: true,
+          categoryID: true,
+          questionID: true,
+          text_answer: true,
+        },
       });
-
       return NextResponse.json(answers);
 
     case 5:

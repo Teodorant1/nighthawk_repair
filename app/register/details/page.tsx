@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { env } from "process";
 
@@ -26,6 +26,29 @@ async function registerAccount(role: string) {
 }
 
 const Details = () => {
+  const [userLocation, setUserLocation] = useState<any>(null);
+  const getUserLocation = () => {
+    // if geolocation is supported by the users browser
+    if (navigator.geolocation) {
+      // get the current users location
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // save the geolocation coordinates in two variables
+          const { latitude, longitude } = position.coords;
+          // update the value of userlocation variable
+          setUserLocation({ latitude, longitude });
+        },
+        // if there was an error getting the users location
+        (error) => {
+          console.error("Error getting user location:", error);
+        }
+      );
+    }
+    // if geolocation is not supported by the users browser
+    else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  };
   return (
     <div className='justify-items-center px-[40%]'>
       {" "}

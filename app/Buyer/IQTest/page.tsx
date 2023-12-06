@@ -3,8 +3,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { question, answer, category, sub_category } from "@prisma/client";
+import { useSession } from "next-auth/react";
 
 const QIZZTAKER = () => {
+  const [userLocation, setUserLocation] = useState<any>(null);
+  const { status, data: session } = useSession();
   const [stage, setstage] = useState<number>(1);
   const [category, setcategory] = useState<category>();
   const [category_Array, setcategory_Array] = useState<category[]>();
@@ -20,6 +23,12 @@ const QIZZTAKER = () => {
     answer[]
   >([]);
 
+  interface question1 {
+    id: String;
+    text_Question: String;
+    sub_categoryID: String;
+    categoryID: String;
+  }
   interface parcel {
     escalationlevel: Number;
     category?: String;
@@ -31,6 +40,9 @@ const QIZZTAKER = () => {
     method?: String;
     answeredquestions?: answer[];
     extrainfo?: String;
+    lat?: Number;
+    long?: Number;
+    email?: String;
   }
 
   const parcel1: parcel = {
@@ -54,6 +66,7 @@ const QIZZTAKER = () => {
         axios.post("/api/qizztaker", parcel1).then((resp) => {
           setcategory_Array(resp.data);
         });
+        break;
 
       case 2:
         let parcel2: parcel = {
@@ -64,6 +77,7 @@ const QIZZTAKER = () => {
           console.log(resp.data);
           setsub_category_Array(resp.data);
         });
+        break;
 
       case 3:
         let parcel3: parcel = {
@@ -75,6 +89,8 @@ const QIZZTAKER = () => {
           console.log(resp.data);
           setQuestion_Array(resp.data);
         });
+        break;
+
       // case 4 is in answerbox
       case 5:
         const extrainfo = (
@@ -88,18 +104,71 @@ const QIZZTAKER = () => {
             answeredquestions: AnsweredQuestionsArray1,
             extrainfo: extrainfo,
             method: "createjobpost",
+            email: session?.user.email,
           };
-          axios.post("/api/qizztaker", parcel4);
+          axios.post("/api/qizztaker", parcel4).then((resp) => {
+            setstage(4);
+          });
+          break;
         } else {
           let parcel4: parcel = {
             escalationlevel: escalationlevel,
             category: AnsweredQuestionsArray1.at(0)?.categoryID,
             subcategory: AnsweredQuestionsArray1.at(0)?.sub_categoryID,
             answeredquestions: AnsweredQuestionsArray1,
-
             method: "createjobpost",
+            email: session?.user.email,
           };
-          axios.post("/api/qizztaker", parcel4);
+          axios.post("/api/qizztaker", parcel4).then((resp) => {
+            setstage(4);
+          });
+          break;
+        }
+
+      case 6:
+        // submitting and registering
+        const extrainfo1 = (
+          document.getElementById("ExtraDetails") as HTMLInputElement
+        )?.value;
+
+        const email = (document.getElementById("email") as HTMLInputElement)
+          ?.value;
+        const password = (
+          document.getElementById("password") as HTMLInputElement
+        )?.value;
+        const phoneNum = (
+          document.getElementById("phoneNum") as HTMLInputElement
+        )?.value;
+        const name = (document.getElementById("name") as HTMLInputElement)
+          ?.value;
+
+        if (extrainfo1) {
+          let parcel4: parcel = {
+            escalationlevel: escalationlevel,
+            category: AnsweredQuestionsArray1.at(0)?.categoryID,
+            subcategory: AnsweredQuestionsArray1.at(0)?.sub_categoryID,
+            answeredquestions: AnsweredQuestionsArray1,
+            extrainfo: extrainfo1,
+            method: labelToChange,
+            email: session?.user.email,
+          };
+          axios.post("/api/qizztaker", parcel4).then((resp) => {
+            setstage(4);
+          });
+          break;
+        } else {
+          let parcel4: parcel = {
+            escalationlevel: escalationlevel,
+            category: AnsweredQuestionsArray1.at(0)?.categoryID,
+            subcategory: AnsweredQuestionsArray1.at(0)?.sub_categoryID,
+            answeredquestions: AnsweredQuestionsArray1,
+            method: labelToChange,
+            email: session?.user.email,
+          };
+          axios.post("/api/qizztaker", parcel4).then((resp) => {
+            setstage(4);
+          });
+          break;
         }
     }
   }
@@ -271,20 +340,49 @@ const QIZZTAKER = () => {
             {AnsweredQuestionsArray.length === Question_Array.length && (
               <>
                 {" "}
-                <input
-                  type='text'
-                  className='mx-[20%] w-[50%] h-[10%] outline text-center font-bold py-10 px-10  my-5'
-                  id='ExtraDetails'
-                  placeholder='Extra details go here'
-                />{" "}
-                <div
-                  onClick={() => {
-                    GetData(5);
-                  }}
-                  className=' bg-blue-600  hover:bg-blue-900 ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
-                >
-                  CLICK HERE TO SUBMIT{" "}
-                </div>
+                <GeolocationBox />
+                {status === "authenticated" && (
+                  <>
+                    <div></div>{" "}
+                    <input
+                      type='text'
+                      className='mx-[20%] w-[50%] h-[10%] outline text-center font-bold py-10 px-10  my-5'
+                      id='ExtraDetails'
+                      placeholder='Extra details go here'
+                    />{" "}
+                    <div
+                      onClick={() => {
+                        GetData(5);
+                      }}
+                      className=' bg-blue-600  hover:bg-blue-900 ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
+                    >
+                      CLICK HERE TO SUBMIT{" "}
+                    </div>
+                  </>
+                )}
+                {status === "unauthenticated" && (
+                  <>
+                    <div>
+                      You are not LOGGED IN , so you can either click to submit
+                      with your existing credentials OR submit and REGISTER at
+                      the same time
+                    </div>{" "}
+                    <input
+                      type='text'
+                      className='mx-[20%] w-[50%] h-[10%] outline text-center font-bold py-10 px-10  my-5'
+                      id='ExtraDetails'
+                      placeholder='Extra details go here'
+                    />{" "}
+                    <div
+                      onClick={() => {
+                        GetData(6);
+                      }}
+                      className=' bg-blue-600  hover:bg-blue-900 ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
+                    >
+                      CLICK HERE TO SUBMIT{" "}
+                    </div>
+                  </>
+                )}
               </>
             )}
           </>
@@ -293,12 +391,69 @@ const QIZZTAKER = () => {
     );
   }
 
+  function GeolocationBox() {
+    const getUserLocation = () => {
+      // if geolocation is supported by the users browser
+      if (navigator.geolocation) {
+        // get the current users location
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            // save the geolocation coordinates in two variables
+            const { latitude, longitude } = position.coords;
+            // update the value of userlocation variable
+            setUserLocation({ latitude, longitude });
+          },
+          // if there was an error getting the users location
+          (error) => {
+            console.error("Error getting user location:", error);
+          }
+        );
+      }
+      // if geolocation is not supported by the users browser
+      else {
+        console.error("Geolocation is not supported by this browser.");
+      }
+    };
+    return (
+      <div>
+        <h1>
+          You can submit your location to make it easier for potential
+          professionals to filter for it
+        </h1>
+        <h2>(Make sure to allow our app to know your location)</h2>
+        {/* create a button that is mapped to the function which retrieves the users location */}
+        <button
+          className=' bg-blue-600  hover:bg-blue-900 ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
+          onClick={getUserLocation}
+        >
+          Load User Location
+        </button>
+        {/* if the user location variable has a value, print the users location */}
+        {userLocation && (
+          <div>
+            <h2>Your Location</h2>
+            <p>Latitude: {userLocation.latitude}</p>
+            <p>Longitude: {userLocation.longitude}</p>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  function SuccessBox() {
+    return (
+      <> YOU HAVE UPLOADED THE JOB , CHECK YOUR EMAIL FOR CONFIRMATION EMAIL</>
+    );
+  }
+
   return (
     <div>
+      stage: {stage}
       {stage === 1 && <CategoryBOX />}
       {stage === 2 && <SubcategoryBOX />}
       {stage === 3 && <QuestionBOX />}
       {stage === 3 && <SubmitBox />}
+      {stage === 4 && <SuccessBox />}
     </div>
   );
 };

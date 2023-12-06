@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `submitted_job` ADD COLUMN `latitude` DECIMAL(65, 30) NOT NULL DEFAULT 0,
+    ADD COLUMN `longitude` DECIMAL(65, 30) NOT NULL DEFAULT 0;

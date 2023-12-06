@@ -19,6 +19,9 @@ interface parcel2 {
   method?: String;
   answeredquestions?: answer[];
   extrainfo?: String;
+  lat?: Number;
+  long?: Number;
+  email?: String;
 }
 export async function POST(req: NextRequest) {
   const body = await req.json();
