@@ -23,12 +23,12 @@ const QIZZTAKER = () => {
     answer[]
   >([]);
 
-  interface question1 {
-    id: String;
-    text_Question: String;
-    sub_categoryID: String;
-    categoryID: String;
-  }
+  // interface question1 {
+  //   id: String;
+  //   text_Question: String;
+  //   sub_categoryID: String;
+  //   categoryID: String;
+  // }
   interface parcel {
     escalationlevel: Number;
     category?: String;
@@ -43,6 +43,8 @@ const QIZZTAKER = () => {
     lat?: Number;
     long?: Number;
     email?: String;
+    password?: String;
+    name?: String;
   }
 
   const parcel1: parcel = {
@@ -105,6 +107,8 @@ const QIZZTAKER = () => {
             extrainfo: extrainfo,
             method: "createjobpost",
             email: session?.user.email,
+            lat: userLocation.latitude,
+            long: userLocation.longitude,
           };
           axios.post("/api/qizztaker", parcel4).then((resp) => {
             setstage(4);
@@ -118,6 +122,8 @@ const QIZZTAKER = () => {
             answeredquestions: AnsweredQuestionsArray1,
             method: "createjobpost",
             email: session?.user.email,
+            lat: userLocation.latitude,
+            long: userLocation.longitude,
           };
           axios.post("/api/qizztaker", parcel4).then((resp) => {
             setstage(4);
@@ -151,6 +157,8 @@ const QIZZTAKER = () => {
             extrainfo: extrainfo1,
             method: labelToChange,
             email: session?.user.email,
+            lat: userLocation.latitude,
+            long: userLocation.longitude,
           };
           axios.post("/api/qizztaker", parcel4).then((resp) => {
             setstage(4);
@@ -164,6 +172,8 @@ const QIZZTAKER = () => {
             answeredquestions: AnsweredQuestionsArray1,
             method: labelToChange,
             email: session?.user.email,
+            lat: userLocation.latitude,
+            long: userLocation.longitude,
           };
           axios.post("/api/qizztaker", parcel4).then((resp) => {
             setstage(4);
@@ -415,7 +425,7 @@ const QIZZTAKER = () => {
       }
     };
     return (
-      <div>
+      <div className='bg-blue-900  ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'>
         <h1>
           You can submit your location to make it easier for potential
           professionals to filter for it
@@ -432,7 +442,7 @@ const QIZZTAKER = () => {
         {userLocation && (
           <div>
             <h2>Your Location</h2>
-            <p>Latitude: {userLocation.latitude}</p>
+            <p>Latitude: {userLocation.latitude} </p>
             <p>Longitude: {userLocation.longitude}</p>
           </div>
         )}
@@ -448,7 +458,7 @@ const QIZZTAKER = () => {
 
   return (
     <div>
-      stage: {stage}
+      {/* stage: {stage} */}
       {stage === 1 && <CategoryBOX />}
       {stage === 2 && <SubcategoryBOX />}
       {stage === 3 && <QuestionBOX />}

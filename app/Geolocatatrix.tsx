@@ -38,7 +38,7 @@ const Geolocatatrix = () => {
       {userLocation && (
         <div>
           <h2>User Location</h2>
-          <p>Latitude: {userLocation.latitude}</p>
+          <p>Latitude: {userLocation.latitude} </p>
           <p>Longitude: {userLocation.longitude}</p>
         </div>
       )}

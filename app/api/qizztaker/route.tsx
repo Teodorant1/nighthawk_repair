@@ -19,12 +19,14 @@ interface parcel {
   lat?: Number;
   long?: Number;
   email?: String;
+  password?: String;
+  name?: String;
 }
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
   const body = await req.json();
   const parcel1: parcel = body;
-  // console.log(parcel1);
+  console.log(parcel1);
 
   switch (parcel1.escalationlevel) {
     case 1:
@@ -105,8 +107,47 @@ export async function POST(req: NextRequest) {
           extrainfo: String(parcel1.extrainfo),
           moneycost: moneycost,
           timecost: timecost,
+          //        submittterEmail : String(parcel1.email)
         },
       });
+      break;
+    case 6:
+      let timecost1 = 0;
+      let moneycost1 = 0;
+
+      for (let i: number = 0; i < parcel1.answeredquestions?.length!; i++) {
+        const tc: answer = await prisma.answer.findFirstOrThrow({
+          where: {
+            id: String(parcel1.answeredquestions![i].id),
+            categoryID: String(parcel1.category),
+            sub_categoryID: String(parcel1.subcategory),
+            questionID: String(parcel1.answeredquestions![i].questionID),
+            // id: "String(parcel1.answeredquestions![i].id",
+          },
+        });
+        timecost = timecost1 + tc.timecost;
+        moneycost = moneycost1 + tc.moneycost;
+
+        // timecost = timecost + parcel1.answeredquestions![i].timecost;
+        // moneycost = moneycost + parcel1.answeredquestions![i].moneycost;
+      }
+
+      const answeredQuestions2 = JSON.stringify(parcel1.answeredquestions);
+
+      await prisma.submitted_job.create({
+        data: {
+          categoryID: String(parcel1.category),
+          sub_categoryID: String(parcel1.subcategory),
+          answeredQuestions: answeredQuestions2,
+          isVisible: false,
+          //  submittterEmail: session?.user.email!,
+          extrainfo: String(parcel1.extrainfo),
+          moneycost: moneycost1,
+          timecost: timecost1,
+          submittterEmail: String(parcel1.email),
+        },
+      });
+      break;
 
     // const answeredquestions = parcel1.answeredquestions?.toString()
 

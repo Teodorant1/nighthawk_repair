@@ -60,7 +60,7 @@ model submitted_job {
   categoryID        String   @db.Text
   answeredQuestions String   @db.Text
   isVisible         Boolean  @default(false)
-  submittterEmail   String
+  submittterEmail   String   @db.Text
   date_created      DateTime @default(now())
   extrainfo         String?  @db.Text
   timecost          Int      
