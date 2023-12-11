@@ -15,6 +15,7 @@ const QIZZTAKER = () => {
   const [sub_category_Array, setsub_category_Array] =
     useState<sub_category[]>();
   const [Question_Array, setQuestion_Array] = useState<question[]>([]);
+  const [optQuestion_Array, setoptQuestion_Array] = useState<question[]>([]);
   //odgovorena pitanja
   const [AnsweredQuestionsArray, setAnsweredQuestionsArray] = useState<
     String[]
@@ -40,11 +41,15 @@ const QIZZTAKER = () => {
     method?: String;
     answeredquestions?: answer[];
     extrainfo?: String;
+
     lat?: Number;
     long?: Number;
+    radius?: Number;
     email?: String;
     password?: String;
     name?: String;
+    phonenum?: String;
+    isOptional?: boolean;
   }
 
   const parcel1: parcel = {
@@ -86,10 +91,25 @@ const QIZZTAKER = () => {
           escalationlevel: escalationlevel,
           category: category?.name,
           subcategory: labelToChange,
+          isOptional: false,
         };
         axios.post("/api/qizztaker", parcel3).then((resp) => {
           console.log(resp.data);
           setQuestion_Array(resp.data);
+        });
+        break;
+      case 3.5:
+        let parcel35: parcel = {
+          escalationlevel: escalationlevel,
+          category: category?.name,
+          subcategory: labelToChange,
+          isOptional: true,
+        };
+        axios.post("/api/qizztaker", parcel35).then((resp) => {
+          setoptQuestion_Array(resp.data);
+          // console.log(resp.data);
+          // console.log(resp.data.length);
+          // setQuestion_Array(resp.data);
         });
         break;
 
@@ -156,7 +176,10 @@ const QIZZTAKER = () => {
             answeredquestions: AnsweredQuestionsArray1,
             extrainfo: extrainfo1,
             method: labelToChange,
-            email: session?.user.email,
+            email: email,
+            password: password,
+            phonenum: phoneNum,
+            name: name,
             lat: userLocation.latitude,
             long: userLocation.longitude,
           };
@@ -171,7 +194,7 @@ const QIZZTAKER = () => {
             subcategory: AnsweredQuestionsArray1.at(0)?.sub_categoryID,
             answeredquestions: AnsweredQuestionsArray1,
             method: labelToChange,
-            email: session?.user.email,
+            email: email,
             lat: userLocation.latitude,
             long: userLocation.longitude,
           };
@@ -220,6 +243,7 @@ const QIZZTAKER = () => {
                   // setsub_category(sub_category);
                   setstage(3);
                   GetData(3, sub_category!.name);
+                  GetData(3.5, sub_category!.name);
                 }}
                 className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5 '
               >
@@ -265,6 +289,7 @@ const QIZZTAKER = () => {
                             sub_categoryID={question.sub_categoryID}
                             categoryID={question.categoryID}
                             answers={null}
+                            isOptional={question.isOptional}
                             // index1={index}
                           />
                         </div>{" "}
@@ -275,7 +300,43 @@ const QIZZTAKER = () => {
               </>
             ))}
           </>
-        )}
+        )}{" "}
+        <div className='bg-green-500'>
+          {" "}
+          {optQuestion_Array!.length > 0 && (
+            <>
+              {optQuestion_Array!.map((question) => (
+                <>
+                  <div>
+                    <>
+                      {AnsweredQuestionsArray.includes(question.id) ===
+                        false && (
+                        <div
+                          key={question.id}
+                          className='ml-3 center outline text-center font-bold py-2 px-4  my-5'
+                        >
+                          <div> {question.text_Question}?</div>
+                          <div>
+                            {" "}
+                            <AnswerBOX
+                              id={question.id}
+                              text_Question={question.text_Question}
+                              sub_categoryID={question.sub_categoryID}
+                              categoryID={question.categoryID}
+                              answers={null}
+                              isOptional={question.isOptional}
+                              // index1={index}
+                            />
+                          </div>{" "}
+                        </div>
+                      )}
+                    </>
+                  </div>
+                </>
+              ))}
+            </>
+          )}
+        </div>
       </div>
     );
   }
@@ -347,16 +408,15 @@ const QIZZTAKER = () => {
       <div>
         {AnsweredQuestionsArray.length > 0 && (
           <>
-            {AnsweredQuestionsArray.length === Question_Array.length && (
+            {AnsweredQuestionsArray.length >= Question_Array.length && (
               <>
                 {" "}
                 <GeolocationBox />
                 {status === "authenticated" && (
                   <>
-                    <div></div>{" "}
                     <input
                       type='text'
-                      className='mx-[20%] w-[50%] h-[10%] outline text-center font-bold py-10 px-10  my-5'
+                      className='mx-[20%] w-[50%] h-[10%]  outline text-center font-bold py-10 px-10  my-5'
                       id='ExtraDetails'
                       placeholder='Extra details go here'
                     />{" "}
@@ -371,27 +431,80 @@ const QIZZTAKER = () => {
                   </>
                 )}
                 {status === "unauthenticated" && (
-                  <>
+                  <div className='px-[40%]'>
+                    {/* <div className='bg-blue-900  ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'> */}
                     <div>
                       You are not LOGGED IN , so you can either click to submit
                       with your existing credentials OR submit and REGISTER at
                       the same time
                     </div>{" "}
-                    <input
-                      type='text'
-                      className='mx-[20%] w-[50%] h-[10%] outline text-center font-bold py-10 px-10  my-5'
-                      id='ExtraDetails'
-                      placeholder='Extra details go here'
-                    />{" "}
+                    <div>
+                      {" "}
+                      Email
+                      <input
+                        type='text'
+                        className='outline text-center font-bold py-2 px-4 rounded-full my-5'
+                        id='email'
+                        placeholder='email goes here'
+                      />{" "}
+                    </div>{" "}
+                    <div>
+                      {" "}
+                      Password
+                      <input
+                        type='text'
+                        className='outline text-center font-bold py-2 px-4 rounded-full my-5'
+                        id='password'
+                        placeholder='password goes here'
+                      />{" "}
+                    </div>{" "}
+                    <div>
+                      {" "}
+                      Phone Number
+                      <input
+                        type='text'
+                        className='outline text-center font-bold py-2 px-4 rounded-full my-5'
+                        id='phoneNum'
+                        placeholder='phoneNum goes here'
+                      />{" "}
+                    </div>{" "}
+                    <div>
+                      {" "}
+                      Name
+                      <input
+                        type='text'
+                        className='outline text-center font-bold py-2 px-4 rounded-full my-5'
+                        id='name'
+                        placeholder='name goes here'
+                      />{" "}
+                    </div>
+                    <div>
+                      {" "}
+                      Extra Details
+                      <input
+                        type='text'
+                        className='mx-[20%] w-[50%] h-[10%] outline text-center font-bold py-10 px-10  my-5'
+                        id='ExtraDetails'
+                        placeholder='Extra details go here'
+                      />{" "}
+                    </div>
                     <div
                       onClick={() => {
-                        GetData(6);
+                        GetData(6, "EXISTINGACCOUNT");
                       }}
                       className=' bg-blue-600  hover:bg-blue-900 ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
                     >
-                      CLICK HERE TO SUBMIT{" "}
+                      CLICK HERE TO SUBMIT WITH YOUR EXISTING ACCOUNT{" "}
+                    </div>{" "}
+                    <div
+                      onClick={() => {
+                        GetData(6, "CREATEACCOUNT");
+                      }}
+                      className=' bg-blue-600  hover:bg-blue-900 ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
+                    >
+                      CLICK HERE TO SUBMIT AND CREATE ACCOUNT{" "}
                     </div>
-                  </>
+                  </div>
                 )}
               </>
             )}
@@ -459,11 +572,11 @@ const QIZZTAKER = () => {
   return (
     <div>
       {/* stage: {stage} */}
+      {stage === 3 && <SubmitBox />}
+      {stage === 4 && <SuccessBox />}
       {stage === 1 && <CategoryBOX />}
       {stage === 2 && <SubcategoryBOX />}
       {stage === 3 && <QuestionBOX />}
-      {stage === 3 && <SubmitBox />}
-      {stage === 4 && <SuccessBox />}
     </div>
   );
 };

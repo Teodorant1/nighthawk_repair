@@ -9,7 +9,7 @@ const QuizzMaker = () => {
   // const [answers, setanswers] = useState<Answer[]>();
   // const [Sub_Category, setSub_Category] = useState<Sub_Category>();
 
-  function PersistToSQUEALdb(escalationlevel: number) {
+  function PersistToSQUEALdb(escalationlevel: number, optionality: boolean) {
     const category = (document.getElementById("Category") as HTMLInputElement)
       .value;
     const subcategory = (
@@ -32,6 +32,7 @@ const QuizzMaker = () => {
       subcategory: subcategory,
       question: question,
       answer: answer,
+      isOptional: optionality,
       timecost: timecost,
       moneycost: moneycost,
     };
@@ -58,7 +59,7 @@ const QuizzMaker = () => {
         <button
           className=' bg-blue-500 hover:bg-blue-700 text-white font-bold my-5 py-2 px-4 rounded-full '
           onClick={() => {
-            PersistToSQUEALdb(1);
+            PersistToSQUEALdb(1, false);
           }}
         >
           Click To Add Category
@@ -73,7 +74,7 @@ const QuizzMaker = () => {
         <button
           className=' bg-blue-500 hover:bg-blue-700 text-white font-bold my-5 py-2 px-4 rounded-full '
           onClick={() => {
-            PersistToSQUEALdb(2);
+            PersistToSQUEALdb(2, false);
           }}
         >
           Click To Add Subcategory
@@ -90,10 +91,18 @@ const QuizzMaker = () => {
         <button
           className=' bg-blue-500 hover:bg-blue-700 text-white font-bold my-5 py-2 px-4 rounded-full '
           onClick={() => {
-            PersistToSQUEALdb(3);
+            PersistToSQUEALdb(3, false);
           }}
         >
           Click To Add Question
+        </button>{" "}
+        <button
+          className=' bg-green-500 hover:bg-green-700 text-white font-bold my-5 py-2 px-4 rounded-full '
+          onClick={() => {
+            PersistToSQUEALdb(3, true);
+          }}
+        >
+          Click To Add OPTIONAL Question
         </button>{" "}
       </div>
       <div>
@@ -121,7 +130,7 @@ const QuizzMaker = () => {
         <button
           className=' bg-blue-500 hover:bg-blue-700 text-white font-bold my-5 py-2 px-4 rounded-full '
           onClick={() => {
-            PersistToSQUEALdb(4);
+            PersistToSQUEALdb(4, false);
           }}
         >
           Click To Add Answer

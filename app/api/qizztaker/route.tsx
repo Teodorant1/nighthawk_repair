@@ -4,6 +4,7 @@ import { category, question, sub_category, answer } from "@prisma/client";
 import { authOptions } from "../auth/authOptions";
 import { getServerSession } from "next-auth";
 import { time } from "console";
+import { boolean } from "zod";
 
 interface parcel {
   escalationlevel: Number;
@@ -21,6 +22,8 @@ interface parcel {
   email?: String;
   password?: String;
   name?: String;
+  phonenum?: String;
+  isOptional?: boolean;
 }
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -47,10 +50,21 @@ export async function POST(req: NextRequest) {
         where: {
           categoryID: String(parcel1.category),
           sub_categoryID: String(parcel1.subcategory),
+          isOptional: Boolean(parcel1.isOptional),
         },
       });
 
       return NextResponse.json(questions);
+    case 3.5:
+      const questions1: question[] = await prisma.question.findMany({
+        where: {
+          categoryID: String(parcel1.category),
+          sub_categoryID: String(parcel1.subcategory),
+          isOptional: Boolean(parcel1.isOptional),
+        },
+      });
+
+      return NextResponse.json(questions1);
 
     //  id
     //  sub_categoryID
@@ -125,8 +139,8 @@ export async function POST(req: NextRequest) {
             // id: "String(parcel1.answeredquestions![i].id",
           },
         });
-        timecost = timecost1 + tc.timecost;
-        moneycost = moneycost1 + tc.moneycost;
+        timecost1 = timecost1 + tc.timecost;
+        moneycost1 = moneycost1 + tc.moneycost;
 
         // timecost = timecost + parcel1.answeredquestions![i].timecost;
         // moneycost = moneycost + parcel1.answeredquestions![i].moneycost;
@@ -145,8 +159,21 @@ export async function POST(req: NextRequest) {
           moneycost: moneycost1,
           timecost: timecost1,
           submittterEmail: String(parcel1.email),
+          latitude: Number(parcel1.lat),
+          longitude: Number(parcel1.long),
         },
       });
+      if (parcel1.method === "CREATEACCOUNT") {
+        await prisma.user.create({
+          data: {
+            email: String(parcel1.email),
+            password: String(parcel1.password),
+            role: "USER",
+            phoneNum: String(parcel1.phonenum),
+            name: String(parcel1.name),
+          },
+        });
+      }
       break;
 
     // const answeredquestions = parcel1.answeredquestions?.toString()

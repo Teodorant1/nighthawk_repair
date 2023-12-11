@@ -9,6 +9,7 @@ interface parcel {
   answer?: String;
   timecost?: Number;
   moneycost?: Number;
+  isOptional?: boolean;
 }
 
 export async function POST(req: NextRequest) {
@@ -44,6 +45,7 @@ export async function POST(req: NextRequest) {
           text_Question: String(parcel1.question),
           sub_categoryID: String(parcel1.subcategory),
           categoryID: String(parcel1.category),
+          isOptional: Boolean(parcel1.isOptional),
         },
       });
       break;

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/client";
+import axios from "axios";
 import {
   category,
   question,
@@ -7,6 +8,7 @@ import {
   answer,
   submitted_job,
 } from "@prisma/client";
+import { stringify } from "querystring";
 
 interface parcel2 {
   escalationlevel: Number;
@@ -21,8 +23,17 @@ interface parcel2 {
   extrainfo?: String;
   lat?: Number;
   long?: Number;
+  radius?: Number;
   email?: String;
 }
+
+interface distanceParcel {
+  radius: Number;
+  lat: Number;
+  long: Number;
+  JobsArray: String;
+}
+
 export async function POST(req: NextRequest) {
   const body = await req.json();
   const parcel1: parcel2 = body;
@@ -54,6 +65,28 @@ export async function POST(req: NextRequest) {
             isVisible: true,
           },
         });
+      const JobsArray1 = submitted_jobs.toString();
+
+      // let distanceParcel1: distanceParcel = {
+      //   radius: Number(parcel1.radius),
+      //   lat: Number(parcel1.lat),
+      //   long: Number(parcel1.long),
+      //   JobsArray: JobsArray1,
+      // };
+
+      let distanceParcel1: distanceParcel = {
+        radius: Number(parcel1.radius),
+        lat: Number(parcel1.lat),
+        long: Number(parcel1.long),
+        JobsArray: JobsArray1,
+      };
+
+      await axios
+        .post("http://localhost:8001/", distanceParcel1)
+        .then((resp) => {
+          console.log(resp.data);
+        })
+        .catch((error) => console.log(error));
       return NextResponse.json(submitted_jobs);
   }
   //  return NextResponse.json({ email: "newuser.email" });

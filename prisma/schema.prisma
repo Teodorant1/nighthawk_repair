@@ -19,6 +19,9 @@ model user {
   isClient     Boolean @default(false)
   isRepairman  Boolean @default(false)
   isProgrammer Boolean @default(false)
+  phoneNum     String 
+  name         String 
+  
 }
 
 model category {
@@ -38,6 +41,7 @@ model question {
   text_Question  String @db.Text
   sub_categoryID String @db.Text
   categoryID     String @db.Text
+  isOptional     Boolean
   answers        Json?
 }
 
@@ -55,18 +59,19 @@ model answer {
 }
 
 model submitted_job {
-  id                String   @id @default(cuid())
-  sub_categoryID    String   @db.Text
-  categoryID        String   @db.Text
-  answeredQuestions String   @db.Text
-  isVisible         Boolean  @default(false)
-  submittterEmail   String   @db.Text
-  date_created      DateTime @default(now())
-  extrainfo         String?  @db.Text
-  timecost          Int      
-  moneycost         Int      
-  latitude          Decimal  @default(0)
-  longitude         Decimal  @default(0)
+  id                         String   @id @default(cuid())
+  sub_categoryID             String   @db.Text
+  categoryID                 String   @db.Text
+  answeredQuestions          String   @db.Text
+  optional_answeredQuestions String?   @db.Text
+  isVisible                  Boolean  @default(false)
+  submittterEmail            String   @db.Text
+  date_created               DateTime @default(now())
+  extrainfo                  String?  @db.Text
+  timecost                   Int      
+  moneycost                  Int      
+  latitude                   Decimal  @default(0)
+  longitude                  Decimal  @default(0)
 }
 
 model final_quote {

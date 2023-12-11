@@ -9,7 +9,9 @@ import {
   submitted_job,
 } from "@prisma/client";
 const IQBrowser = () => {
-  const [stage, setstage] = useState<number>(1);
+  const [userLocation, setUserLocation] = useState<any>(null);
+  const [radius, setradius] = useState<number>(25);
+  const [stage, setstage] = useState<number>(0);
   const [category, setcategory] = useState<category>();
   const [category_Array, setcategory_Array] = useState<category[]>();
   // const [sub_category, setsub_category] = useState<sub_category>();
@@ -71,6 +73,69 @@ const IQBrowser = () => {
         });
     }
   }
+
+  const Geolocatatrix = () => {
+    const getUserLocation = () => {
+      // if geolocation is supported by the users browser
+      if (navigator.geolocation) {
+        // get the current users location
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            // save the geolocation coordinates in two variables
+            const { latitude, longitude } = position.coords;
+            // update the value of userlocation variable
+            setUserLocation({ latitude, longitude });
+          },
+          // if there was an error getting the users location
+          (error) => {
+            console.error("Error getting user location:", error);
+          }
+        );
+      }
+      // if geolocation is not supported by the users browser
+      else {
+        console.error("Geolocation is not supported by this browser.");
+      }
+    };
+    return (
+      <div className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5'>
+        <h1> You can filter out jobs by radius </h1>
+        {/* create a button that is mapped to the function which retrieves the users location */}
+        <button
+          className=' bg-blue-600  hover:bg-blue-900 ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
+          onClick={getUserLocation}
+        >
+          Load User Location
+        </button>
+        {/* if the user location variable has a value, print the users location */}
+        {userLocation && (
+          <div>
+            <h2>User Location</h2>
+            <p>Latitude: {userLocation.latitude} </p>
+            <p>Longitude: {userLocation.longitude}</p>
+            RADIUS {radius}
+            <input
+              type='number'
+              className='mx-[20%] w-[50%] h-[10%] outline text-center font-bold py-10 px-10  my-5'
+              id='radius'
+              value={radius}
+            />{" "}
+          </div>
+        )}
+
+        {userLocation !== null && (
+          <button
+            className=' bg-blue-600  hover:bg-blue-900 ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
+            onClick={() => {
+              setstage(1);
+            }}
+          >
+            Proceed to next step
+          </button>
+        )}
+      </div>
+    );
+  };
 
   function CategoryBOX() {
     return (
@@ -202,6 +267,7 @@ const IQBrowser = () => {
 
   return (
     <div>
+      {stage === 0 && <Geolocatatrix />}
       {stage === 1 && <CategoryBOX />}
       {stage === 2 && <SubcategoryBOX />}
       {stage === 3 && <JOBbox />}
