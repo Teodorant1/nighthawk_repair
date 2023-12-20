@@ -21,6 +21,7 @@ model user {
   isProgrammer Boolean @default(false)
   phoneNum     String 
   name         String 
+  coins        Int?    @default(0)
   
 }
 
@@ -69,15 +70,19 @@ model submitted_job {
   date_created               DateTime @default(now())
   extrainfo                  String?  @db.Text
   timecost                   Int      
-  moneycost                  Int      
+  moneycost                  Int
+  //this one is used in a bit of a hacky way, 
+  //since we never initialize it except in our endpoint
+  distance                   Int?       
   latitude                   Decimal  @default(0)
   longitude                  Decimal  @default(0)
 }
 
-model final_quote {
-  id          String @id @default(cuid())
-  text_answer String @db.Text
-  moneycost   Int
-  timecost_   Int
-  // question Question[]
+model job_application { 
+   id              String  @id @default(cuid())
+   submittedJob_ID String
+   userID          String 
+
 }
+
+

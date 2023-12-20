@@ -33,6 +33,10 @@ const IQBrowser = () => {
     method?: String;
     answeredquestions?: answer[];
     extrainfo?: String;
+    lat?: Number;
+    long?: Number;
+    radius?: Number;
+    email?: String;
   }
 
   const parcel1: parcel = {
@@ -66,6 +70,9 @@ const IQBrowser = () => {
           escalationlevel: escalationlevel,
           category: category?.name,
           subcategory: labelToChange,
+          lat: userLocation.latitude,
+          long: userLocation.longitude,
+          radius: radius,
         };
         axios.post("/api/qizztaker/v2", parcel3).then((resp) => {
           console.log(resp.data);
@@ -113,12 +120,14 @@ const IQBrowser = () => {
             <h2>User Location</h2>
             <p>Latitude: {userLocation.latitude} </p>
             <p>Longitude: {userLocation.longitude}</p>
-            RADIUS {radius}
+            RADIUS
+            {/* {radius} */}
             <input
               type='number'
-              className='mx-[20%] w-[50%] h-[10%] outline text-center font-bold py-10 px-10  my-5'
+              className='mx-[20%] w-[50%] h-[10%] outline text-center font-bold text-xl py-10 px-10  my-5'
               id='radius'
               value={radius}
+              onChange={(e) => setradius(Number(e.target.value))}
             />{" "}
           </div>
         )}
@@ -214,6 +223,7 @@ const IQBrowser = () => {
               >
                 <div>ID:{job.id}</div>
                 <div>DATE OF CREATION: {String(job.date_created)}</div>
+                <div> Calculated distance: {job.distance} </div>
                 <div>Email:{job.submittterEmail}</div>
                 <div>Expected cost: {job.moneycost}</div>
                 <div>Expected duration: {job.timecost}</div>

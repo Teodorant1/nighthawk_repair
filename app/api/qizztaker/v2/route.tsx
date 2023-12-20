@@ -8,7 +8,6 @@ import {
   answer,
   submitted_job,
 } from "@prisma/client";
-import { stringify } from "querystring";
 
 interface parcel2 {
   escalationlevel: Number;
@@ -31,7 +30,8 @@ interface distanceParcel {
   radius: Number;
   lat: Number;
   long: Number;
-  JobsArray: String;
+  //JobsArray: String;
+  JobsArray: submitted_job[];
 }
 
 export async function POST(req: NextRequest) {
@@ -49,6 +49,7 @@ export async function POST(req: NextRequest) {
           categoryID: String(parcel1.category),
         },
       });
+
       return NextResponse.json(subcategories);
 
     case 3:
@@ -65,29 +66,28 @@ export async function POST(req: NextRequest) {
             isVisible: true,
           },
         });
-      const JobsArray1 = submitted_jobs.toString();
 
-      // let distanceParcel1: distanceParcel = {
-      //   radius: Number(parcel1.radius),
-      //   lat: Number(parcel1.lat),
-      //   long: Number(parcel1.long),
-      //   JobsArray: JobsArray1,
-      // };
+      const JobsArray1 = JSON.stringify(submitted_jobs);
+      //const JobsArray1 = submitted_jobs.toString();
 
       let distanceParcel1: distanceParcel = {
         radius: Number(parcel1.radius),
         lat: Number(parcel1.lat),
         long: Number(parcel1.long),
-        JobsArray: JobsArray1,
+        JobsArray: submitted_jobs,
+        // JobsArray: submitted_jobs,
       };
 
-      await axios
+      const result = await axios
         .post("http://localhost:8001/", distanceParcel1)
         .then((resp) => {
-          console.log(resp.data);
+          //  console.log(resp.data);
+          return NextResponse.json(resp.data);
         })
         .catch((error) => console.log(error));
-      return NextResponse.json(submitted_jobs);
+      //  return NextResponse.json(submitted_jobs);
+      //  return NextResponse.json(result);
+      return result;
   }
   //  return NextResponse.json({ email: "newuser.email" });
 }
