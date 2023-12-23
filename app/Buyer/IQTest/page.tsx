@@ -23,6 +23,9 @@ const QIZZTAKER = () => {
   const [AnsweredQuestionsArray1, setAnsweredQuestionsArray1] = useState<
     answer[]
   >([]);
+  const [AnsweredQuestionsArray2, setAnsweredQuestionsArray2] = useState<
+    answer[]
+  >([]);
 
   // interface question1 {
   //   id: String;
