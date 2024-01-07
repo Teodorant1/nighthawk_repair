@@ -4,9 +4,41 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { question, answer, category, sub_category } from "@prisma/client";
 import { useSession } from "next-auth/react";
+import { CldImage, CldUploadWidget } from "next-cloudinary";
 
 const QIZZTAKER = () => {
+  const [timingPRESETS, settimingPRESETS] = useState<String[]>([
+    "URGENTLY",
+    "WITHIN 2 DAYS",
+    "WITHIN 2 WEEKS",
+    "WITHIN 2 MONTHS",
+    "2 MONTHS+",
+    "FLEXIBLE START DATE",
+  ]);
+  const [hiringstagePRESETS, sethiringstagePRESETS] = useState<String[]>([
+    "Ready to hire",
+    "Insurance Quote",
+  ]);
+  const [minbudgetPRESETS, setminbudgetPRESETS] = useState<number[]>([
+    0, 100, 250, 500, 1000, 2000, 4000, 8000, 15000, 30000,
+  ]);
+  const [maxbudgetPRESETS, setmaxbudgetPRESETS] = useState<number[]>([
+    0, 100, 250, 500, 1000, 2000, 4000, 8000, 15000, 30000,
+  ]);
+
+  const [title, settitle] = useState<String>("0");
+  const [timing, settiming] = useState<String>("0");
+  const [hiringstage, sethiringstage] = useState<String>("0");
+  const [first_to_buy, setfirst_to_buy] = useState<boolean>(false);
+  const [minbudget, setminbudget] = useState<number>(0);
+  const [maxbudget, setmaxbudget] = useState<number>(0);
+  const [pictures, setpictures] = useState<String[]>([]);
+
   const [userLocation, setUserLocation] = useState<any>(null);
+  const [longitude, setLongitude] = useState<number>(0);
+  const [latitude, setLatitude] = useState<number>(0);
+  const [coordsTouched, setcoordsTouched] = useState<boolean>(false);
+
   const { status, data: session } = useSession();
   const [stage, setstage] = useState<number>(1);
   const [category, setcategory] = useState<category>();
@@ -21,9 +53,6 @@ const QIZZTAKER = () => {
     String[]
   >([]);
   const [AnsweredQuestionsArray1, setAnsweredQuestionsArray1] = useState<
-    answer[]
-  >([]);
-  const [AnsweredQuestionsArray2, setAnsweredQuestionsArray2] = useState<
     answer[]
   >([]);
 
@@ -45,14 +74,23 @@ const QIZZTAKER = () => {
     answeredquestions?: answer[];
     extrainfo?: String;
 
-    lat?: Number;
-    long?: Number;
     radius?: Number;
     email?: String;
     password?: String;
     name?: String;
     phonenum?: String;
     isOptional?: boolean;
+
+    lat?: Number;
+    long?: Number;
+
+    pictures?: String[];
+    title?: String;
+    timing?: String;
+    hiringstage?: String;
+    firstToBuy?: boolean;
+    minbudget?: number;
+    maxbudget?: number;
   }
 
   const parcel1: parcel = {
@@ -130,11 +168,19 @@ const QIZZTAKER = () => {
             extrainfo: extrainfo,
             method: "createjobpost",
             email: session?.user.email,
-            lat: userLocation.latitude,
-            long: userLocation.longitude,
+            lat: latitude,
+            long: longitude,
+
+            title: title,
+            timing: timing,
+            hiringstage: hiringstage,
+            firstToBuy: first_to_buy,
+            minbudget: minbudget,
+            maxbudget: maxbudget,
+            pictures: pictures,
           };
           axios.post("/api/qizztaker", parcel4).then((resp) => {
-            setstage(4);
+            setstage(5);
           });
           break;
         } else {
@@ -145,11 +191,19 @@ const QIZZTAKER = () => {
             answeredquestions: AnsweredQuestionsArray1,
             method: "createjobpost",
             email: session?.user.email,
-            lat: userLocation.latitude,
-            long: userLocation.longitude,
+            lat: latitude,
+            long: longitude,
+
+            title: title,
+            timing: timing,
+            hiringstage: hiringstage,
+            firstToBuy: first_to_buy,
+            minbudget: minbudget,
+            maxbudget: maxbudget,
+            pictures: pictures,
           };
           axios.post("/api/qizztaker", parcel4).then((resp) => {
-            setstage(4);
+            setstage(5);
           });
           break;
         }
@@ -183,11 +237,19 @@ const QIZZTAKER = () => {
             password: password,
             phonenum: phoneNum,
             name: name,
-            lat: userLocation.latitude,
-            long: userLocation.longitude,
+            lat: latitude,
+            long: longitude,
+
+            title: title,
+            timing: timing,
+            hiringstage: hiringstage,
+            firstToBuy: first_to_buy,
+            minbudget: minbudget,
+            maxbudget: maxbudget,
+            pictures: pictures,
           };
           axios.post("/api/qizztaker", parcel4).then((resp) => {
-            setstage(4);
+            setstage(5);
           });
           break;
         } else {
@@ -198,11 +260,19 @@ const QIZZTAKER = () => {
             answeredquestions: AnsweredQuestionsArray1,
             method: labelToChange,
             email: email,
-            lat: userLocation.latitude,
-            long: userLocation.longitude,
+            lat: latitude,
+            long: longitude,
+
+            title: title,
+            timing: timing,
+            hiringstage: hiringstage,
+            firstToBuy: first_to_buy,
+            minbudget: minbudget,
+            maxbudget: maxbudget,
+            pictures: pictures,
           };
           axios.post("/api/qizztaker", parcel4).then((resp) => {
-            setstage(4);
+            setstage(5);
           });
           break;
         }
@@ -258,6 +328,61 @@ const QIZZTAKER = () => {
       </div>
     );
   }
+
+  function OptionalQuestionBOX() {
+    return (
+      <div className='bg-green-500'>
+        {" "}
+        <button
+          onClick={() => {
+            setstage(3.4);
+          }}
+          className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'
+        >
+          {" "}
+          Click here to proceed to the next step{" "}
+        </button>
+        {optQuestion_Array!.length === 0 && (
+          <>
+            This questionare has no optional questions, so you can just proceed
+            to the next stage safely
+          </>
+        )}
+        {optQuestion_Array!.length > 0 && (
+          <>
+            {optQuestion_Array!.map((question) => (
+              <>
+                <div>
+                  <>
+                    {AnsweredQuestionsArray.includes(question.id) === false && (
+                      <div
+                        key={question.id}
+                        className='ml-3 center outline text-center font-bold py-2 px-4  my-5'
+                      >
+                        <div> {question.text_Question}?</div>
+                        <div>
+                          {" "}
+                          <AnswerBOX
+                            id={question.id}
+                            text_Question={question.text_Question}
+                            sub_categoryID={question.sub_categoryID}
+                            categoryID={question.categoryID}
+                            answers={null}
+                            isOptional={question.isOptional}
+                            // index1={index}
+                          />
+                        </div>{" "}
+                      </div>
+                    )}
+                  </>
+                </div>
+              </>
+            ))}
+          </>
+        )}
+      </div>
+    );
+  }
   function QuestionBOX() {
     return (
       <div>
@@ -271,6 +396,9 @@ const QIZZTAKER = () => {
               {Question_Array?.length!} questions{" "}
             </div>
           </>
+        )}
+        {AnsweredQuestionsArray?.length! >= Question_Array?.length! && (
+          <OptionalQuestionBOX />
         )}
         {Question_Array!.length > 0 && (
           <>
@@ -304,42 +432,6 @@ const QIZZTAKER = () => {
             ))}
           </>
         )}{" "}
-        <div className='bg-green-500'>
-          {" "}
-          {optQuestion_Array!.length > 0 && (
-            <>
-              {optQuestion_Array!.map((question) => (
-                <>
-                  <div>
-                    <>
-                      {AnsweredQuestionsArray.includes(question.id) ===
-                        false && (
-                        <div
-                          key={question.id}
-                          className='ml-3 center outline text-center font-bold py-2 px-4  my-5'
-                        >
-                          <div> {question.text_Question}?</div>
-                          <div>
-                            {" "}
-                            <AnswerBOX
-                              id={question.id}
-                              text_Question={question.text_Question}
-                              sub_categoryID={question.sub_categoryID}
-                              categoryID={question.categoryID}
-                              answers={null}
-                              isOptional={question.isOptional}
-                              // index1={index}
-                            />
-                          </div>{" "}
-                        </div>
-                      )}
-                    </>
-                  </div>
-                </>
-              ))}
-            </>
-          )}
-        </div>
       </div>
     );
   }
@@ -407,6 +499,19 @@ const QIZZTAKER = () => {
   }
 
   function SubmitBox() {
+    function setup_coordinates() {
+      const longitude1: number = Number(
+        (document.getElementById("longitude") as HTMLInputElement)?.value
+      );
+      setLongitude(longitude1);
+
+      const latitude1 = Number(
+        (document.getElementById("latitude") as HTMLInputElement)?.value
+      );
+      setLatitude(latitude1);
+      setcoordsTouched(true);
+    }
+
     return (
       <div>
         {AnsweredQuestionsArray.length > 0 && (
@@ -414,105 +519,305 @@ const QIZZTAKER = () => {
             {AnsweredQuestionsArray.length >= Question_Array.length && (
               <>
                 {" "}
-                <GeolocationBox />
-                {status === "authenticated" && (
-                  <>
-                    <input
-                      type='text'
-                      className='mx-[20%] w-[50%] h-[10%]  outline text-center font-bold py-10 px-10  my-5'
-                      id='ExtraDetails'
-                      placeholder='Extra details go here'
-                    />{" "}
-                    <div
-                      onClick={() => {
-                        GetData(5);
-                      }}
-                      className=' bg-blue-600  hover:bg-blue-900 ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
-                    >
-                      CLICK HERE TO SUBMIT{" "}
-                    </div>
-                  </>
-                )}
-                {status === "unauthenticated" && (
-                  <div className='px-[40%]'>
-                    {/* <div className='bg-blue-900  ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'> */}
-                    <div>
-                      You are not LOGGED IN , so you can either click to submit
-                      with your existing credentials OR submit and REGISTER at
-                      the same time
-                    </div>{" "}
-                    <div>
-                      {" "}
-                      Email
-                      <input
-                        type='text'
-                        className='outline text-center font-bold py-2 px-4 rounded-full my-5'
-                        id='email'
-                        placeholder='email goes here'
-                      />{" "}
-                    </div>{" "}
-                    <div>
-                      {" "}
-                      Password
-                      <input
-                        type='text'
-                        className='outline text-center font-bold py-2 px-4 rounded-full my-5'
-                        id='password'
-                        placeholder='password goes here'
-                      />{" "}
-                    </div>{" "}
-                    <div>
-                      {" "}
-                      Phone Number
-                      <input
-                        type='text'
-                        className='outline text-center font-bold py-2 px-4 rounded-full my-5'
-                        id='phoneNum'
-                        placeholder='phoneNum goes here'
-                      />{" "}
-                    </div>{" "}
-                    <div>
-                      {" "}
-                      Name
-                      <input
-                        type='text'
-                        className='outline text-center font-bold py-2 px-4 rounded-full my-5'
-                        id='name'
-                        placeholder='name goes here'
-                      />{" "}
-                    </div>
-                    <div>
-                      {" "}
-                      Extra Details
-                      <input
-                        type='text'
-                        className='mx-[20%] w-[50%] h-[10%] outline text-center font-bold py-10 px-10  my-5'
-                        id='ExtraDetails'
-                        placeholder='Extra details go here'
-                      />{" "}
-                    </div>
-                    <div
-                      onClick={() => {
-                        GetData(6, "EXISTINGACCOUNT");
-                      }}
-                      className=' bg-blue-600  hover:bg-blue-900 ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
-                    >
-                      CLICK HERE TO SUBMIT WITH YOUR EXISTING ACCOUNT{" "}
-                    </div>{" "}
-                    <div
-                      onClick={() => {
-                        GetData(6, "CREATEACCOUNT");
-                      }}
-                      className=' bg-blue-600  hover:bg-blue-900 ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
-                    >
-                      CLICK HERE TO SUBMIT AND CREATE ACCOUNT{" "}
-                    </div>
+                <div>
+                  Longitude
+                  <input
+                    type='number'
+                    className='mx-[5%] w-[10%] h-[10%]  outline text-center font-bold py-10 px-10  my-5'
+                    id='longitude'
+                    defaultValue={0}
+                  />{" "}
+                </div>
+                <div>
+                  Latitude
+                  <input
+                    type='number'
+                    className='mx-[5%] w-[10%] h-[10%]  outline text-center font-bold py-10 px-10  my-5'
+                    id='latitude'
+                    defaultValue={0}
+                  />{" "}
+                </div>
+                <button
+                  onClick={() => {
+                    setup_coordinates();
+                  }}
+                  className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                >
+                  {" "}
+                  Click here to set coordinates{" "}
+                </button>
+                {coordsTouched && (
+                  <div>
+                    {" "}
+                    {status === "authenticated" && (
+                      <>
+                        <input
+                          type='text'
+                          className='mx-[20%] w-[50%] h-[10%]  outline text-center font-bold py-10 px-10  my-5'
+                          id='ExtraDetails'
+                          placeholder='Extra details go here'
+                        />{" "}
+                        <div
+                          onClick={() => {
+                            GetData(5);
+                          }}
+                          className=' bg-blue-600  hover:bg-blue-900 ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
+                        >
+                          CLICK HERE TO SUBMIT{" "}
+                        </div>
+                      </>
+                    )}
+                    {status === "unauthenticated" && (
+                      <div className='px-[40%]'>
+                        {/* <div className='bg-blue-900  ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'> */}
+                        <div>
+                          You are not LOGGED IN , so you can either click to
+                          submit with your existing credentials OR submit and
+                          REGISTER at the same time
+                        </div>{" "}
+                        <div>
+                          {" "}
+                          Email
+                          <input
+                            type='text'
+                            className='outline text-center font-bold py-2 px-4 rounded-full my-5'
+                            id='email'
+                            placeholder='email goes here'
+                          />{" "}
+                        </div>{" "}
+                        <div>
+                          {" "}
+                          Password
+                          <input
+                            type='text'
+                            className='outline text-center font-bold py-2 px-4 rounded-full my-5'
+                            id='password'
+                            placeholder='password goes here'
+                          />{" "}
+                        </div>{" "}
+                        <div>
+                          {" "}
+                          Phone Number
+                          <input
+                            type='text'
+                            className='outline text-center font-bold py-2 px-4 rounded-full my-5'
+                            id='phoneNum'
+                            placeholder='phoneNum goes here'
+                          />{" "}
+                        </div>{" "}
+                        <div>
+                          {" "}
+                          Name
+                          <input
+                            type='text'
+                            className='outline text-center font-bold py-2 px-4 rounded-full my-5'
+                            id='name'
+                            placeholder='name goes here'
+                          />{" "}
+                        </div>
+                        <div>
+                          {" "}
+                          Extra Details
+                          <input
+                            type='text'
+                            className='mx-[20%] w-[50%] h-[10%] outline text-center font-bold py-10 px-10  my-5'
+                            id='ExtraDetails'
+                            placeholder='Extra details go here'
+                          />{" "}
+                        </div>
+                        <div
+                          onClick={() => {
+                            GetData(6, "EXISTINGACCOUNT");
+                          }}
+                          className=' bg-blue-600  hover:bg-blue-900 ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
+                        >
+                          CLICK HERE TO SUBMIT WITH YOUR EXISTING ACCOUNT{" "}
+                        </div>{" "}
+                        <div
+                          onClick={() => {
+                            GetData(6, "CREATEACCOUNT");
+                          }}
+                          className=' bg-blue-600  hover:bg-blue-900 ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
+                        >
+                          CLICK HERE TO SUBMIT AND CREATE ACCOUNT{" "}
+                        </div>
+                      </div>
+                    )}{" "}
                   </div>
                 )}
+                {/* <GeolocationBox />
+                {userLocation && (
+                  <div>
+                    {" "}
+                    {status === "authenticated" && (
+                      <>
+                        <input
+                          type='text'
+                          className='mx-[20%] w-[50%] h-[10%]  outline text-center font-bold py-10 px-10  my-5'
+                          id='ExtraDetails'
+                          placeholder='Extra details go here'
+                        />{" "}
+                        <div
+                          onClick={() => {
+                            GetData(5);
+                          }}
+                          className=' bg-blue-600  hover:bg-blue-900 ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
+                        >
+                          CLICK HERE TO SUBMIT{" "}
+                        </div>
+                      </>
+                    )}
+                    {status === "unauthenticated" && (
+                      <div className='px-[40%]'>
+                        <div>
+                          You are not LOGGED IN , so you can either click to
+                          submit with your existing credentials OR submit and
+                          REGISTER at the same time
+                        </div>{" "}
+                        <div>
+                          {" "}
+                          Email
+                          <input
+                            type='text'
+                            className='outline text-center font-bold py-2 px-4 rounded-full my-5'
+                            id='email'
+                            placeholder='email goes here'
+                          />{" "}
+                        </div>{" "}
+                        <div>
+                          {" "}
+                          Password
+                          <input
+                            type='text'
+                            className='outline text-center font-bold py-2 px-4 rounded-full my-5'
+                            id='password'
+                            placeholder='password goes here'
+                          />{" "}
+                        </div>{" "}
+                        <div>
+                          {" "}
+                          Phone Number
+                          <input
+                            type='text'
+                            className='outline text-center font-bold py-2 px-4 rounded-full my-5'
+                            id='phoneNum'
+                            placeholder='phoneNum goes here'
+                          />{" "}
+                        </div>{" "}
+                        <div>
+                          {" "}
+                          Name
+                          <input
+                            type='text'
+                            className='outline text-center font-bold py-2 px-4 rounded-full my-5'
+                            id='name'
+                            placeholder='name goes here'
+                          />{" "}
+                        </div>
+                        <div>
+                          {" "}
+                          Extra Details
+                          <input
+                            type='text'
+                            className='mx-[20%] w-[50%] h-[10%] outline text-center font-bold py-10 px-10  my-5'
+                            id='ExtraDetails'
+                            placeholder='Extra details go here'
+                          />{" "}
+                        </div>
+                        <div
+                          onClick={() => {
+                            GetData(6, "EXISTINGACCOUNT");
+                          }}
+                          className=' bg-blue-600  hover:bg-blue-900 ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
+                        >
+                          CLICK HERE TO SUBMIT WITH YOUR EXISTING ACCOUNT{" "}
+                        </div>{" "}
+                        <div
+                          onClick={() => {
+                            GetData(6, "CREATEACCOUNT");
+                          }}
+                          className=' bg-blue-600  hover:bg-blue-900 ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
+                        >
+                          CLICK HERE TO SUBMIT AND CREATE ACCOUNT{" "}
+                        </div>
+                      </div>
+                    )}{" "}
+                  </div>
+                )} */}
               </>
             )}
           </>
         )}
+      </div>
+    );
+  }
+
+  function UploadBox() {
+    console.log("rendering uploadBox");
+    // const [pictures, setpictures] = useState<String[]>([]);
+
+    interface CloudinaryResult {
+      public_id: String;
+    }
+
+    return (
+      <div>
+        <button
+          onClick={() => {
+            setstage(4);
+          }}
+          className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'
+        >
+          {" "}
+          Click here to move to the next step{" "}
+        </button>{" "}
+        <button className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'>
+          {" "}
+          You have uploaded {pictures.length} pictures so far.
+        </button>
+        <CldUploadWidget
+          uploadPreset='bqhf0bxn'
+          onUpload={(result, widget) => {
+            if (result.event !== "success") {
+              return;
+            }
+            const info = result.info as CloudinaryResult;
+            const pictures1 = [...pictures, info.public_id];
+            console.log("pictures", pictures);
+            console.log("info", info);
+            setpictures(pictures1);
+            if (pictures.length > 1) {
+              console.log(pictures);
+            }
+          }}
+        >
+          {({ open }) => (
+            <button
+              onClick={() => open()}
+              className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'
+            >
+              Upload
+            </button>
+          )}
+        </CldUploadWidget>{" "}
+        <>
+          {" "}
+          {pictures.length > 0 && (
+            <>
+              {pictures.map((id) => (
+                <div key={id.toString()}>
+                  {" "}
+                  <CldImage
+                    src={id.toString()}
+                    width={300}
+                    height={200}
+                    alt={id.toString()}
+                  />{" "}
+                </div>
+              ))}
+            </>
+          )}{" "}
+        </>
       </div>
     );
   }
@@ -554,7 +859,7 @@ const QIZZTAKER = () => {
         >
           Load User Location
         </button>
-        {/* if the user location variable has a value, print the users location */}
+
         {userLocation && (
           <div>
             <h2>Your Location</h2>
@@ -572,14 +877,138 @@ const QIZZTAKER = () => {
     );
   }
 
+  function ExtraDetailsBox() {
+    const [title1, settitle1] = useState<String>("Title goes here");
+
+    function uploadState() {
+      setstage(3.5);
+      settitle(title1);
+    }
+
+    return (
+      <div>
+        EXTRA DETAILS{" "}
+        <button
+          onClick={() => {
+            uploadState();
+          }}
+          className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'
+        >
+          {" "}
+          Click here to move to the next step{" "}
+        </button>{" "}
+        <div>
+          {" "}
+          <input
+            type='text'
+            className='mx-[20%] w-[50%] h-[10%] outline text-center font-bold text-xl py-10 px-10  my-5'
+            id='title1'
+            defaultValue={title1.toString()}
+            onChange={(e) => {
+              settitle1(e.target.value);
+            }}
+          />{" "}
+        </div>
+        {first_to_buy === true && (
+          <button
+            onClick={() => {
+              setfirst_to_buy(false);
+            }}
+            className='ml-3 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+          >
+            Click here to disable first to buy
+          </button>
+        )}
+        {first_to_buy === false && (
+          <button
+            onClick={() => {
+              setfirst_to_buy(true);
+            }}
+            className='ml-3 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+          >
+            Click here to enable first to buy
+          </button>
+        )}
+        <div>
+          <div className='ml-3 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'>
+            Current timing value: {timing}
+          </div>
+          {timingPRESETS!.map((preset) => (
+            <div
+              key={preset.toString()}
+              onClick={() => {
+                settiming(preset);
+              }}
+              className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5 '
+            >
+              {preset}
+            </div>
+          ))}
+        </div>
+        <div>
+          <div className='ml-3 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'>
+            Current hiringstage value: {hiringstage}
+          </div>
+          {hiringstagePRESETS!.map((preset) => (
+            <div
+              key={preset.toString()}
+              onClick={() => {
+                sethiringstage(preset);
+              }}
+              className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5 '
+            >
+              {preset}
+            </div>
+          ))}
+        </div>
+        <div>
+          <div className='ml-3 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'>
+            Current minbudget value: {minbudget}
+          </div>
+          {minbudgetPRESETS!.map((preset) => (
+            <div
+              key={preset.toString()}
+              onClick={() => {
+                setminbudget(preset);
+              }}
+              className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5 '
+            >
+              {preset}
+            </div>
+          ))}
+        </div>{" "}
+        <div>
+          <div className='ml-3 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'>
+            Current maxbudget value: {maxbudget}
+          </div>
+          {maxbudgetPRESETS!.map((preset) => (
+            <div
+              key={preset.toString()}
+              onClick={() => {
+                setmaxbudget(preset);
+              }}
+              className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5 '
+            >
+              {preset}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+  // useEffect(() => {
+  //   console.log("stage changed", stage);
+  // }, [stage]);
+
   return (
     <div>
-      {/* stage: {stage} */}
-      {stage === 3 && <SubmitBox />}
-      {stage === 4 && <SuccessBox />}
       {stage === 1 && <CategoryBOX />}
       {stage === 2 && <SubcategoryBOX />}
       {stage === 3 && <QuestionBOX />}
+      {stage === 3.4 && <ExtraDetailsBox />}
+      {stage === 3.5 && <UploadBox />}
+      {stage === 4 && <SubmitBox />}
+      {stage === 5 && <SuccessBox />}
     </div>
   );
 };

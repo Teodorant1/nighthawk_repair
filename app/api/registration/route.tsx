@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import prisma from "@/prisma/client";
 import bcrypt from "bcrypt";
+import { userNotificationConfig } from "@prisma/client";
 
 const schema = z.object({
   email: z.string().email(),
@@ -43,6 +44,12 @@ export async function POST(req: NextRequest) {
       name: body.name,
     },
   });
+  const userconfig = await prisma.userNotificationConfig.create({
+    data: {
+      name: newuser.name,
+      userId: newuser.id,
+    },
+  });
 
-  return NextResponse.json({ email: newuser.email });
+  return NextResponse.json({ name: newuser.name });
 }

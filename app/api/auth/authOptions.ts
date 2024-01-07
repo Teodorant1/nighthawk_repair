@@ -22,10 +22,13 @@ export const authOptions = {
         try {
           const foundUser = await prisma.user.findUnique({
             where: { email: credentials!.email },
+            include: { userNotificationConfig: true },
           });
 
           if (foundUser) {
+            console.log(foundUser.userNotificationConfig);
             console.log("User Exists");
+            console.log(foundUser);
             const match = await bcrypt.compare(
               credentials!.password,
               foundUser.password

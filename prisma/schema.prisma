@@ -11,27 +11,26 @@ datasource db {
 }
 
 model user {
-  id                   String  @id @default(cuid())
-  email                String  @unique
-  password             String
-  isAdmin              Boolean @default(false)
-  role                 String  @default("user")
-  isClient             Boolean @default(false)
-  isRepairman          Boolean @default(false)
-  isProgrammer         Boolean @default(false)
-  phoneNum             String
-  name                 String
-  coins                Int?    @default(0)
-  notificationsEnabled Boolean @default(false)
+  id                     String                  @id @default(cuid())
+  email                  String                  @unique
+  password               String
+  isAdmin                Boolean                 @default(false)
+  role                   String                  @default("user")
+  isClient               Boolean                 @default(false)
+  isRepairman            Boolean                 @default(false)
+  isProgrammer           Boolean                 @default(false)
+  phoneNum               String
+  name                   String
+  coins                  Int?                    @default(0)
+  notificationsEnabled   Boolean                 @default(false)
   userNotificationConfig userNotificationConfig?
 }
 
 model userNotificationConfig {
-  id     String @id @default(cuid())
-  name   String
-  coins  Int?   @default(0)
-  user   user   @relation(fields: [userId], references: [id])
-  userId String @unique
+  id     String  @id @default(cuid())
+  name   String?
+  user   user    @relation(fields: [userId], references: [id])
+  userId String  @unique
 }
 
 model category {
@@ -69,29 +68,39 @@ model answer {
 }
 
 model submitted_job {
-  id                         String   @id @default(cuid())
-  sub_categoryID             String   @db.Text
-  categoryID                 String   @db.Text
-  answeredQuestions          String   @db.Text
-  optional_answeredQuestions String?  @db.Text
-  isVisible                  Boolean  @default(false)
-  submittterEmail            String   @db.Text
-  date_created               DateTime @default(now())
-  extrainfo                  String?  @db.Text
+  id                         String       @id @default(cuid())
+  sub_categoryID             String       @db.Text
+  categoryID                 String       @db.Text
+  answeredQuestions          String       @db.Text
+  optional_answeredQuestions String?      @db.Text
+  isVisible                  Boolean      @default(false)
+  submittterEmail            String       @db.Text
+  date_created               DateTime     @default(now())
+  extrainfo                  String?      @db.Text
   timecost                   Int
   moneycost                  Int
   //this one is used in a bit of a hacky way, 
-  //since we never initialize it except in our endpoint
+  //since we never initialize it except in our Java haversin formula endpoint
   distance                   Int?
-  latitude                   Decimal  @default(0)
-  longitude                  Decimal  @default(0)
-  imagesArray                Json?
+  latitude                   Decimal      @default(0)
+  longitude                  Decimal      @default(0)
+  ///
+  title                      String? 
   timing                     String?
   hiringstage                String?
-  minBudget                  Int?     @default(0)
-  maxBudget                  Int?     @default(10000)
+  first_to_buy               Boolean?     @default(false)
+  minBudget                  Int?         @default(0)
+  maxBudget                  Int?         @default(10000)
   status                     String?
   finalWorkerID              String?
+  pictures                   JobPicture[]
+}
+
+model JobPicture {
+  id              String         @id @default(cuid())
+  cloudinaryID    String
+  submitted_job   submitted_job @relation(fields: [submitted_jobId], references: [id])
+  submitted_jobId String
 }
 
 model job_application {

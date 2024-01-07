@@ -17,13 +17,23 @@ interface parcel {
   method?: String;
   answeredquestions?: answer[];
   extrainfo?: String;
-  lat?: Number;
-  long?: Number;
+
   email?: String;
   password?: String;
   name?: String;
   phonenum?: String;
   isOptional?: boolean;
+
+  lat?: Number;
+  long?: Number;
+
+  title?: String;
+  timing?: String;
+  hiringstage?: String;
+  firstToBuy?: boolean;
+  minBudget?: number;
+  maxBudget?: number;
+  pictures?: String[];
 }
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -111,7 +121,7 @@ export async function POST(req: NextRequest) {
 
       const answeredQuestions1 = JSON.stringify(parcel1.answeredquestions);
 
-      await prisma.submitted_job.create({
+      const subjob = await prisma.submitted_job.create({
         data: {
           categoryID: String(parcel1.category),
           sub_categoryID: String(parcel1.subcategory),
@@ -121,9 +131,31 @@ export async function POST(req: NextRequest) {
           extrainfo: String(parcel1.extrainfo),
           moneycost: moneycost,
           timecost: timecost,
-          //        submittterEmail : String(parcel1.email)
+
+          latitude: Number(parcel1.lat),
+          longitude: Number(parcel1.long),
+          title: String(parcel1.title),
+          timing: String(parcel1.timing),
+          hiringstage: String(parcel1.hiringstage),
+          first_to_buy: parcel1.firstToBuy,
+          minBudget: parcel1.minBudget,
+          maxBudget: parcel1.maxBudget,
+          // submittterEmail : String(parcel1.email)
         },
       });
+      if (parcel1.pictures?.length! > 0) {
+        for (let i: number = 0; i < parcel1.answeredquestions?.length!; i++) {
+          await prisma.jobPicture.create({
+            data: {
+              cloudinaryID: String(parcel1.pictures![i]),
+              submitted_jobId: subjob.id,
+            },
+          });
+        }
+      }
+
+      // await prisma.jobPicture
+
       break;
     case 6:
       let timecost1 = 0;
@@ -148,7 +180,7 @@ export async function POST(req: NextRequest) {
 
       const answeredQuestions2 = JSON.stringify(parcel1.answeredquestions);
 
-      await prisma.submitted_job.create({
+      const subjob1 = await prisma.submitted_job.create({
         data: {
           categoryID: String(parcel1.category),
           sub_categoryID: String(parcel1.subcategory),
@@ -163,6 +195,16 @@ export async function POST(req: NextRequest) {
           longitude: Number(parcel1.long),
         },
       });
+      if (parcel1.pictures?.length! > 0) {
+        for (let i: number = 0; i < parcel1.answeredquestions?.length!; i++) {
+          await prisma.jobPicture.create({
+            data: {
+              cloudinaryID: String(parcel1.pictures![i]),
+              submitted_jobId: subjob1.id,
+            },
+          });
+        }
+      }
       if (parcel1.method === "CREATEACCOUNT") {
         await prisma.user.create({
           data: {
