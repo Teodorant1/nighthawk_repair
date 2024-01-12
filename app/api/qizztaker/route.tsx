@@ -144,7 +144,7 @@ export async function POST(req: NextRequest) {
         },
       });
       if (parcel1.pictures?.length! > 0) {
-        for (let i: number = 0; i < parcel1.answeredquestions?.length!; i++) {
+        for (let i: number = 0; i < parcel1.pictures?.length!; i++) {
           await prisma.jobPicture.create({
             data: {
               cloudinaryID: String(parcel1.pictures![i]),
@@ -196,7 +196,7 @@ export async function POST(req: NextRequest) {
         },
       });
       if (parcel1.pictures?.length! > 0) {
-        for (let i: number = 0; i < parcel1.answeredquestions?.length!; i++) {
+        for (let i: number = 0; i < parcel1.pictures?.length!; i++) {
           await prisma.jobPicture.create({
             data: {
               cloudinaryID: String(parcel1.pictures![i]),

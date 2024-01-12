@@ -26,12 +26,12 @@ const QIZZTAKER = () => {
     0, 100, 250, 500, 1000, 2000, 4000, 8000, 15000, 30000,
   ]);
 
-  const [title, settitle] = useState<String>("0");
-  const [timing, settiming] = useState<String>("0");
-  const [hiringstage, sethiringstage] = useState<String>("0");
-  const [first_to_buy, setfirst_to_buy] = useState<boolean>(false);
-  const [minbudget, setminbudget] = useState<number>(0);
-  const [maxbudget, setmaxbudget] = useState<number>(0);
+  const [title, settitle] = React.useState<String>("Title");
+  const [timing, settiming1] = useState<String>("URGENTLY");
+  const [hiringstage, sethiringstage1] = useState<String>("Insurance Quote");
+  const [first_to_buy, setfirst_to_buy1] = useState<boolean>(false);
+  const [minbudget, setminbudget1] = useState<number>(0);
+  const [maxbudget, setmaxbudget1] = useState<number>(0);
   const [pictures, setpictures] = useState<String[]>([]);
 
   const [userLocation, setUserLocation] = useState<any>(null);
@@ -520,19 +520,19 @@ const QIZZTAKER = () => {
               <>
                 {" "}
                 <div>
-                  Longitude
+                  Longitude {longitude}
                   <input
                     type='number'
-                    className='mx-[5%] w-[10%] h-[10%]  outline text-center font-bold py-10 px-10  my-5'
+                    className='mx-[5%] w-[30%] h-[10%]  outline text-center font-bold py-10 px-10  my-5'
                     id='longitude'
                     defaultValue={0}
                   />{" "}
                 </div>
                 <div>
-                  Latitude
+                  Latitude {latitude}
                   <input
                     type='number'
-                    className='mx-[5%] w-[10%] h-[10%]  outline text-center font-bold py-10 px-10  my-5'
+                    className='mx-[5%] w-[30%] h-[10%]  outline text-center font-bold py-10 px-10  my-5'
                     id='latitude'
                     defaultValue={0}
                   />{" "}
@@ -876,34 +876,39 @@ const QIZZTAKER = () => {
       <> YOU HAVE UPLOADED THE JOB , CHECK YOUR EMAIL FOR CONFIRMATION EMAIL</>
     );
   }
+  // function ZIETITLE() {
+  //   return <div>
+
+  //   </div>
+  // }
 
   function ExtraDetailsBox() {
     const [title1, settitle1] = useState<String>("Title goes here");
+    const [timing, settiming] = useState<String>("0");
+    const [hiringstage, sethiringstage] = useState<String>("0");
+    const [first_to_buy, setfirst_to_buy] = useState<boolean>(false);
+    const [minbudget, setminbudget] = useState<number>(0);
+    const [maxbudget, setmaxbudget] = useState<number>(0);
 
     function uploadState() {
-      setstage(3.5);
       settitle(title1);
+      setstage(3.5);
+      sethiringstage1(hiringstage);
+      setfirst_to_buy1(first_to_buy);
+      setminbudget1(minbudget);
+      setmaxbudget1(maxbudget);
     }
 
     return (
       <div>
         EXTRA DETAILS{" "}
-        <button
-          onClick={() => {
-            uploadState();
-          }}
-          className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'
-        >
-          {" "}
-          Click here to move to the next step{" "}
-        </button>{" "}
         <div>
           {" "}
+          TITLE
           <input
             type='text'
             className='mx-[20%] w-[50%] h-[10%] outline text-center font-bold text-xl py-10 px-10  my-5'
             id='title1'
-            defaultValue={title1.toString()}
             onChange={(e) => {
               settitle1(e.target.value);
             }}
@@ -992,6 +997,18 @@ const QIZZTAKER = () => {
               {preset}
             </div>
           ))}
+        </div>
+        <div>
+          {" "}
+          <button
+            onClick={() => {
+              uploadState();
+            }}
+            className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'
+          >
+            {" "}
+            Click here to move to the next step{" "}
+          </button>{" "}
         </div>
       </div>
     );

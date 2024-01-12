@@ -20,7 +20,49 @@ const IQBrowser = () => {
   const [submittedJob_Array, setsubmittedJob_Array] = useState<submitted_job[]>(
     []
   );
+  const [submittedJob_Array2, setsubmittedJob_Array2] = useState<
+    submitted_job[]
+  >([]);
+  const [filterBoxEnabled, setfilterBoxEnabled] = useState<boolean>(false);
+
+  const [timingPRESETS, settimingPRESETS] = useState<String[]>([
+    "URGENTLY",
+    "WITHIN 2 DAYS",
+    "WITHIN 2 WEEKS",
+    "WITHIN 2 MONTHS",
+    "2 MONTHS+",
+    "FLEXIBLE START DATE",
+  ]);
+  const [hiringstagePRESETS, sethiringstagePRESETS] = useState<String[]>([
+    "Ready to hire",
+    "Insurance Quote",
+  ]);
   const [currentJobID, setcurrentJobID] = useState<String>("1");
+  const [timingCriteria, settimingCriteria] = useState<String[]>([
+    "URGENTLY",
+    "WITHIN 2 DAYS",
+    "WITHIN 2 WEEKS",
+    "WITHIN 2 MONTHS",
+    "2 MONTHS+",
+    "FLEXIBLE START DATE",
+  ]);
+  const [hiringstageCriteria, sethiringstageCriteria] = useState<String[]>([
+    "Ready to hire",
+    "Insurance Quote",
+  ]);
+  const [budgetPRESETS, setbudgetPRESETS] = useState<number[]>([
+    0, 100, 250, 500, 1000, 2000, 4000, 8000, 15000, 30000,
+  ]);
+  // const [minbudgetPRESETS, setminbudgetPRESETS] = useState<number[]>([
+  //   0, 100, 250, 500, 1000, 2000, 4000, 8000, 15000, 30000,
+  // ]);
+  // const [maxbudgetPRESETS, setmaxbudgetPRESETS] = useState<number[]>([
+  //   0, 100, 250, 500, 1000, 2000, 4000, 8000, 15000, 30000,
+  // ]);
+  const [minbudget, setminbudget] = useState<number>(0);
+  const [maxbudget, setmaxbudget] = useState<number>(30000);
+  const [pictureseRequired, setpictureseRequired] = useState<boolean>(false);
+  const [firstTobuy, setfirstTobuy] = useState<boolean>(false);
 
   interface parcel {
     escalationlevel: Number;
@@ -198,6 +240,29 @@ const IQBrowser = () => {
     qstns: string;
   }
 
+  function isJobVisible(job: any): Boolean {
+    console.log(job);
+    if (firstTobuy === true) {
+      if (job.first_to_buy === false) {
+        return false;
+      }
+    }
+    if (pictureseRequired === true) {
+      if (job.pictures.length === 0) {
+        return false;
+      }
+    }
+    if (
+      hiringstageCriteria.includes(job.hiringstage!) &&
+      timingCriteria.includes(job.timing!) &&
+      minbudget <= job.minBudget! &&
+      maxbudget >= job.maxBudget!
+    ) {
+      return true;
+    }
+    return false;
+  }
+
   function JOBbox() {
     function toggleShow(jobid: String) {
       if (currentJobID !== jobid) {
@@ -213,32 +278,46 @@ const IQBrowser = () => {
         A LIST OF FRESH JOBS
         {submittedJob_Array?.length! > 0 && (
           <>
-            {submittedJob_Array!.map((job) => (
-              <div
-                className='ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'
-                key={job.id}
-                onClick={() => {
-                  toggleShow(job.id);
-                }}
-              >
-                <div>ID:{job.id}</div>
-                <div>DATE OF CREATION: {String(job.date_created)}</div>
-                <div> Calculated distance: {job.distance} </div>
-                <div>Email:{job.submittterEmail}</div>
-                <div>Expected cost: {job.moneycost}</div>
-                <div>Expected duration: {job.timecost}</div>
-                {job.extrainfo !== "undefined" && (
-                  <div>EXTRA INFO: {job.extrainfo}</div>
-                )}
+            {submittedJob_Array!.map(
+              (job) =>
+                isJobVisible(job) && (
+                  <div
+                    className='ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'
+                    key={job.id}
+                    onClick={() => {
+                      toggleShow(job.id);
+                    }}
+                  >
+                    <div>ID:{job.id}</div>
+                    <div>
+                      1ST TO BUY: {job.first_to_buy === true && <>true</>}
+                      {job.first_to_buy === false && <>false</>}
+                    </div>
 
-                {currentJobID === job.id && (
-                  <div>
-                    <AnsweredQuestionBox qstns={job.answeredQuestions} />
+                    <div>DATE OF CREATION: {String(job.date_created)}</div>
+                    <div> Calculated distance: {job.distance} </div>
+                    <div>Email:{job.submittterEmail}</div>
+                    <div>Expected cost: {job.moneycost}</div>
+                    <div>Minimal Budget: {job.minBudget}</div>
+                    <div>Maximal Budget: {job.maxBudget}</div>
+
+                    <div>Expected duration: {job.timecost}</div>
+                    <div>Timing:{job.timing}</div>
+                    <div>Hiring stage:{job.hiringstage}</div>
+                    <div>PICS LENGTH:{job.pictures.length}</div>
+                    {job.extrainfo !== "undefined" && (
+                      <div>EXTRA INFO: {job.extrainfo}</div>
+                    )}
+
+                    {currentJobID === job.id && (
+                      <div>
+                        <AnsweredQuestionBox qstns={job.answeredQuestions} />
+                      </div>
+                    )}
+                    <div></div>
                   </div>
-                )}
-                <div></div>
-              </div>
-            ))}
+                )
+            )}
           </>
         )}
       </div>
@@ -274,9 +353,171 @@ const IQBrowser = () => {
       </div>
     );
   }
+  function FilterBox() {
+    return (
+      <div className='ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'>
+        <div className='ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'>
+          {firstTobuy === false && (
+            <button
+              onClick={() => {
+                setfirstTobuy(true);
+              }}
+              className='ml-3 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+            >
+              ENABLE FIRST TO BUY FILTER
+            </button>
+          )}
+          {firstTobuy === true && (
+            <button
+              onClick={() => {
+                setfirstTobuy(false);
+              }}
+              className='ml-3 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+            >
+              DISABLE FIRST TO BUY FILTER
+            </button>
+          )}{" "}
+          {pictureseRequired === false && (
+            <button
+              onClick={() => {
+                setpictureseRequired(true);
+              }}
+              className='ml-3 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+            >
+              ENABLE LEADS WITH IMAGES
+            </button>
+          )}
+          {pictureseRequired === true && (
+            <button
+              onClick={() => {
+                setpictureseRequired(false);
+              }}
+              className='ml-3 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+            >
+              DISABLE LEADS WITH IMAGES
+            </button>
+          )}{" "}
+        </div>
+        <div className='ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'>
+          <h1>TIMING</h1>{" "}
+          {timingPRESETS.map((preset) => (
+            <div key={preset.toString()}>
+              {" "}
+              {timingCriteria.includes(preset) === true && (
+                <button
+                  onClick={() => {
+                    const newcriteria = timingCriteria.filter(
+                      (preset1) => preset1 !== preset
+                    );
+                    settimingCriteria(newcriteria);
+                  }}
+                  className='ml-3 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                >
+                  DISABLE {preset} CRITERIA
+                </button>
+              )}
+              {timingCriteria.includes(preset) === false && (
+                <button
+                  onClick={() => {
+                    const newcriteria = [...timingCriteria, preset];
+                    settimingCriteria(newcriteria);
+                  }}
+                  className='ml-3 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                >
+                  ENABLE {preset} CRITERIA
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
+        <div className='ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'>
+          <h1>BUDGET</h1>{" "}
+          <div className='flex'>
+            {" "}
+            <div className='flex-1 ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'>
+              {" "}
+              <h1>MINIMAL BUDGET</h1>
+              {budgetPRESETS.map((preset) => (
+                <div key={preset.toString()}>
+                  {" "}
+                  {minbudget === preset && (
+                    <button
+                      // onClick={() => {
+                      //   setminbudget(preset);
+                      // }}
+                      className='ml-3 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                    >
+                      Minimal budget is set to {preset}
+                    </button>
+                  )}
+                  {minbudget !== preset && (
+                    <button
+                      onClick={() => {
+                        setminbudget(preset);
+                      }}
+                      className='ml-3 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                    >
+                      Set minimum budget to {preset}
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+            <div className='flex-1 ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'>
+              {" "}
+              <h1>MAXIMUM BUDGET</h1>
+              {budgetPRESETS.map((preset) => (
+                <div key={preset.toString()}>
+                  {" "}
+                  {preset === maxbudget && (
+                    <button
+                      // onClick={() => {
+
+                      // }}
+                      className='ml-3 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                    >
+                      Maximum budget is set to {preset}{" "}
+                    </button>
+                  )}
+                  {preset !== maxbudget && (
+                    <button
+                      onClick={() => {
+                        setmaxbudget(preset);
+                      }}
+                      className='ml-3 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                    >
+                      Set maximum budget to {preset}
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
+      {stage === 3 && (
+        <div>
+          <button
+            className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+            onClick={() => {
+              if (filterBoxEnabled === false) {
+                setfilterBoxEnabled(true);
+              } else {
+                setfilterBoxEnabled(false);
+              }
+            }}
+          >
+            FILTERS
+          </button>
+          {filterBoxEnabled === true && <FilterBox />}
+        </div>
+      )}
+
       {stage === 0 && <Geolocatatrix />}
       {stage === 1 && <CategoryBOX />}
       {stage === 2 && <SubcategoryBOX />}

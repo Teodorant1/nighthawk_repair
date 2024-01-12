@@ -72,6 +72,7 @@ model submitted_job {
   sub_categoryID             String       @db.Text
   categoryID                 String       @db.Text
   answeredQuestions          String       @db.Text
+  //optional questions aren't really used here, need to delete this before production
   optional_answeredQuestions String?      @db.Text
   isVisible                  Boolean      @default(false)
   submittterEmail            String       @db.Text

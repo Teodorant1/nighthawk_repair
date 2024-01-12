@@ -65,9 +65,13 @@ export async function POST(req: NextRequest) {
             sub_categoryID: String(parcel1.subcategory),
             isVisible: true,
           },
+          include: { pictures: true },
         });
 
-      const JobsArray1 = JSON.stringify(submitted_jobs);
+      // console.log("lenghth", submitted_jobs.length);
+      // console.log(submitted_jobs);
+
+      // const JobsArray1 = JSON.stringify(submitted_jobs);
       //const JobsArray1 = submitted_jobs.toString();
 
       let distanceParcel1: distanceParcel = {
