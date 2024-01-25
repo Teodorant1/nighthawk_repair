@@ -5,46 +5,6 @@ import { answer } from "@prisma/client";
 import { useJobContext } from "./JobContext";
 
 const IQBrowser = () => {
-  // const {
-  //   userLocation,
-  //   setUserLocation,
-  //   radius,
-  //   setRadius,
-  //   stage,
-  //   setStage,
-  //   category,
-  //   setCategory,
-  //   categoryArray,
-  //   setCategoryArray,
-  //   subCategoryArray,
-  //   setSubCategoryArray,
-  //   submittedJobArray,
-  //   setSubmittedJobArray,
-  //   submittedJobArray2,
-  //   setSubmittedJobArray2,
-  //   filterBoxEnabled,
-  //   setFilterBoxEnabled,
-  //   timingPresets,
-  //   setTimingPresets,
-  //   hiringStagePresets,
-  //   setHiringStagePresets,
-  //   currentJobID,
-  //   setCurrentJobID,
-  //   timingCriteria,
-  //   setTimingCriteria,
-  //   hiringStageCriteria,
-  //   setHiringStageCriteria,
-  //   budgetPresets,
-  //   setBudgetPresets,
-  //   minBudget,
-  //   setMinBudget,
-  //   maxBudget,
-  //   setMaxBudget,
-  //   picturesRequired,
-  //   setPicturesRequired,
-  //   firstTobuy,
-  //   setFirstToBuy,
-  // } = useJobContext();
   const context = useJobContext();
 
   interface parcel {
@@ -102,6 +62,7 @@ const IQBrowser = () => {
         axios.post("/api/qizztaker/v2", parcel1).then((resp) => {
           context.setCategoryArray(resp.data);
         });
+        break;
 
       case 2:
         let parcel2: parcel = {
@@ -109,11 +70,14 @@ const IQBrowser = () => {
           category: labelToChange,
         };
         axios.post("/api/qizztaker/v2", parcel2).then((resp) => {
-          console.log(resp.data);
+          console.log("faloki1", resp.data);
           context.setSubCategoryArray(resp.data);
         });
+        break;
 
       case 3:
+        // if (labelToChange === "faloki") {
+        // }
         let parcel3: parcel = {
           escalationlevel: escalationlevel,
           category: context.category?.name,
@@ -126,6 +90,7 @@ const IQBrowser = () => {
           console.log(resp.data);
           context.setSubmittedJobArray(resp.data);
         });
+        break;
     }
   }
 
@@ -271,8 +236,46 @@ const IQBrowser = () => {
     );
   }
   function FilterBox() {
+    function filterSubjobs(column: String, descending: boolean): void {
+      if (column === "budget") {
+        if (descending === true) {
+          const valueDescending = [...context.submittedJobArray].sort(
+            (a, b) => b.moneycost - a.moneycost
+          );
+          context.setSubmittedJobArray(valueDescending);
+        }
+        if (descending === false) {
+          const valueAscending = [...context.submittedJobArray].sort(
+            (a, b) => a.moneycost - b.moneycost
+          );
+          context.setSubmittedJobArray(valueAscending);
+        }
+      }
+    }
+
     return (
       <div className='ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'>
+        <div className='ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'>
+          <h1>SORTING HAPPENS HERE</h1>
+          <button
+            className='ml-3 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+            onClick={() => {
+              filterSubjobs("budget", false);
+            }}
+          >
+            {" "}
+            Sort by ASCENDING VALUE{" "}
+          </button>
+          <button
+            className='ml-3 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+            onClick={() => {
+              filterSubjobs("budget", true);
+            }}
+          >
+            {" "}
+            Sort by DESCENDING VALUE{" "}
+          </button>
+        </div>
         <div className='ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'>
           {context.firstTobuy === false && (
             <button

@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import axios from "axios";
 import { question, answer, category, sub_category } from "@prisma/client";
 import { useSession } from "next-auth/react";
@@ -27,6 +28,8 @@ const QIZZTAKER = () => {
     setmaxbudget,
     extradetailsText,
     setextradetailsText,
+    pictures,
+    setpictures,
   } = useAppState();
 
   const [timingPRESETS, settimingPRESETS] = useState<String[]>([
@@ -54,7 +57,7 @@ const QIZZTAKER = () => {
   // const [first_to_buy, setfirst_to_buy1] = useState<boolean>(false);
   // const [minbudget, setminbudget1] = useState<number>(0);
   // const [maxbudget, setmaxbudget1] = useState<number>(0);
-  const [pictures, setpictures] = useState<String[]>([]);
+  // const [pictures, setpictures] = useState<String[]>([]);
 
   const [userLocation, setUserLocation] = useState<any>(null);
   const [longitude, setLongitude] = useState<number>(0);
@@ -420,7 +423,19 @@ const QIZZTAKER = () => {
           </>
         )}
         {AnsweredQuestionsArray?.length! >= Question_Array?.length! && (
-          <OptionalQuestionBOX />
+          <>
+            {" "}
+            <button
+              onClick={() => {
+                setstage(3.4);
+              }}
+              className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'
+            >
+              {" "}
+              Click here to proceed to the next step{" "}
+            </button>
+            {/* <OptionalQuestionBOX /> */}
+          </>
         )}
         {Question_Array!.length > 0 && (
           <>
@@ -776,7 +791,15 @@ const QIZZTAKER = () => {
 
   function UploadBox() {
     console.log("rendering uploadBox");
-    // const [pictures, setpictures] = useState<String[]>([]);
+
+    const [pictures2, setpictures2] = useState<string[]>([]);
+
+    // useEffect(() => {
+    //   if (pictures2.length > 0) {
+    //     const newpictures = [...pictures, ...pictures2];
+    //     setpictures(newpictures);
+    //   }
+    // }, [pictures2]);
 
     interface CloudinaryResult {
       public_id: String;
@@ -787,6 +810,7 @@ const QIZZTAKER = () => {
         <button
           onClick={() => {
             setstage(4);
+            setpictures(pictures2);
           }}
           className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'
         >
@@ -795,7 +819,7 @@ const QIZZTAKER = () => {
         </button>{" "}
         <button className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'>
           {" "}
-          You have uploaded {pictures.length} pictures so far.
+          You have uploaded {pictures2.length} pictures so far.
         </button>
         <CldUploadWidget
           uploadPreset='bqhf0bxn'
@@ -804,13 +828,8 @@ const QIZZTAKER = () => {
               return;
             }
             const info = result.info as CloudinaryResult;
-            const pictures1 = [...pictures, info.public_id];
-            console.log("pictures", pictures);
-            console.log("info", info);
-            setpictures(pictures1);
-            if (pictures.length > 1) {
-              console.log(pictures);
-            }
+            const pictures21 = [...pictures2, String(info.public_id)];
+            setpictures2(pictures21);
           }}
         >
           {({ open }) => (
@@ -824,9 +843,9 @@ const QIZZTAKER = () => {
         </CldUploadWidget>{" "}
         <>
           {" "}
-          {pictures.length > 0 && (
+          {pictures2.length > 0 && (
             <>
-              {pictures.map((id) => (
+              {pictures2.map((id) => (
                 <div key={id.toString()}>
                   {" "}
                   <CldImage

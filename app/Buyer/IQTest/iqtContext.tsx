@@ -22,6 +22,8 @@ interface AppState {
   setmaxbudget: Dispatch<SetStateAction<number>>;
   extradetailsText: string;
   setextradetailsText: Dispatch<SetStateAction<string>>;
+  pictures: string[];
+  setpictures: Dispatch<SetStateAction<string[]>>;
 }
 
 const AppContext = createContext<AppState | undefined>(undefined);
@@ -46,6 +48,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [extradetailsText, setextradetailsText] = useState<string>(
     "extra details goes here"
   );
+  const [pictures, setpictures] = useState<string[]>([]);
 
   const state: AppState = {
     title1,
@@ -62,6 +65,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     setmaxbudget,
     extradetailsText,
     setextradetailsText,
+    pictures,
+    setpictures,
   };
 
   return <AppContext.Provider value={state}>{children}</AppContext.Provider>;
