@@ -24,6 +24,13 @@ model user {
   coins                  Int?                    @default(0)
   notificationsEnabled   Boolean                 @default(false)
   userNotificationConfig userNotificationConfig?
+    //this one is used in a bit of a hacky way, 
+  //since we never initialize it except in our Java haversin formula endpoint
+  distance               Int?
+  TravelRange            Int?
+  latitude               Decimal      @default(0)
+  longitude              Decimal      @default(0)
+  country                String       @default("UK") 
 }
 
 model userNotificationConfig {

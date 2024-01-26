@@ -36,6 +36,7 @@ const GoogleMapsComponent: React.FC = () => {
   // }, []);
 
   return (
+    // <div>PLACEHOLDER</div>
     <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!}>
       <GoogleMap
         mapContainerStyle={mapContainerStyle}

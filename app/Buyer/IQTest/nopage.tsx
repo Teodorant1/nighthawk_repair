@@ -31,7 +31,31 @@ const QIZZTAKER = () => {
     pictures,
     setpictures,
   } = useAppState();
+  const mapContainerStyle = {
+    width: "100%",
+    height: "700px",
+  };
+  interface ClickedPosition {
+    lat: number;
+    lng: number;
+  }
+  const center = {
+    lat: 0,
+    lng: 0,
+  };
 
+  const [clickedPosition, setClickedPosition] =
+    useState<ClickedPosition | null>({ lat: 0, lng: 0 });
+
+  const mapRef = useRef<GoogleMap | null>(null);
+
+  const handleMapClick = (event: google.maps.MapMouseEvent) => {
+    const clickedPosition: ClickedPosition = {
+      lat: event.latLng!.lat(),
+      lng: event.latLng!.lng(),
+    };
+    setClickedPosition(clickedPosition);
+  };
   const [timingPRESETS, settimingPRESETS] = useState<String[]>([
     "URGENTLY",
     "WITHIN 2 DAYS",
@@ -51,7 +75,6 @@ const QIZZTAKER = () => {
     0, 100, 250, 500, 1000, 2000, 4000, 8000, 15000, 30000,
   ]);
 
-  const [title, settitle] = React.useState<String>("Title");
   // const [timing, settiming1] = useState<String>("URGENTLY");
   // const [hiringstage, sethiringstage1] = useState<String>("Insurance Quote");
   // const [first_to_buy, setfirst_to_buy1] = useState<boolean>(false);
@@ -59,9 +82,9 @@ const QIZZTAKER = () => {
   // const [maxbudget, setmaxbudget1] = useState<number>(0);
   // const [pictures, setpictures] = useState<String[]>([]);
 
-  const [userLocation, setUserLocation] = useState<any>(null);
-  const [longitude, setLongitude] = useState<number>(0);
-  const [latitude, setLatitude] = useState<number>(0);
+  // const [userLocation, setUserLocation] = useState<any>(null);
+  // const [longitude, setLongitude] = useState<number>(0);
+  // const [latitude, setLatitude] = useState<number>(0);
   const [coordsTouched, setcoordsTouched] = useState<boolean>(false);
 
   const { status, data: session } = useSession();
@@ -193,10 +216,10 @@ const QIZZTAKER = () => {
             extrainfo: extrainfo,
             method: "createjobpost",
             email: session?.user.email,
-            lat: latitude,
-            long: longitude,
+            lat: clickedPosition?.lat,
+            long: clickedPosition?.lng,
 
-            title: title,
+            title: title1,
             timing: timing,
             hiringstage: hiringstage,
             firstToBuy: first_to_buy,
@@ -216,10 +239,10 @@ const QIZZTAKER = () => {
             answeredquestions: AnsweredQuestionsArray1,
             method: "createjobpost",
             email: session?.user.email,
-            lat: latitude,
-            long: longitude,
+            lat: clickedPosition?.lat,
+            long: clickedPosition?.lng,
 
-            title: title,
+            title: title1,
             timing: timing,
             hiringstage: hiringstage,
             firstToBuy: first_to_buy,
@@ -262,10 +285,10 @@ const QIZZTAKER = () => {
             password: password,
             phonenum: phoneNum,
             name: name,
-            lat: latitude,
-            long: longitude,
+            lat: clickedPosition?.lat,
+            long: clickedPosition?.lng,
 
-            title: title,
+            title: title1,
             timing: timing,
             hiringstage: hiringstage,
             firstToBuy: first_to_buy,
@@ -285,10 +308,10 @@ const QIZZTAKER = () => {
             answeredquestions: AnsweredQuestionsArray1,
             method: labelToChange,
             email: email,
-            lat: latitude,
-            long: longitude,
+            lat: clickedPosition?.lat,
+            long: clickedPosition?.lng,
 
-            title: title,
+            title: title1,
             timing: timing,
             hiringstage: hiringstage,
             firstToBuy: first_to_buy,
@@ -536,19 +559,6 @@ const QIZZTAKER = () => {
   }
 
   function SubmitBox() {
-    function setup_coordinates() {
-      const longitude1: number = Number(
-        (document.getElementById("longitude") as HTMLInputElement)?.value
-      );
-      setLongitude(longitude1);
-
-      const latitude1 = Number(
-        (document.getElementById("latitude") as HTMLInputElement)?.value
-      );
-      setLatitude(latitude1);
-      setcoordsTouched(true);
-    }
-
     return (
       <div>
         {AnsweredQuestionsArray.length > 0 && (
@@ -556,33 +566,22 @@ const QIZZTAKER = () => {
             {AnsweredQuestionsArray.length >= Question_Array.length && (
               <>
                 {" "}
-                <div>
-                  Longitude {longitude}
-                  <input
-                    type='number'
-                    className='mx-[5%] w-[30%] h-[10%]  outline text-center font-bold py-10 px-10  my-5'
-                    id='longitude'
-                    defaultValue={0}
-                  />{" "}
-                </div>
-                <div>
-                  Latitude {latitude}
-                  <input
-                    type='number'
-                    className='mx-[5%] w-[30%] h-[10%]  outline text-center font-bold py-10 px-10  my-5'
-                    id='latitude'
-                    defaultValue={0}
-                  />{" "}
-                </div>
-                <button
-                  onClick={() => {
-                    setup_coordinates();
-                  }}
-                  className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'
-                >
-                  {" "}
-                  Click here to set coordinates{" "}
-                </button>
+                {coordsTouched === false && (
+                  <>
+                    {" "}
+                    <GeolocationBox />
+                    <button
+                      onClick={() => {
+                        setcoordsTouched(true);
+                      }}
+                      className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                    >
+                      {" "}
+                      Click here to finalize coordinates and go to the final
+                      page{" "}
+                    </button>
+                  </>
+                )}
                 {coordsTouched && (
                   <div>
                     {" "}
@@ -682,105 +681,6 @@ const QIZZTAKER = () => {
                     )}{" "}
                   </div>
                 )}
-                {/* <GeolocationBox />
-                {userLocation && (
-                  <div>
-                    {" "}
-                    {status === "authenticated" && (
-                      <>
-                        <input
-                          type='text'
-                          className='mx-[20%] w-[50%] h-[10%]  outline text-center font-bold py-10 px-10  my-5'
-                          id='ExtraDetails'
-                          placeholder='Extra details go here'
-                        />{" "}
-                        <div
-                          onClick={() => {
-                            GetData(5);
-                          }}
-                          className=' bg-blue-600  hover:bg-blue-900 ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
-                        >
-                          CLICK HERE TO SUBMIT{" "}
-                        </div>
-                      </>
-                    )}
-                    {status === "unauthenticated" && (
-                      <div className='px-[40%]'>
-                        <div>
-                          You are not LOGGED IN , so you can either click to
-                          submit with your existing credentials OR submit and
-                          REGISTER at the same time
-                        </div>{" "}
-                        <div>
-                          {" "}
-                          Email
-                          <input
-                            type='text'
-                            className='outline text-center font-bold py-2 px-4 rounded-full my-5'
-                            id='email'
-                            placeholder='email goes here'
-                          />{" "}
-                        </div>{" "}
-                        <div>
-                          {" "}
-                          Password
-                          <input
-                            type='text'
-                            className='outline text-center font-bold py-2 px-4 rounded-full my-5'
-                            id='password'
-                            placeholder='password goes here'
-                          />{" "}
-                        </div>{" "}
-                        <div>
-                          {" "}
-                          Phone Number
-                          <input
-                            type='text'
-                            className='outline text-center font-bold py-2 px-4 rounded-full my-5'
-                            id='phoneNum'
-                            placeholder='phoneNum goes here'
-                          />{" "}
-                        </div>{" "}
-                        <div>
-                          {" "}
-                          Name
-                          <input
-                            type='text'
-                            className='outline text-center font-bold py-2 px-4 rounded-full my-5'
-                            id='name'
-                            placeholder='name goes here'
-                          />{" "}
-                        </div>
-                        <div>
-                          {" "}
-                          Extra Details
-                          <input
-                            type='text'
-                            className='mx-[20%] w-[50%] h-[10%] outline text-center font-bold py-10 px-10  my-5'
-                            id='ExtraDetails'
-                            placeholder='Extra details go here'
-                          />{" "}
-                        </div>
-                        <div
-                          onClick={() => {
-                            GetData(6, "EXISTINGACCOUNT");
-                          }}
-                          className=' bg-blue-600  hover:bg-blue-900 ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
-                        >
-                          CLICK HERE TO SUBMIT WITH YOUR EXISTING ACCOUNT{" "}
-                        </div>{" "}
-                        <div
-                          onClick={() => {
-                            GetData(6, "CREATEACCOUNT");
-                          }}
-                          className=' bg-blue-600  hover:bg-blue-900 ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
-                        >
-                          CLICK HERE TO SUBMIT AND CREATE ACCOUNT{" "}
-                        </div>
-                      </div>
-                    )}{" "}
-                  </div>
-                )} */}
               </>
             )}
           </>
@@ -864,51 +764,33 @@ const QIZZTAKER = () => {
   }
 
   function GeolocationBox() {
-    const getUserLocation = () => {
-      // if geolocation is supported by the users browser
-      if (navigator.geolocation) {
-        // get the current users location
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            // save the geolocation coordinates in two variables
-            const { latitude, longitude } = position.coords;
-            // update the value of userlocation variable
-            setUserLocation({ latitude, longitude });
-          },
-          // if there was an error getting the users location
-          (error) => {
-            console.error("Error getting user location:", error);
-          }
-        );
-      }
-      // if geolocation is not supported by the users browser
-      else {
-        console.error("Geolocation is not supported by this browser.");
-      }
-    };
     return (
-      <div className='bg-blue-900  ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'>
-        <h1>
-          You can submit your location to make it easier for potential
-          professionals to filter for it
-        </h1>
-        <h2>(Make sure to allow our app to know your location)</h2>
-        {/* create a button that is mapped to the function which retrieves the users location */}
-        <button
-          className=' bg-blue-600  hover:bg-blue-900 ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
-          onClick={getUserLocation}
+      <LoadScript
+        googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!}
+      >
+        <GoogleMap
+          mapContainerStyle={mapContainerStyle}
+          center={clickedPosition!}
+          zoom={2}
+          onClick={handleMapClick}
+          onLoad={(map: any) => {
+            mapRef.current = map;
+          }}
         >
-          Load User Location
-        </button>
-
-        {userLocation && (
+          {clickedPosition && (
+            <Marker
+              position={{ lat: clickedPosition.lat, lng: clickedPosition.lng }}
+            />
+          )}
+        </GoogleMap>
+        {clickedPosition && (
           <div>
-            <h2>Your Location</h2>
-            <p>Latitude: {userLocation.latitude} </p>
-            <p>Longitude: {userLocation.longitude}</p>
+            <h3>Clicked Coordinates:</h3>
+            <p>Latitude: {clickedPosition.lat.toFixed(6)}</p>
+            <p>Longitude: {clickedPosition.lng.toFixed(6)}</p>
           </div>
         )}
-      </div>
+      </LoadScript>
     );
   }
 
