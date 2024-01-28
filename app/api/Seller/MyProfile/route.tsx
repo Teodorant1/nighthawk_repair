@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import prisma from "@/prisma/client";
 import bcrypt from "bcrypt";
-import { userNotificationConfig } from "@prisma/client";
+import { parcel } from "@/projecttypes";
 
 const schema = z.object({
   email: z.string().email(),

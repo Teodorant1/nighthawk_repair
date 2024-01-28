@@ -1,6 +1,7 @@
 // JobContext.tsx
 import { category, sub_category, submitted_job } from "@prisma/client";
 import React, { createContext, useContext, ReactNode, useState } from "react";
+import { submitted_job_SANS_Email } from "@/projecttypes";
 
 interface JobContextProps {
   children: ReactNode;
@@ -19,10 +20,14 @@ interface JobContextValues {
   setCategoryArray: React.Dispatch<React.SetStateAction<category[]>>;
   subCategoryArray: sub_category[];
   setSubCategoryArray: React.Dispatch<React.SetStateAction<sub_category[]>>;
-  submittedJobArray: submitted_job[];
-  setSubmittedJobArray: React.Dispatch<React.SetStateAction<submitted_job[]>>;
-  submittedJobArray2: submitted_job[];
-  setSubmittedJobArray2: React.Dispatch<React.SetStateAction<submitted_job[]>>;
+  submittedJobArray: submitted_job_SANS_Email[];
+  setSubmittedJobArray: React.Dispatch<
+    React.SetStateAction<submitted_job_SANS_Email[]>
+  >;
+  submittedJobArray2: submitted_job_SANS_Email[];
+  setSubmittedJobArray2: React.Dispatch<
+    React.SetStateAction<submitted_job_SANS_Email[]>
+  >;
   filterBoxEnabled: boolean;
   setFilterBoxEnabled: React.Dispatch<React.SetStateAction<boolean>>;
   timingPresets: string[];
@@ -45,8 +50,10 @@ interface JobContextValues {
   setPicturesRequired: React.Dispatch<React.SetStateAction<boolean>>;
   firstTobuy: boolean;
   setFirstToBuy: React.Dispatch<React.SetStateAction<boolean>>;
-  userLocationText: String;
-  setUserLocationText: React.Dispatch<React.SetStateAction<String>>;
+  userLocationText: string;
+  setUserLocationText: React.Dispatch<React.SetStateAction<string>>;
+  COINS: number;
+  setCOINS: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const JobContext = createContext<JobContextValues | undefined>(undefined);
@@ -60,9 +67,10 @@ export const useJobContext = (): JobContextValues => {
 };
 
 export const JobProvider: React.FC<JobContextProps> = ({ children }) => {
-  const [userLocationText, setUserLocationText] = useState<String>(
+  const [userLocationText, setUserLocationText] = useState<string>(
     "Testing the alt tab error"
   );
+  const [COINS, setCOINS] = useState<number>(0);
 
   const [userLocation, setUserLocation] = useState<any>(null);
   const [radius, setRadius] = useState<number>(25);
@@ -73,12 +81,12 @@ export const JobProvider: React.FC<JobContextProps> = ({ children }) => {
   });
   const [categoryArray, setCategoryArray] = useState<category[]>([]);
   const [subCategoryArray, setSubCategoryArray] = useState<sub_category[]>([]);
-  const [submittedJobArray, setSubmittedJobArray] = useState<submitted_job[]>(
-    []
-  );
-  const [submittedJobArray2, setSubmittedJobArray2] = useState<submitted_job[]>(
-    []
-  );
+  const [submittedJobArray, setSubmittedJobArray] = useState<
+    submitted_job_SANS_Email[]
+  >([]);
+  const [submittedJobArray2, setSubmittedJobArray2] = useState<
+    submitted_job_SANS_Email[]
+  >([]);
   const [filterBoxEnabled, setFilterBoxEnabled] = useState<boolean>(false);
   const [timingPresets, setTimingPresets] = useState<string[]>([
     "URGENTLY",
@@ -154,6 +162,8 @@ export const JobProvider: React.FC<JobContextProps> = ({ children }) => {
     setFirstToBuy,
     userLocationText,
     setUserLocationText,
+    COINS,
+    setCOINS,
   };
 
   return (

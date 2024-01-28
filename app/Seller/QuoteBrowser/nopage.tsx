@@ -1,28 +1,14 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 import axios from "axios";
 import { answer } from "@prisma/client";
 import { useJobContext } from "./JobContext";
+import { parcel } from "@/projecttypes";
 
 const IQBrowser = () => {
+  const { status, data: session } = useSession();
   const context = useJobContext();
-
-  interface parcel {
-    escalationlevel: Number;
-    category?: String;
-    subcategory?: String;
-    question?: String;
-    answer?: String;
-    timecost?: Number;
-    moneycost?: Number;
-    method?: String;
-    answeredquestions?: answer[];
-    extrainfo?: String;
-    lat?: Number;
-    long?: Number;
-    radius?: Number;
-    email?: String;
-  }
 
   function isJobVisible(job: any): Boolean {
     console.log(job);
@@ -56,7 +42,7 @@ const IQBrowser = () => {
     });
   }, []);
 
-  async function GetData(escalationlevel: number, labelToChange?: String) {
+  async function GetData(escalationlevel: number, labelToChange?: string) {
     switch (escalationlevel) {
       case 1:
         axios.post("/api/qizztaker/v2", parcel1).then((resp) => {
@@ -91,6 +77,8 @@ const IQBrowser = () => {
           context.setSubmittedJobArray(resp.data);
         });
         break;
+
+      case 4:
     }
   }
 
@@ -147,6 +135,18 @@ const IQBrowser = () => {
   }
 
   function JOBbox() {
+    useEffect(() => {
+      let coinparcel: parcel = {
+        method: "getCoins",
+        string1: session?.user.sub,
+      };
+      console.log(coinparcel);
+      axios.post("/api/qizztaker/v2", coinparcel).then((resp) => {
+        console.log(resp.data);
+        context.setCOINS(resp.data.coins);
+      });
+    }, []);
+
     function toggleShow(jobid: String) {
       if (context.currentJobID !== jobid) {
         context.setCurrentJobID(jobid.toString());
@@ -156,8 +156,10 @@ const IQBrowser = () => {
       }
     }
 
+    async function BuyAlead() {}
+
     return (
-      <div className='ml-3 center outline text-center font-bold py-2 px-4  rounded-md my-5'>
+      <div className='ml-3 center outline text-center font-bold py-2 px-4  rounded-md my-5 h-screen overflow-y-auto'>
         A LIST OF FRESH JOBS
         {context.submittedJobArray?.length! > 0 && (
           <>
@@ -167,10 +169,37 @@ const IQBrowser = () => {
                   <div
                     className='ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'
                     key={job.id}
-                    onClick={() => {
-                      toggleShow(job.id);
-                    }}
                   >
+                    {context.COINS > 20 && (
+                      <button
+                        className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                        onClick={() => {
+                          console.log("applying");
+                        }}
+                      >
+                        CLICK HERE TO APPLY
+                      </button>
+                    )}
+                    {context.currentJobID !== job.id && (
+                      <button
+                        className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                        onClick={() => {
+                          toggleShow(job.id);
+                        }}
+                      >
+                        EXPAND LEAD{" "}
+                      </button>
+                    )}{" "}
+                    {context.currentJobID === job.id && (
+                      <button
+                        className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                        onClick={() => {
+                          toggleShow(job.id);
+                        }}
+                      >
+                        CLOSE LEAD{" "}
+                      </button>
+                    )}
                     <div>ID:{job.id}</div>
                     <div>
                       1ST TO BUY: {job.first_to_buy === true && <>true</>}
@@ -178,7 +207,7 @@ const IQBrowser = () => {
                     </div>
                     <div>DATE OF CREATION: {String(job.date_created)}</div>
                     <div> Calculated distance: {job.distance} </div>
-                    <div>Email:{job.submittterEmail}</div>
+                    {/* <div>Email:{job.submittterEmail}</div> */}
                     <div>Expected cost: {job.moneycost}</div>
                     <div>Minimal Budget: {job.minBudget}</div>
                     <div>Maximal Budget: {job.maxBudget}</div>
@@ -483,7 +512,7 @@ const IQBrowser = () => {
     );
   };
 
-  console.log(context);
+  // console.log(context);
   return (
     <>
       <div>
@@ -505,6 +534,9 @@ const IQBrowser = () => {
               }}
             >
               FILTERS
+            </button>{" "}
+            <button className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'>
+              AVAILABLE CREDIT: {context.COINS}
             </button>
             {context.filterBoxEnabled === true && <FilterBox />}
           </div>

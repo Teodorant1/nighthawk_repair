@@ -2,41 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/client";
 import axios from "axios";
 import {
-  category,
-  question,
-  sub_category,
-  answer,
-  submitted_job,
-} from "@prisma/client";
-
-interface parcel2 {
-  escalationlevel: Number;
-  category?: String;
-  subcategory?: String;
-  question?: String;
-  answer?: String;
-  timecost?: Number;
-  moneycost?: Number;
-  method?: String;
-  answeredquestions?: answer[];
-  extrainfo?: String;
-  lat?: Number;
-  long?: Number;
-  radius?: Number;
-  email?: String;
-}
-
-interface distanceParcel {
-  radius: Number;
-  lat: Number;
-  long: Number;
-  //JobsArray: String;
-  JobsArray: submitted_job[];
-}
+  parcel,
+  distanceParcel,
+  submitted_job_SANS_Email,
+} from "@/projecttypes";
+import { category, sub_category } from "@prisma/client";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const parcel1: parcel2 = body;
+  const parcel1: parcel = body;
   console.log(parcel1, "you are using v2 of the api");
 
   switch (parcel1.escalationlevel) {
@@ -46,40 +20,60 @@ export async function POST(req: NextRequest) {
     case 2:
       const subcategories: sub_category[] = await prisma.sub_category.findMany({
         where: {
-          categoryID: String(parcel1.category),
+          categoryID: parcel1.category,
         },
       });
 
       return NextResponse.json(subcategories);
 
     case 3:
-      const submitted_jobs: submitted_job[] =
-        await prisma.submitted_job.findMany({
-          orderBy: [
-            {
-              date_created: "desc",
-            },
-          ],
-          where: {
-            categoryID: String(parcel1.category),
-            sub_categoryID: String(parcel1.subcategory),
-            isVisible: true,
+      const submitted_jobs = (await prisma.submitted_job.findMany({
+        orderBy: [
+          {
+            date_created: "desc",
           },
-          include: { pictures: true },
-        });
+        ],
 
-      // console.log("lenghth", submitted_jobs.length);
-      // console.log(submitted_jobs);
+        where: {
+          categoryID: parcel1.category,
+          sub_categoryID: parcel1.subcategory,
+          isVisible: true,
+        },
 
-      // const JobsArray1 = JSON.stringify(submitted_jobs);
-      //const JobsArray1 = submitted_jobs.toString();
+        select: {
+          id: true,
+          sub_categoryID: true,
+          categoryID: true,
+          answeredQuestions: true,
+          optional_answeredQuestions: true,
+          isVisible: true,
+          // submittterEmail: true,
+          date_created: true,
+          extrainfo: true,
+          timecost: true,
+          moneycost: true,
+
+          distance: true,
+          latitude: true,
+          longitude: true,
+
+          title: true,
+          timing: true,
+          hiringstage: true,
+          first_to_buy: true,
+          minBudget: true,
+          maxBudget: true,
+          status: true,
+          finalWorkerID: true,
+          pictures: true,
+        },
+      })) as submitted_job_SANS_Email[];
 
       let distanceParcel1: distanceParcel = {
-        radius: Number(parcel1.radius),
-        lat: Number(parcel1.lat),
-        long: Number(parcel1.long),
+        radius: parcel1.radius!,
+        lat: parcel1.lat!,
+        long: parcel1.long!,
         JobsArray: submitted_jobs,
-        // JobsArray: submitted_jobs,
       };
 
       const result = await axios
@@ -93,5 +87,19 @@ export async function POST(req: NextRequest) {
       //  return NextResponse.json(result);
       return result;
   }
+
+  if (parcel1.method === "getCoins") {
+    console.log("doing getcoins");
+    const CoinPerson = await prisma.user.findFirst({
+      where: { id: parcel1.string1 },
+
+      select: { coins: true },
+    });
+
+    console.log("coinperson");
+    console.log(CoinPerson);
+    return NextResponse.json(CoinPerson);
+  }
+
   //  return NextResponse.json({ email: "newuser.email" });
 }

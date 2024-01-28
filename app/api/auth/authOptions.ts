@@ -22,11 +22,9 @@ export const authOptions = {
         try {
           const foundUser = await prisma.user.findUnique({
             where: { email: credentials!.email },
-            include: { userNotificationConfig: true },
           });
 
           if (foundUser) {
-            console.log(foundUser.userNotificationConfig);
             console.log("User Exists");
             console.log(foundUser);
             const match = await bcrypt.compare(
@@ -50,23 +48,25 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user, session }: any) {
+    async jwt({ token, user }: any) {
       // console.log("jwt callback", { token, user, session });
       if (user) {
         token.role = user.role;
         token.isClient = user.isClient;
         token.isAdmin = user.isAdmin;
         token.isRepairman = user.isRepairman;
+        token.sub = user.id;
       }
       return token;
     },
-    async session({ session, token, user }: any) {
+    async session({ session, token }: any) {
       // console.log("sesh callback", { token, user, session });
       if (session?.user) {
         session.user.role = token.role;
         session.user.isClient = token.isClient;
         session.user.isAdmin = token.isAdmin;
         session.user.isRepairman = token.isRepairman;
+        session.user.sub = token.sub;
       }
       return session;
     },

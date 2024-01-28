@@ -7,6 +7,7 @@ import { question, answer, category, sub_category } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { CldImage, CldUploadWidget } from "next-cloudinary";
 import { useAppState } from "./iqtContext";
+import { parcel } from "@/projecttypes";
 
 const QIZZTAKER = () => {
   // const [userLocationText, setUserLocationText] = useState<String>(
@@ -103,43 +104,6 @@ const QIZZTAKER = () => {
   const [AnsweredQuestionsArray1, setAnsweredQuestionsArray1] = useState<
     answer[]
   >([]);
-
-  // interface question1 {
-  //   id: String;
-  //   text_Question: String;
-  //   sub_categoryID: String;
-  //   categoryID: String;
-  // }
-  interface parcel {
-    escalationlevel: Number;
-    category?: String;
-    subcategory?: String;
-    question?: String;
-    answer?: String;
-    timecost?: Number;
-    moneycost?: Number;
-    method?: String;
-    answeredquestions?: answer[];
-    extrainfo?: String;
-
-    radius?: Number;
-    email?: String;
-    password?: String;
-    name?: String;
-    phonenum?: String;
-    isOptional?: boolean;
-
-    lat?: Number;
-    long?: Number;
-
-    pictures?: String[];
-    title?: String;
-    timing?: String;
-    hiringstage?: String;
-    firstToBuy?: boolean;
-    minbudget?: number;
-    maxbudget?: number;
-  }
 
   const parcel1: parcel = {
     escalationlevel: 1,

@@ -1,13 +1,26 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { GetSessionParams, getSession, useSession } from "next-auth/react";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import logo from "@/public/images/IQTlogo.png";
+import { parcel } from "@/projecttypes";
 
-const NavBar = () => {
-  const { status, data: session } = useSession();
+export async function getServerSideProps(
+  context: GetSessionParams | undefined
+) {
+  const session = await getSession(context);
+
+  return {
+    props: {
+      session,
+    },
+  };
+}
+
+const NavBar = ({ session }: any) => {
+  const { status, data: session1 } = useSession();
   const [show, setShow] = useState(false);
 
   function toggleShow() {
@@ -18,6 +31,20 @@ const NavBar = () => {
       setShow(false);
     }
   }
+
+  // useEffect(() => {
+  //   console.log("navbar", session?.user.sub.toString());
+  //   console.log("navbar", session?.user.email);
+  //   let coinparcel: parcel = {
+  //     method: "getCoins",
+  //     string1: session?.user.sub,
+  //   };
+
+  //   console.log(coinparcel);
+
+  //   //  axios.post("/api/qizztaker/v2", coinparcel).then((resp) => {
+  //   //    console.log("received coins", resp.data);});
+  // }, []);
 
   function MyAccount() {
     return (
@@ -46,6 +73,7 @@ const NavBar = () => {
           {status === "authenticated" && (
             <div className='flex'>
               {" "}
+              <div> {session?.user.email} </div>
               <div onClick={() => toggleShow()}>My Account - </div>{" "}
               <div>{show === true && <AccountDropdown />}</div>{" "}
             </div>
@@ -84,6 +112,13 @@ const NavBar = () => {
       <div className='flex content-evenly m-5 p-5'>
         {session?.user.role === "USER" && (
           <div>
+            <Link
+              href='/Seller/QuoteBrowser'
+              className='ml-3 outline text-center font-bold  py-2 px-4 rounded-full my-5 center'
+            >
+              {" "}
+              GO TO QUOTE BROWSER
+            </Link>
             <Link
               href='/FindaTrade'
               className='ml-3 outline text-center font-bold  py-2 px-4 rounded-full my-5 center'

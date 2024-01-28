@@ -10,6 +10,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model profileSubCategory {
+  id          String @id @default(cuid())
+  user_ID     String
+  category    String
+  subcategory String
+}
+
+model Review {
+  id           String   @id @default(cuid())
+  user_ID      String
+  // Job_Id                 String
+  reviewText   String
+  rating       Int
+  date_created DateTime @default(now())
+}
+
+model Certificate {
+  id           String   @id @default(cuid())
+  user_ID      String
+  name         String
+  Link         String
+  date_created DateTime @default(now())
+}
+
+model workGalleryPicture {
+  id           String @id @default(cuid())
+  user_ID      String
+  cloudinaryID String
+}
+
 model user {
   id                     String                  @id @default(cuid())
   email                  String                  @unique
@@ -22,22 +52,23 @@ model user {
   phoneNum               String
   name                   String
   coins                  Int?                    @default(0)
-  notificationsEnabled   Boolean                 @default(false)
   userNotificationConfig userNotificationConfig?
-    //this one is used in a bit of a hacky way, 
+  //this one is used in a bit of a hacky way, 
   //since we never initialize it except in our Java haversin formula endpoint
   distance               Int?
   TravelRange            Int?
-  latitude               Decimal      @default(0)
-  longitude              Decimal      @default(0)
-  country                String       @default("UK") 
+  latitude               Decimal                 @default(0)
+  longitude              Decimal                 @default(0)
+  country                String                  @default("UK")
+  profilePic             String?                
 }
 
 model userNotificationConfig {
-  id     String  @id @default(cuid())
-  name   String?
-  user   user    @relation(fields: [userId], references: [id])
-  userId String  @unique
+  id           String  @id @default(cuid())
+  emailEnabled Boolean @default(false)
+  pushEnabled  Boolean @default(false)
+  user         user    @relation(fields: [userId], references: [id])
+  userId       String  @unique
 }
 
 model category {
@@ -93,7 +124,7 @@ model submitted_job {
   latitude                   Decimal      @default(0)
   longitude                  Decimal      @default(0)
   ///
-  title                      String? 
+  title                      String?
   timing                     String?
   hiringstage                String?
   first_to_buy               Boolean?     @default(false)
@@ -105,15 +136,24 @@ model submitted_job {
 }
 
 model JobPicture {
-  id              String         @id @default(cuid())
+  id              String        @id @default(cuid())
   cloudinaryID    String
   submitted_job   submitted_job @relation(fields: [submitted_jobId], references: [id])
   submitted_jobId String
 }
 
+// a job that a user has applied to
+model appliedJob {
+  id              String @id @default(cuid())
+  submittedJob_ID String
+  status          String?
+  userID          String
+}
+
 model job_application {
   id              String @id @default(cuid())
   submittedJob_ID String
+  text            String?
   userID          String
   status          String
 }
