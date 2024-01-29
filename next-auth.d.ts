@@ -10,6 +10,7 @@ declare module "next-auth" {
       email: string;
       role: string;
       isClient: boolean;
+      isRepairman: boolean;
       sub: string;
     } & DefaultSession["user"];
   }

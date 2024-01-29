@@ -23,19 +23,19 @@ const NavBar = () => {
   function MyAccount() {
     return (
       // <div>
-      <div className='center outline text-center font-bold py-2 px-4  flex z-10 ml-auto top-[20%]  right-[10%]'>
+      <div className='center outline text-center font-bold py-2 px-4   z-10 ml-auto top-[20%]  right-[10%]'>
         {" "}
         {status === "unauthenticated" && (
           <div>
             <Link
-              className='flex p-2 font-bold'
+              className=' p-2 font-bold'
               href='/register'
             >
               Register
             </Link>
 
             <Link
-              className='flex p-2 font-bold'
+              className=' p-2 font-bold'
               href='/api/auth/signin'
             >
               Login
@@ -45,7 +45,7 @@ const NavBar = () => {
         <div>
           {" "}
           {status === "authenticated" && (
-            <div className='flex'>
+            <div className=''>
               {" "}
               {/* <div> {session?.user.email} </div> */}
               <div onClick={() => toggleShow()}>My Account - </div>{" "}
@@ -83,77 +83,77 @@ const NavBar = () => {
   }
   function USERBOX() {
     return (
-      <div className='flex content-evenly m-5 p-5'>
+      <div className='m-5 p-5'>
         {session?.user.role === "USER" && (
           <div>
             <Link
               href='/Seller/QuoteBrowser'
-              className='ml-3 outline text-center font-bold  py-2 px-4 rounded-full my-5 center'
+              className='ml-3  text-center font-bold  py-2 px-4 rounded-full my-5 center'
             >
               {" "}
               GO TO QUOTE BROWSER
             </Link>
             <Link
               href='/FindaTrade'
-              className='ml-3 outline text-center font-bold  py-2 px-4 rounded-full my-5 center'
+              className='ml-3  text-center font-bold  py-2 px-4 rounded-full my-5 center'
             >
               {" "}
               Find a Trade
             </Link>
             <Link
               href='/Ask'
-              className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5'
+              className='ml-3 center  text-center font-bold py-2 px-4 rounded-full my-5'
             >
               {" "}
               Ask
             </Link>
             <Link
               href='/Advice'
-              className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5'
+              className='ml-3 center  text-center font-bold py-2 px-4 rounded-full my-5'
             >
               Advice
             </Link>{" "}
             <Link
               href='/LIVELEADS'
-              className='ml-3 outline text-center font-bold py-2 px-4 rounded-full my-5 center'
+              className='ml-3  text-center font-bold py-2 px-4 rounded-full my-5 center'
             >
               {" "}
               LIVE LEADS
             </Link>
             <Link
               href='/MYLEADS'
-              className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5'
+              className='ml-3 center  text-center font-bold py-2 px-4 rounded-full my-5'
             >
               {" "}
               MY LEADS
             </Link>
             <Link
               href='/PROFILE'
-              className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5'
+              className='ml-3 center  text-center font-bold py-2 px-4 rounded-full my-5'
             >
               PROFILE{" "}
             </Link>{" "}
             <Link
               href='/MY RATINGS'
-              className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5'
+              className='ml-3 center  text-center font-bold py-2 px-4 rounded-full my-5'
             >
               MY RATINGS
             </Link>{" "}
             <Link
               href='/ASKANEXPERT'
-              className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5'
+              className='ml-3 center  text-center font-bold py-2 px-4 rounded-full my-5'
             >
               ASK AN EXPERT{" "}
             </Link>{" "}
             <Link
               href='/HELP'
-              className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5'
+              className='ml-3 center  text-center font-bold py-2 px-4 rounded-full my-5'
             >
               HELP{" "}
             </Link>{" "}
             <Link
               href='/CHAT'
-              className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5'
+              className='ml-3 center  text-center font-bold py-2 px-4 rounded-full my-5'
             >
               CHAT{" "}
             </Link>{" "}
@@ -165,7 +165,7 @@ const NavBar = () => {
 
   function BUYERBOX() {
     return (
-      <div className='flex content-evenly m-5 p-5'>
+      <div className='m-5 p-5'>
         {" "}
         {session?.user.role === "BUYER" && (
           <div>
