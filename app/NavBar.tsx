@@ -7,20 +7,8 @@ import Image from "next/image";
 import logo from "@/public/images/IQTlogo.png";
 import { parcel } from "@/projecttypes";
 
-export async function getServerSideProps(
-  context: GetSessionParams | undefined
-) {
-  const session = await getSession(context);
-
-  return {
-    props: {
-      session,
-    },
-  };
-}
-
-const NavBar = ({ session }: any) => {
-  const { status, data: session1 } = useSession();
+const NavBar = () => {
+  const { status, data: session } = useSession();
   const [show, setShow] = useState(false);
 
   function toggleShow() {
@@ -31,20 +19,6 @@ const NavBar = ({ session }: any) => {
       setShow(false);
     }
   }
-
-  // useEffect(() => {
-  //   console.log("navbar", session?.user.sub.toString());
-  //   console.log("navbar", session?.user.email);
-  //   let coinparcel: parcel = {
-  //     method: "getCoins",
-  //     string1: session?.user.sub,
-  //   };
-
-  //   console.log(coinparcel);
-
-  //   //  axios.post("/api/qizztaker/v2", coinparcel).then((resp) => {
-  //   //    console.log("received coins", resp.data);});
-  // }, []);
 
   function MyAccount() {
     return (
@@ -73,7 +47,7 @@ const NavBar = ({ session }: any) => {
           {status === "authenticated" && (
             <div className='flex'>
               {" "}
-              <div> {session?.user.email} </div>
+              {/* <div> {session?.user.email} </div> */}
               <div onClick={() => toggleShow()}>My Account - </div>{" "}
               <div>{show === true && <AccountDropdown />}</div>{" "}
             </div>

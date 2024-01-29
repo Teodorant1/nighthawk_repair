@@ -146,6 +146,7 @@ model JobPicture {
 model appliedJob {
   id              String @id @default(cuid())
   submittedJob_ID String
+  submitterEmail  String
   status          String?
   userID          String
 }

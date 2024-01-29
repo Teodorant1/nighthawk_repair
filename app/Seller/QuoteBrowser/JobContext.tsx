@@ -1,5 +1,10 @@
 // JobContext.tsx
-import { category, sub_category, submitted_job } from "@prisma/client";
+import {
+  appliedJob,
+  category,
+  sub_category,
+  submitted_job,
+} from "@prisma/client";
 import React, { createContext, useContext, ReactNode, useState } from "react";
 import { submitted_job_SANS_Email } from "@/projecttypes";
 
@@ -24,10 +29,8 @@ interface JobContextValues {
   setSubmittedJobArray: React.Dispatch<
     React.SetStateAction<submitted_job_SANS_Email[]>
   >;
-  submittedJobArray2: submitted_job_SANS_Email[];
-  setSubmittedJobArray2: React.Dispatch<
-    React.SetStateAction<submitted_job_SANS_Email[]>
-  >;
+  appliedJobs: appliedJob[];
+  setappliedJobs: React.Dispatch<React.SetStateAction<appliedJob[]>>;
   filterBoxEnabled: boolean;
   setFilterBoxEnabled: React.Dispatch<React.SetStateAction<boolean>>;
   timingPresets: string[];
@@ -84,9 +87,7 @@ export const JobProvider: React.FC<JobContextProps> = ({ children }) => {
   const [submittedJobArray, setSubmittedJobArray] = useState<
     submitted_job_SANS_Email[]
   >([]);
-  const [submittedJobArray2, setSubmittedJobArray2] = useState<
-    submitted_job_SANS_Email[]
-  >([]);
+  const [appliedJobs, setappliedJobs] = useState<appliedJob[]>([]);
   const [filterBoxEnabled, setFilterBoxEnabled] = useState<boolean>(false);
   const [timingPresets, setTimingPresets] = useState<string[]>([
     "URGENTLY",
@@ -136,8 +137,8 @@ export const JobProvider: React.FC<JobContextProps> = ({ children }) => {
     setSubCategoryArray,
     submittedJobArray,
     setSubmittedJobArray,
-    submittedJobArray2,
-    setSubmittedJobArray2,
+    appliedJobs,
+    setappliedJobs,
     filterBoxEnabled,
     setFilterBoxEnabled,
     timingPresets,

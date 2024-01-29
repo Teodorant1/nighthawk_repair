@@ -7,11 +7,13 @@ import {
   submitted_job_SANS_Email,
 } from "@/projecttypes";
 import { category, sub_category } from "@prisma/client";
+import { authOptions } from "../../auth/authOptions";
+import { Session, getServerSession } from "next-auth";
 
 export async function POST(req: NextRequest) {
+  const session = (await getServerSession(authOptions)) as Session;
   const body = await req.json();
   const parcel1: parcel = body;
-  console.log(parcel1, "you are using v2 of the api");
 
   switch (parcel1.escalationlevel) {
     case 1:
@@ -79,7 +81,6 @@ export async function POST(req: NextRequest) {
       const result = await axios
         .post("http://localhost:8001/", distanceParcel1)
         .then((resp) => {
-          //  console.log(resp.data);
           return NextResponse.json(resp.data);
         })
         .catch((error) => console.log(error));
@@ -88,17 +89,54 @@ export async function POST(req: NextRequest) {
       return result;
   }
 
-  if (parcel1.method === "getCoins") {
-    console.log("doing getcoins");
-    const CoinPerson = await prisma.user.findFirst({
-      where: { id: parcel1.string1 },
+  if (parcel1.method === "getCoins" && parcel1.userID === session.user.sub) {
+    const TradesmanCredit = await prisma.user.findFirst({
+      where: { id: parcel1.userID },
 
       select: { coins: true },
     });
 
-    console.log("coinperson");
-    console.log(CoinPerson);
+    return NextResponse.json(TradesmanCredit);
+  }
+  if (parcel1.method === "BuyAlead" && parcel1.userID === session.user.sub) {
+    const CoinPerson = await prisma.user.findFirst({
+      where: { id: parcel1.userID },
+      select: { coins: true },
+    });
+
+    if (CoinPerson !== null && CoinPerson.coins! >= 20) {
+      let new_coins: number = CoinPerson?.coins! - 20;
+
+      const CoinPerson2 = await prisma.user.update({
+        where: { id: parcel1.userID },
+        data: { coins: new_coins },
+      });
+
+      const JobThatIsBeingAppliedTo = await prisma.submitted_job.findFirst({
+        where: { id: parcel1.leadID },
+      });
+
+      await prisma.appliedJob.create({
+        data: {
+          submittedJob_ID: parcel1.leadID!,
+          submitterEmail: JobThatIsBeingAppliedTo?.submittterEmail!,
+          status: "contacted",
+          userID: parcel1.userID,
+        },
+      });
+    }
     return NextResponse.json(CoinPerson);
+  }
+
+  if (
+    parcel1.method === "getappliedjobs" &&
+    parcel1.userID === session.user.sub
+  ) {
+    const AppliedJobs = await prisma.appliedJob.findMany({
+      where: { userID: parcel1.userID },
+    });
+
+    return NextResponse.json(AppliedJobs);
   }
 
   //  return NextResponse.json({ email: "newuser.email" });

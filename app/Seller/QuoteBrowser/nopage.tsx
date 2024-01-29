@@ -2,16 +2,63 @@
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
-import { answer } from "@prisma/client";
+import { answer, appliedJob, submitted_job } from "@prisma/client";
 import { useJobContext } from "./JobContext";
-import { parcel } from "@/projecttypes";
+import { parcel, submitted_job_SANS_Email } from "@/projecttypes";
 
 const IQBrowser = () => {
   const { status, data: session } = useSession();
   const context = useJobContext();
 
+  // function IsAlreadyContacted(
+  //   element: submitted_job,
+  //   index: number,
+  //   array: appliedJob[]
+  // ): boolean {
+  //   return element.id === array[index].submittedJob_ID;
+  // }
+
+  useEffect(() => {
+    axios.post("/api/qizztaker", parcel1).then((resp) => {
+      context.setCategoryArray(resp.data);
+    });
+  }, []);
+  useEffect(() => {
+    if (status === "authenticated") {
+      let coinparcel: parcel = {
+        method: "getCoins",
+        userID: session?.user.sub,
+      };
+
+      axios
+        .post("/api/qizztaker/v2", coinparcel)
+        .then((resp) => {
+          context.setCOINS(resp.data.coins);
+        })
+        .then(() => {
+          GetappliedJobs();
+        });
+    }
+  }, [status]);
+
+  async function GetappliedJobs() {
+    let appliedJobsParcel: parcel = {
+      method: "getappliedjobs",
+      userID: session?.user.sub,
+    };
+    axios.post("/api/qizztaker/v2", appliedJobsParcel).then((resp) => {
+      context.setappliedJobs(resp.data);
+    });
+  }
   function isJobVisible(job: any): Boolean {
-    console.log(job);
+    if (
+      context.appliedJobs.some(
+        (appliedjob) => appliedjob.submittedJob_ID === job.id
+      )
+    ) {
+      return false;
+    }
+
     if (context.firstTobuy === true) {
       if (job.first_to_buy === false) {
         return false;
@@ -36,11 +83,6 @@ const IQBrowser = () => {
   const parcel1: parcel = {
     escalationlevel: 1,
   };
-  useEffect(() => {
-    axios.post("/api/qizztaker", parcel1).then((resp) => {
-      context.setCategoryArray(resp.data);
-    });
-  }, []);
 
   async function GetData(escalationlevel: number, labelToChange?: string) {
     switch (escalationlevel) {
@@ -56,7 +98,7 @@ const IQBrowser = () => {
           category: labelToChange,
         };
         axios.post("/api/qizztaker/v2", parcel2).then((resp) => {
-          console.log("faloki1", resp.data);
+          // console.log("faloki1", resp.data);
           context.setSubCategoryArray(resp.data);
         });
         break;
@@ -73,7 +115,7 @@ const IQBrowser = () => {
           radius: context.radius,
         };
         axios.post("/api/qizztaker/v2", parcel3).then((resp) => {
-          console.log(resp.data);
+          // console.log(resp.data);
           context.setSubmittedJobArray(resp.data);
         });
         break;
@@ -135,18 +177,6 @@ const IQBrowser = () => {
   }
 
   function JOBbox() {
-    useEffect(() => {
-      let coinparcel: parcel = {
-        method: "getCoins",
-        string1: session?.user.sub,
-      };
-      console.log(coinparcel);
-      axios.post("/api/qizztaker/v2", coinparcel).then((resp) => {
-        console.log(resp.data);
-        context.setCOINS(resp.data.coins);
-      });
-    }, []);
-
     function toggleShow(jobid: String) {
       if (context.currentJobID !== jobid) {
         context.setCurrentJobID(jobid.toString());
@@ -156,11 +186,37 @@ const IQBrowser = () => {
       }
     }
 
-    async function BuyAlead() {}
+    async function BuyAlead(job: submitted_job_SANS_Email) {
+      let coinparcel: parcel = {
+        method: "BuyAlead",
+        userID: session?.user.sub,
+        leadID: job.id,
+      };
+
+      axios
+        .post("/api/qizztaker/v2", coinparcel)
+
+        .then(() => {
+          if (status === "authenticated") {
+            let coinparcel: parcel = {
+              method: "getCoins",
+              userID: session?.user.sub,
+            };
+
+            axios
+              .post("/api/qizztaker/v2", coinparcel)
+              .then((resp) => {
+                context.setCOINS(resp.data.coins);
+              })
+              .then(async () => {
+                await GetappliedJobs();
+              });
+          }
+        });
+    }
 
     return (
       <div className='ml-3 center outline text-center font-bold py-2 px-4  rounded-md my-5 h-screen overflow-y-auto'>
-        A LIST OF FRESH JOBS
         {context.submittedJobArray?.length! > 0 && (
           <>
             {context.submittedJobArray!.map(
@@ -174,12 +230,12 @@ const IQBrowser = () => {
                       <button
                         className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
                         onClick={() => {
-                          console.log("applying");
+                          BuyAlead(job);
                         }}
                       >
                         CLICK HERE TO APPLY
                       </button>
-                    )}
+                    )}{" "}
                     {context.currentJobID !== job.id && (
                       <button
                         className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
@@ -512,7 +568,6 @@ const IQBrowser = () => {
     );
   };
 
-  // console.log(context);
   return (
     <>
       <div>
@@ -536,8 +591,14 @@ const IQBrowser = () => {
               FILTERS
             </button>{" "}
             <button className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'>
-              AVAILABLE CREDIT: {context.COINS}
+              AVAILABLE CREDIT: £{context.COINS}
             </button>
+            <button className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'>
+              NUMBER OF APPLIED JOBS: {context.appliedJobs.length}
+            </button>
+            <div className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'>
+              A LIST OF FRESH JOBS{" "}
+            </div>
             {context.filterBoxEnabled === true && <FilterBox />}
           </div>
         )}

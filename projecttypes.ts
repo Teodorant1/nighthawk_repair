@@ -9,8 +9,19 @@ export type parcel = {
   answer?: string;
   timecost?: number;
   moneycost?: number;
+
   string1?: string;
-  number1?: string;
+  number1?: number;
+  string2?: string;
+  number2?: number;
+  string3?: string;
+  number3?: number;
+  string4?: string;
+  number4?: number;
+
+  leadID?: string;
+  userID?: string;
+
   method?: string;
   answeredquestions?: answer[];
   extrainfo?: string;

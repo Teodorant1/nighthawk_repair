@@ -2,14 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/client";
 import { category, question, sub_category, answer } from "@prisma/client";
 import { authOptions } from "../auth/authOptions";
-import { getServerSession } from "next-auth";
+import { Session, getServerSession } from "next-auth";
 import { parcel } from "@/projecttypes";
 
 export async function POST(req: NextRequest) {
-  const session = await getServerSession(authOptions);
+  const session = (await getServerSession(authOptions)) as Session;
   const body = await req.json();
   const parcel1: parcel = body;
-  console.log(parcel1);
 
   switch (parcel1.escalationlevel) {
     case 1:
