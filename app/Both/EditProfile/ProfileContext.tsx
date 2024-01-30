@@ -1,3 +1,4 @@
+import { Certificate, Review, category, sub_category } from "@prisma/client";
 import React, {
   createContext,
   useContext,
@@ -8,12 +9,20 @@ import React, {
 } from "react";
 
 interface ProfileState {
-  title1: string;
-  settitle1: Dispatch<SetStateAction<string>>;
-  timing: string;
-  settiming: Dispatch<SetStateAction<string>>;
-  timing1: string;
-  settiming1: Dispatch<SetStateAction<string>>;
+  show: string;
+  setshow: Dispatch<SetStateAction<string>>;
+  all_categories: category[];
+  setall_categories: Dispatch<SetStateAction<category[]>>;
+  all_subcategories: sub_category[];
+  setall_subcategories: Dispatch<SetStateAction<sub_category[]>>;
+  hidden_Categories: category[];
+  sethidden_Categories: Dispatch<SetStateAction<category[]>>;
+  hidden_Sub_Categories: sub_category[];
+  sethidden_Sub_Categories: Dispatch<SetStateAction<sub_category[]>>;
+  reviews: Review[];
+  setreviews: Dispatch<SetStateAction<Review[]>>;
+  certificates: Certificate[];
+  setcertificates: Dispatch<SetStateAction<Certificate[]>>;
 }
 
 const ProfileContext = createContext<ProfileState | undefined>(undefined);
@@ -31,14 +40,33 @@ export const useProfileState = (): ProfileState => {
 export const ProfileProvider: React.FC<ProfileProviderProps> = ({
   children,
 }) => {
-  const [title1, settitle1] = useState<string>("Title goes here");
-  const [timing, settiming] = useState<string>("0");
+  const [show, setshow] = useState<string>("none");
+  const [all_categories, setall_categories] = useState<category[]>([]);
+  const [all_subcategories, setall_subcategories] = useState<sub_category[]>(
+    []
+  );
+  const [hidden_Categories, sethidden_Categories] = useState<category[]>([]);
+  const [hidden_Sub_Categories, sethidden_Sub_Categories] = useState<
+    sub_category[]
+  >([]);
+  const [reviews, setreviews] = useState<Review[]>([]);
+  const [certificates, setcertificates] = useState<Certificate[]>([]);
 
   const state: ProfileState = {
-    title1,
-    settitle1,
-    timing,
-    settiming,
+    show,
+    setshow,
+    all_categories,
+    setall_categories,
+    all_subcategories,
+    setall_subcategories,
+    hidden_Categories,
+    sethidden_Categories,
+    hidden_Sub_Categories,
+    sethidden_Sub_Categories,
+    reviews,
+    setreviews,
+    certificates,
+    setcertificates,
   };
 
   return (

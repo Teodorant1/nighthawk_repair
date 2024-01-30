@@ -81,3 +81,8 @@ export interface distanceParcel {
 export function paloki(input: string) {
   console.log(input);
 }
+
+export interface ClickedPosition {
+  lat: number;
+  lng: number;
+}

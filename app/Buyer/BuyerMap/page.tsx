@@ -1,20 +1,13 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { ClickedPosition } from "@/projecttypes";
 
 const GoogleMapsComponent: React.FC = () => {
   const mapContainerStyle = {
     width: "100%",
     height: "700px",
-  };
-  interface ClickedPosition {
-    lat: number;
-    lng: number;
-  }
-  const center = {
-    lat: 0,
-    lng: 0,
   };
 
   const [clickedPosition, setClickedPosition] =
