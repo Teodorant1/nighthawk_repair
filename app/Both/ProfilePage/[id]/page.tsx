@@ -2,11 +2,17 @@
 import React from "react";
 import { ProfileProvider } from "./ProfileContext";
 import SellerProfile from "./nopage";
-
-const Myprofile = () => {
+import { Props1 } from "@/projecttypes";
+const Myprofile = ({ params: { id } }: Props1) => {
   return (
     <ProfileProvider>
-      <SellerProfile />
+      <>
+        <SellerProfile
+          params={{
+            id: id,
+          }}
+        />
+      </>
     </ProfileProvider>
   );
 };

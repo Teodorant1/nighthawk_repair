@@ -96,14 +96,14 @@ const QuizzMaker = () => {
         >
           Click To Add Question
         </button>{" "}
-        <button
+        {/* <button
           className=' bg-green-500 hover:bg-green-700 text-white font-bold my-5 py-2 px-4 rounded-full '
           onClick={() => {
             PersistToSQUEALdb(3, true);
           }}
         >
           Click To Add OPTIONAL Question
-        </button>{" "}
+        </button>{" "} */}
       </div>
       <div>
         Answer:{" "}

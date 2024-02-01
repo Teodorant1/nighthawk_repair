@@ -1,4 +1,11 @@
-import { Certificate, Review, category, sub_category } from "@prisma/client";
+import {
+  Certificate,
+  Review,
+  category,
+  profileSubCategory,
+  sub_category,
+  user,
+} from "@prisma/client";
 import React, {
   createContext,
   useContext,
@@ -7,6 +14,8 @@ import React, {
   Dispatch,
   SetStateAction,
 } from "react";
+import { UserLoc } from "@/projecttypes";
+import { Decimal } from "@prisma/client/runtime/library";
 
 interface ProfileState {
   show: string;
@@ -17,12 +26,14 @@ interface ProfileState {
   setall_subcategories: Dispatch<SetStateAction<sub_category[]>>;
   hidden_Categories: category[];
   sethidden_Categories: Dispatch<SetStateAction<category[]>>;
-  hidden_Sub_Categories: sub_category[];
-  sethidden_Sub_Categories: Dispatch<SetStateAction<sub_category[]>>;
+  my_Sub_Categories: profileSubCategory[];
+  setmy_Sub_Categories: Dispatch<SetStateAction<profileSubCategory[]>>;
   reviews: Review[];
   setreviews: Dispatch<SetStateAction<Review[]>>;
   certificates: Certificate[];
   setcertificates: Dispatch<SetStateAction<Certificate[]>>;
+  UserLoc: UserLoc;
+  setUserLoc: Dispatch<SetStateAction<UserLoc>>;
 }
 
 const ProfileContext = createContext<ProfileState | undefined>(undefined);
@@ -46,11 +57,16 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
     []
   );
   const [hidden_Categories, sethidden_Categories] = useState<category[]>([]);
-  const [hidden_Sub_Categories, sethidden_Sub_Categories] = useState<
-    sub_category[]
+  const [my_Sub_Categories, setmy_Sub_Categories] = useState<
+    profileSubCategory[]
   >([]);
   const [reviews, setreviews] = useState<Review[]>([]);
   const [certificates, setcertificates] = useState<Certificate[]>([]);
+  const [UserLoc, setUserLoc] = useState<UserLoc>({
+    TravelRange: 0,
+    latitude: 0,
+    longitude: 0,
+  });
 
   const state: ProfileState = {
     show,
@@ -61,12 +77,14 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
     setall_subcategories,
     hidden_Categories,
     sethidden_Categories,
-    hidden_Sub_Categories,
-    sethidden_Sub_Categories,
+    my_Sub_Categories,
+    setmy_Sub_Categories,
     reviews,
     setreviews,
     certificates,
     setcertificates,
+    UserLoc,
+    setUserLoc,
   };
 
   return (

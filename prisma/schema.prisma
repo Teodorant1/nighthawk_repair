@@ -19,8 +19,9 @@ model profileSubCategory {
 
 model Review {
   id           String   @id @default(cuid())
-  user_ID      String
-  // Job_Id                 String
+  ReviewerID   String
+  WorkerID     String  
+  Job_Id       String   @unique
   reviewText   String
   rating       Int
   date_created DateTime @default(now())

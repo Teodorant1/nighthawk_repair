@@ -1,3 +1,4 @@
+import { ClickedPosition } from "@/projecttypes";
 import React, {
   createContext,
   useContext,
@@ -24,6 +25,8 @@ interface AppState {
   setextradetailsText: Dispatch<SetStateAction<string>>;
   pictures: string[];
   setpictures: Dispatch<SetStateAction<string[]>>;
+  clickPosition: ClickedPosition;
+  setclickPosition: Dispatch<SetStateAction<ClickedPosition>>;
 }
 
 const AppContext = createContext<AppState | undefined>(undefined);
@@ -49,6 +52,10 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     "extra details goes here"
   );
   const [pictures, setpictures] = useState<string[]>([]);
+  const [clickPosition, setclickPosition] = useState<ClickedPosition>({
+    lat: 0,
+    lng: 0,
+  });
 
   const state: AppState = {
     title1,
@@ -67,6 +74,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     setextradetailsText,
     pictures,
     setpictures,
+    clickPosition,
+    setclickPosition,
   };
 
   return <AppContext.Provider value={state}>{children}</AppContext.Provider>;

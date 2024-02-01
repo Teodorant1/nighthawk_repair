@@ -2,6 +2,7 @@ import { JobPicture, answer } from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime/library";
 
 export type parcel = {
+  id?: string;
   escalationlevel?: number;
   category?: string;
   subcategory?: string;
@@ -85,4 +86,14 @@ export function paloki(input: string) {
 export interface ClickedPosition {
   lat: number;
   lng: number;
+}
+
+export interface UserLoc {
+  TravelRange: number;
+  latitude: number;
+  longitude: number;
+}
+
+export interface Props1 {
+  params: { id: string };
 }

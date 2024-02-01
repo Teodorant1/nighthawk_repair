@@ -58,8 +58,16 @@ const NavBar = () => {
     );
   }
   function AccountDropdown() {
+    // const profileURL = "/Both/ProfilePage/" + session?.user.sub;
+
     return (
       <div className='ml-3 outline text-center font-bold py-2 px-4 my-5 center'>
+        <Link
+          className='flex p-1 font-bold'
+          href={"/Both/ProfilePage/" + session?.user.sub}
+        >
+          My Profile
+        </Link>
         <Link
           className='flex p-1 font-bold'
           href='/MyJobs'

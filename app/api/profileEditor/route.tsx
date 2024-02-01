@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/client";
-import axios from "axios";
 import { parcel } from "@/projecttypes";
 import { category, sub_category } from "@prisma/client";
 import { authOptions } from "../auth/authOptions";
@@ -11,90 +10,173 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   const parcel1: parcel = body;
 
-  if (session) {
-    if (parcel1.method === "getLocation") {
-      const stuffToEdit = await prisma.user.findFirst({
-        where: { id: session.user.sub },
+  if (parcel1.method === "getLocation") {
+    const stuffToEdit = await prisma.user.findFirst({
+      where: { id: parcel1.userID },
 
-        select: {
-          coins: true,
-          TravelRange: true,
-          latitude: true,
-          longitude: true,
-        },
-      });
+      select: {
+        TravelRange: true,
+        latitude: true,
+        longitude: true,
+      },
+    });
 
-      return NextResponse.json(stuffToEdit);
-    }
-    if (parcel1.method === "getLocation") {
-      const stuffToEdit = await prisma.user.findFirst({
-        where: { id: session.user.sub },
+    return NextResponse.json(stuffToEdit);
+  }
 
-        select: {
-          coins: true,
-          TravelRange: true,
-          latitude: true,
-          longitude: true,
-        },
-      });
+  if (parcel1.method === "setLocation" && session.user.sub === parcel1.userID) {
+    await prisma.user.update({
+      where: { id: parcel1.userID },
+      data: {
+        latitude: parcel1.lat,
+        longitude: parcel1.long,
+      },
+    });
 
-      return NextResponse.json(stuffToEdit);
-    }
-    if (parcel1.method === "getLocation") {
-      const stuffToEdit = await prisma.user.findFirst({
-        where: { id: session.user.sub },
+    const stuffToEdit = await prisma.user.findFirst({
+      where: { id: parcel1.userID },
 
-        select: {
-          coins: true,
-          TravelRange: true,
-          latitude: true,
-          longitude: true,
-        },
-      });
+      select: {
+        TravelRange: true,
+        latitude: true,
+        longitude: true,
+      },
+    });
 
-      return NextResponse.json(stuffToEdit);
-    }
-    if (parcel1.method === "getLocation") {
-      const stuffToEdit = await prisma.user.findFirst({
-        where: { id: session.user.sub },
+    return NextResponse.json(stuffToEdit);
+  }
 
-        select: {
-          coins: true,
-          TravelRange: true,
-          latitude: true,
-          longitude: true,
-        },
-      });
+  if (
+    parcel1.method === "setTravelRange" &&
+    session.user.sub === parcel1.userID
+  ) {
+    await prisma.user.update({
+      where: { id: parcel1.userID },
+      data: {
+        TravelRange: parcel1.radius,
+      },
+    });
 
-      return NextResponse.json(stuffToEdit);
-    }
-    if (parcel1.method === "getLocation") {
-      const stuffToEdit = await prisma.user.findFirst({
-        where: { id: session.user.sub },
+    const stuffToEdit = await prisma.user.findFirst({
+      where: { id: parcel1.userID },
 
-        select: {
-          coins: true,
-          TravelRange: true,
-          latitude: true,
-          longitude: true,
-        },
-      });
+      select: {
+        TravelRange: true,
+        latitude: true,
+        longitude: true,
+      },
+    });
 
-      return NextResponse.json(stuffToEdit);
-    }
-    if (parcel1.method === "getLocation") {
-      const stuffToEdit = await prisma.user.findFirst({
-        where: { id: session.user.sub },
+    return NextResponse.json(stuffToEdit);
+  }
 
-        select: {
-          coins: true,
-          TravelRange: true,
-          latitude: true,
-          longitude: true,
-        },
-      });
+  if (parcel1.method === "getCategories") {
+    const categories: category[] = await prisma.category.findMany();
+    return NextResponse.json(categories);
+  }
 
-      return NextResponse.json(stuffToEdit);
-    }
+  if (
+    parcel1.method === "AddProfileSubcat" &&
+    session.user.sub === parcel1.userID
+  ) {
+    await prisma.profileSubCategory.create({
+      data: {
+        user_ID: parcel1.userID!,
+        category: parcel1.category!,
+        subcategory: parcel1.subcategory!,
+      },
+    });
+
+    const my_subcategories = await prisma.profileSubCategory.findMany({
+      where: {
+        user_ID: parcel1.userID,
+      },
+      orderBy: [{ category: "desc" }],
+    });
+
+    return NextResponse.json(my_subcategories);
+  }
+  if (
+    parcel1.method === "DeleteProfileSubcat" &&
+    session.user.sub === parcel1.userID
+  ) {
+    await prisma.profileSubCategory.delete({
+      where: {
+        id: parcel1.id,
+        user_ID: parcel1.userID!,
+        category: parcel1.category!,
+        subcategory: parcel1.subcategory!,
+      },
+    });
+
+    const my_subcategories = await prisma.profileSubCategory.findMany({
+      where: {
+        user_ID: parcel1.userID,
+      },
+      orderBy: [{ category: "desc" }],
+    });
+
+    return NextResponse.json(my_subcategories);
+  }
+
+  if (parcel1.method === "getSubcategories") {
+    const subcategories = await prisma.sub_category.findMany({
+      // where: {
+      //   categoryID: parcel1.category,
+      // },
+      orderBy: [{ categoryID: "desc" }],
+      select: { id: true, name: true, categoryID: true, questions: false },
+    });
+
+    return NextResponse.json(subcategories);
+  }
+  if (parcel1.method === "getMYSubcategories") {
+    const my_subcategories = await prisma.profileSubCategory.findMany({
+      where: {
+        user_ID: parcel1.userID,
+      },
+      orderBy: [{ category: "desc" }],
+    });
+
+    return NextResponse.json(my_subcategories);
+  }
+  if (parcel1.method === "getreviews") {
+    const stuffToEdit = await prisma.user.findFirst({
+      where: { id: parcel1.userID },
+
+      select: {
+        TravelRange: true,
+        latitude: true,
+        longitude: true,
+      },
+    });
+
+    return NextResponse.json(stuffToEdit);
+  }
+  if (parcel1.method === "getcertificates") {
+    const stuffToEdit = await prisma.user.findFirst({
+      where: { id: parcel1.userID },
+
+      select: {
+        TravelRange: true,
+        latitude: true,
+        longitude: true,
+      },
+    });
+
+    return NextResponse.json(stuffToEdit);
+  }
+  if (parcel1.method === "getworkgallery") {
+    const stuffToEdit = await prisma.user.findFirst({
+      where: { id: parcel1.userID },
+
+      select: {
+        TravelRange: true,
+        latitude: true,
+        longitude: true,
+      },
+    });
+
+    return NextResponse.json(stuffToEdit);
   }
 }

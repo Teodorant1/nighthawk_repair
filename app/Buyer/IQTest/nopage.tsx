@@ -7,7 +7,7 @@ import { question, answer, category, sub_category } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { CldImage, CldUploadWidget } from "next-cloudinary";
 import { useAppState } from "./iqtContext";
-import { parcel } from "@/projecttypes";
+import { ClickedPosition, parcel } from "@/projecttypes";
 
 const QIZZTAKER = () => {
   // const [userLocationText, setUserLocationText] = useState<String>(
@@ -31,22 +31,13 @@ const QIZZTAKER = () => {
     setextradetailsText,
     pictures,
     setpictures,
+    clickPosition,
+    setclickPosition,
   } = useAppState();
   const mapContainerStyle = {
     width: "100%",
     height: "700px",
   };
-  interface ClickedPosition {
-    lat: number;
-    lng: number;
-  }
-  const center = {
-    lat: 0,
-    lng: 0,
-  };
-
-  const [clickedPosition, setClickedPosition] =
-    useState<ClickedPosition | null>({ lat: 0, lng: 0 });
 
   const mapRef = useRef<GoogleMap | null>(null);
 
@@ -55,7 +46,7 @@ const QIZZTAKER = () => {
       lat: event.latLng!.lat(),
       lng: event.latLng!.lng(),
     };
-    setClickedPosition(clickedPosition);
+    setclickPosition(clickedPosition);
   };
   const [timingPRESETS, settimingPRESETS] = useState<String[]>([
     "URGENTLY",
@@ -120,7 +111,7 @@ const QIZZTAKER = () => {
   //     setsub_category_Array(resp.data);
   //   });
   // }, [category]);
-  async function GetData(escalationlevel: number, labelToChange?: String) {
+  async function GetData(escalationlevel: number, labelToChange?: string) {
     switch (escalationlevel) {
       case 1:
         axios.post("/api/qizztaker", parcel1).then((resp) => {
@@ -180,8 +171,8 @@ const QIZZTAKER = () => {
             extrainfo: extrainfo,
             method: "createjobpost",
             email: session?.user.email,
-            lat: clickedPosition?.lat,
-            long: clickedPosition?.lng,
+            lat: clickPosition?.lat,
+            long: clickPosition?.lng,
 
             title: title1,
             timing: timing,
@@ -203,8 +194,8 @@ const QIZZTAKER = () => {
             answeredquestions: AnsweredQuestionsArray1,
             method: "createjobpost",
             email: session?.user.email,
-            lat: clickedPosition?.lat,
-            long: clickedPosition?.lng,
+            lat: clickPosition?.lat,
+            long: clickPosition?.lng,
 
             title: title1,
             timing: timing,
@@ -249,8 +240,8 @@ const QIZZTAKER = () => {
             password: password,
             phonenum: phoneNum,
             name: name,
-            lat: clickedPosition?.lat,
-            long: clickedPosition?.lng,
+            lat: clickPosition?.lat,
+            long: clickPosition?.lng,
 
             title: title1,
             timing: timing,
@@ -272,8 +263,8 @@ const QIZZTAKER = () => {
             answeredquestions: AnsweredQuestionsArray1,
             method: labelToChange,
             email: email,
-            lat: clickedPosition?.lat,
-            long: clickedPosition?.lng,
+            lat: clickPosition?.lat,
+            long: clickPosition?.lng,
 
             title: title1,
             timing: timing,
@@ -734,24 +725,24 @@ const QIZZTAKER = () => {
       >
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
-          center={clickedPosition!}
+          center={clickPosition!}
           zoom={2}
           onClick={handleMapClick}
           onLoad={(map: any) => {
             mapRef.current = map;
           }}
         >
-          {clickedPosition && (
+          {clickPosition && (
             <Marker
-              position={{ lat: clickedPosition.lat, lng: clickedPosition.lng }}
+              position={{ lat: clickPosition.lat, lng: clickPosition.lng }}
             />
           )}
         </GoogleMap>
-        {clickedPosition && (
+        {clickPosition && (
           <div>
             <h3>Clicked Coordinates:</h3>
-            <p>Latitude: {clickedPosition.lat.toFixed(6)}</p>
-            <p>Longitude: {clickedPosition.lng.toFixed(6)}</p>
+            <p>Latitude: {clickPosition.lat.toFixed(6)}</p>
+            <p>Longitude: {clickPosition.lng.toFixed(6)}</p>
           </div>
         )}
       </LoadScript>
@@ -766,14 +757,6 @@ const QIZZTAKER = () => {
 
   function ExtraDetailsBox() {
     const [title2, settitle2] = useState<String>("Title goes here");
-    //  const [timing, settiming] = useState<String>("0");
-    //  const [hiringstage, sethiringstage] = useState<String>("0");
-    //  const [first_to_buy, setfirst_to_buy] = useState<boolean>(false);
-    //  const [minbudget, setminbudget] = useState<number>(0);
-    //  const [maxbudget, setmaxbudget] = useState<number>(0);
-    //  const [extradetailsText, setextradetailsText] = useState<String>(
-    //    "extra details goes here"
-    //  );
 
     function uploadState() {
       setstage(3.5);
@@ -801,18 +784,6 @@ const QIZZTAKER = () => {
             }}
           />{" "}
         </div>{" "}
-        {/* <button
-          className='ml-3 center bg-pink-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
-          onClick={() => {
-            const thetitle = (
-              document.getElementById("title2") as HTMLInputElement
-            )?.value;
-            settitle1(thetitle);
-          }}
-        >
-          {" "}
-          Save title{" "}
-        </button> */}
         {first_to_buy === true && (
           <button
             onClick={() => {
