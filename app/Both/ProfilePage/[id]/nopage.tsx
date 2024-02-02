@@ -2,10 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 import { useProfileState } from "./ProfileContext";
-import { Props1, parcel } from "@/projecttypes";
+import { Props1, parcel, reviewCounter } from "@/projecttypes";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import { ClickedPosition } from "@/projecttypes";
-import { profileSubCategory, sub_category } from "@prisma/client";
+import { Review, sub_category } from "@prisma/client";
+import { number } from "zod";
 
 const SellerProfile = ({ params: { id } }: Props1) => {
   const context = useProfileState();
@@ -49,6 +50,60 @@ const SellerProfile = ({ params: { id } }: Props1) => {
     });
   }, []);
 
+  async function GetReviewCounter(reviews: Review[]): Promise<reviewCounter> {
+    // Calculate the sum of all ratings
+    const totalScore = reviews.reduce((sum, review) => sum + review.rating, 0);
+    // Calculate the average grade
+    const averageGrade = totalScore / reviews.length;
+
+    // Initialize an object to store the count for each score
+    const scoreCounts: { [key: string]: number } = {};
+
+    // Iterate through the reviews and count the occurrences of each score
+    reviews.forEach((review) => {
+      const { rating } = review;
+
+      // If the score is not in the count object, initialize it with 1, otherwise increment the count
+      scoreCounts[rating] = (scoreCounts[rating] || 0) + 1;
+    });
+
+    scoreCounts[6] = averageGrade;
+
+    // Print the counts for each score
+    console.log(averageGrade);
+    console.log(scoreCounts);
+
+    let RevCount: reviewCounter = {
+      ones: scoreCounts["1"],
+      twos: scoreCounts["2"],
+      threes: scoreCounts["3"],
+      fours: scoreCounts["4"],
+      fives: scoreCounts["5"],
+      average: scoreCounts["6"],
+    };
+
+    return RevCount;
+  }
+
+  useEffect(() => {
+    let my_Sub_CategoriesParcel: parcel = {
+      method: "getreviews",
+      userID: id,
+    };
+    axios
+      .post("/api/profileEditor", my_Sub_CategoriesParcel)
+      .then(async (resp) => {
+        context.setreviews(resp.data);
+        if (resp.data.length > 0) {
+          const revcount = await GetReviewCounter(resp.data);
+          console.log("revcount", revcount);
+          context.setreviewCounter(revcount);
+        }
+      })
+      .then(() => {
+        console.log(context.reviewCounter);
+      });
+  }, []);
   function GreaterCategoryBox() {
     function check_IF_PresentInMyInterests(subcategory: sub_category) {
       if (
@@ -150,7 +205,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                 <h1>ADD NEW SUBCATEGORIES HERE</h1>
 
                 {context.all_subcategories!.map((sub_category) => (
-                  <>
+                  <div key={sub_category.id}>
                     {" "}
                     {check_IF_PresentInMyInterests(sub_category) && (
                       <div
@@ -171,7 +226,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                         </button>
                       </div>
                     )}
-                  </>
+                  </div>
                 ))}
               </div>
             )}
@@ -241,6 +296,14 @@ const SellerProfile = ({ params: { id } }: Props1) => {
 
   return (
     <div>
+      <button
+        onClick={() => {
+          console.log(context.reviewCounter);
+        }}
+      >
+        {" "}
+        log the rc{" "}
+      </button>
       <div>
         {" "}
         <GreaterCategoryBox />
@@ -265,8 +328,33 @@ const SellerProfile = ({ params: { id } }: Props1) => {
               <div>
                 {" "}
                 <div> Current Radius : {context.UserLoc.TravelRange} KM</div>
+                <input
+                  type='number'
+                  className='outline text-center font-bold py-2 px-4 rounded-full my-5'
+                  defaultValue={context.UserLoc.TravelRange}
+                  id='Radius'
+                  placeholder='Radius Goes Here'
+                />{" "}
                 <button
-                  onClick={() => {}}
+                  onClick={() => {
+                    const Radius = (
+                      document.getElementById("Radius") as HTMLInputElement
+                    ).value;
+
+                    let update_location_parcel: parcel = {
+                      method: "setTravelRange",
+                      userID: id,
+                      radius: Number(Radius),
+                    };
+                    axios
+                      .post("/api/profileEditor", update_location_parcel)
+                      .then(() => {
+                        context.setUserLoc({
+                          ...context.UserLoc,
+                          TravelRange: Number(Radius),
+                        });
+                      });
+                  }}
                   className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'
                 >
                   {" "}

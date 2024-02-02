@@ -14,8 +14,7 @@ import React, {
   Dispatch,
   SetStateAction,
 } from "react";
-import { UserLoc } from "@/projecttypes";
-import { Decimal } from "@prisma/client/runtime/library";
+import { UserLoc, reviewCounter } from "@/projecttypes";
 
 interface ProfileState {
   show: string;
@@ -34,6 +33,8 @@ interface ProfileState {
   setcertificates: Dispatch<SetStateAction<Certificate[]>>;
   UserLoc: UserLoc;
   setUserLoc: Dispatch<SetStateAction<UserLoc>>;
+  reviewCounter: reviewCounter;
+  setreviewCounter: Dispatch<SetStateAction<reviewCounter>>;
 }
 
 const ProfileContext = createContext<ProfileState | undefined>(undefined);
@@ -67,6 +68,14 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
     latitude: 0,
     longitude: 0,
   });
+  const [reviewCounter, setreviewCounter] = useState<reviewCounter>({
+    ones: 0,
+    twos: 0,
+    threes: 0,
+    fours: 0,
+    fives: 0,
+    average: 0,
+  });
 
   const state: ProfileState = {
     show,
@@ -85,6 +94,8 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
     setcertificates,
     UserLoc,
     setUserLoc,
+    reviewCounter,
+    setreviewCounter,
   };
 
   return (

@@ -79,10 +79,6 @@ export interface distanceParcel {
   JobsArray: submitted_job_SANS_Email[];
 }
 
-export function paloki(input: string) {
-  console.log(input);
-}
-
 export interface ClickedPosition {
   lat: number;
   lng: number;
@@ -97,3 +93,11 @@ export interface UserLoc {
 export interface Props1 {
   params: { id: string };
 }
+export type reviewCounter = {
+  ones?: number;
+  twos?: number;
+  threes?: number;
+  fours?: number;
+  fives?: number;
+  average?: number;
+};

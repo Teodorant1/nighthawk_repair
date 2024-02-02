@@ -56,18 +56,6 @@ export async function POST(req: NextRequest) {
         TravelRange: parcel1.radius,
       },
     });
-
-    const stuffToEdit = await prisma.user.findFirst({
-      where: { id: parcel1.userID },
-
-      select: {
-        TravelRange: true,
-        latitude: true,
-        longitude: true,
-      },
-    });
-
-    return NextResponse.json(stuffToEdit);
   }
 
   if (parcel1.method === "getCategories") {
@@ -141,27 +129,18 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(my_subcategories);
   }
   if (parcel1.method === "getreviews") {
-    const stuffToEdit = await prisma.user.findFirst({
-      where: { id: parcel1.userID },
-
-      select: {
-        TravelRange: true,
-        latitude: true,
-        longitude: true,
-      },
+    const reviews = await prisma.review.findMany({
+      where: { WorkerID: parcel1.userID },
     });
 
-    return NextResponse.json(stuffToEdit);
+    console.log("getreviews");
+    console.log(reviews);
+
+    return NextResponse.json(reviews);
   }
   if (parcel1.method === "getcertificates") {
     const stuffToEdit = await prisma.user.findFirst({
       where: { id: parcel1.userID },
-
-      select: {
-        TravelRange: true,
-        latitude: true,
-        longitude: true,
-      },
     });
 
     return NextResponse.json(stuffToEdit);
