@@ -332,19 +332,52 @@ const SellerProfile = ({ params: { id } }: Props1) => {
 
     return (
       <div>
+        {" "}
         {images.length > 0 && (
-          <CldImage
-            src={images[currentImageIndex].cloudinaryID}
-            alt={`Image ${currentImageIndex + 1}`}
-            width={600}
-            height={600}
-          />
+          <>
+            {" "}
+            <div className='flex items-center justify-center'>
+              <button
+                className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                onClick={handlePrevImage}
+              >
+                Previous
+              </button>
+              <button
+                className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                onClick={handleNextImage}
+              >
+                Next
+              </button>{" "}
+              {session?.user.sub === id && (
+                <button
+                  onClick={() => {
+                    let deletePicParcel: parcel = {
+                      method: "removeworkgalleryPic",
+                      id: images[currentImageIndex].id,
+                      userID: session.user.sub,
+                    };
+                    setCurrentImageIndex(1);
+                    axios
+                      .post("/api/profileEditor", deletePicParcel)
+                      .then((resp) => {
+                        context.setworkGalleryPictures(resp.data);
+                      });
+                  }}
+                  className='ml-3 center  bg-red-600  text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                >
+                  DELETE THIS PICTURE
+                </button>
+              )}
+            </div>{" "}
+            <CldImage
+              src={images[currentImageIndex].cloudinaryID}
+              alt={`Image ${currentImageIndex + 1}`}
+              width={600}
+              height={600}
+            />
+          </>
         )}
-
-        <div>
-          <button onClick={handlePrevImage}>Previous</button>
-          <button onClick={handleNextImage}>Next</button>
-        </div>
       </div>
     );
   };
@@ -505,13 +538,48 @@ const SellerProfile = ({ params: { id } }: Props1) => {
   return (
     <div>
       {" "}
-      {context.UserLoc.isRepairman === true && (
+      {context.UserLoc.isRepairman !== false && (
         <div>
           {" "}
           <ReviewBox />
           <GreaterCategoryBox />
           <CertificateBox />{" "}
-          <ImageCarousel images={context.workGalleryPictures} />
+          <div className='flex items-center justify-center h-screen'>
+            {" "}
+            <ImageCarousel images={context.workGalleryPictures} />
+          </div>{" "}
+          {session?.user.sub === id && (
+            <CldUploadWidget
+              uploadPreset='bqhf0bxn'
+              onUpload={(result, widget) => {
+                if (result.event !== "success") {
+                  return;
+                }
+                const info = result.info as CloudinaryResult;
+
+                let image_upload_parcel: parcel = {
+                  method: "addworkgallery",
+                  id: info.public_id.toString(),
+                  userID: session?.user.sub,
+                };
+
+                axios
+                  .post("/api/profileEditor", image_upload_parcel)
+                  .then((resp) => {
+                    context.setworkGalleryPictures(resp.data);
+                  });
+              }}
+            >
+              {({ open }) => (
+                <button
+                  onClick={() => open()}
+                  className='flex mx-auto w-1/2  justify-center bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full'
+                >
+                  Upload
+                </button>
+              )}
+            </CldUploadWidget>
+          )}
           {session?.user.sub === id && (
             <>
               {" "}
@@ -571,42 +639,6 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                   </div>
                 </div>
               )}{" "}
-              <>
-                {" "}
-                <h1>IMAGES GALLERY</h1>{" "}
-              </>
-              {session.user.sub === id && (
-                <CldUploadWidget
-                  uploadPreset='bqhf0bxn'
-                  onUpload={(result, widget) => {
-                    if (result.event !== "success") {
-                      return;
-                    }
-                    const info = result.info as CloudinaryResult;
-
-                    let image_upload_parcel: parcel = {
-                      method: "addworkgallery",
-                      id: info.public_id.toString(),
-                      userID: session.user.sub,
-                    };
-
-                    axios
-                      .post("/api/profileEditor", image_upload_parcel)
-                      .then((resp) => {
-                        context.setworkGalleryPictures(resp.data);
-                      });
-                  }}
-                >
-                  {({ open }) => (
-                    <button
-                      onClick={() => open()}
-                      className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'
-                    >
-                      Upload
-                    </button>
-                  )}
-                </CldUploadWidget>
-              )}
             </>
           )}
         </div>

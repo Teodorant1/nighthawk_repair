@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 
 import NavBar from "./NavBar";
 import AuthProvider from "./auth/Provider";
+import Provider from "./_trpc/Provider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -21,8 +22,11 @@ export default function RootLayout({
     >
       <body>
         <AuthProvider>
-          <NavBar />
-          <main className='p-5 '>{children}</main>
+          <Provider>
+            {" "}
+            <NavBar />
+            <main className='p-5 '>{children}</main>
+          </Provider>
         </AuthProvider>
       </body>
     </html>
