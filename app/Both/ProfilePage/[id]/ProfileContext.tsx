@@ -5,6 +5,7 @@ import {
   profileSubCategory,
   sub_category,
   user,
+  workGalleryPicture,
 } from "@prisma/client";
 import React, {
   createContext,
@@ -35,6 +36,8 @@ interface ProfileState {
   setUserLoc: Dispatch<SetStateAction<UserLoc>>;
   reviewCounter: reviewCounter;
   setreviewCounter: Dispatch<SetStateAction<reviewCounter>>;
+  workGalleryPictures: workGalleryPicture[];
+  setworkGalleryPictures: Dispatch<SetStateAction<workGalleryPicture[]>>;
 }
 
 const ProfileContext = createContext<ProfileState | undefined>(undefined);
@@ -67,6 +70,7 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
     TravelRange: 0,
     latitude: 0,
     longitude: 0,
+    isRepairman: false,
   });
   const [reviewCounter, setreviewCounter] = useState<reviewCounter>({
     ones: 0,
@@ -76,6 +80,9 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
     fives: 0,
     average: 0,
   });
+  const [workGalleryPictures, setworkGalleryPictures] = useState<
+    workGalleryPicture[]
+  >([]);
 
   const state: ProfileState = {
     show,
@@ -96,6 +103,8 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({
     setUserLoc,
     reviewCounter,
     setreviewCounter,
+    workGalleryPictures,
+    setworkGalleryPictures,
   };
 
   return (

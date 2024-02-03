@@ -11,17 +11,19 @@ export type parcel = {
   timecost?: number;
   moneycost?: number;
 
-  string1?: string;
-  number1?: number;
-  string2?: string;
-  number2?: number;
-  string3?: string;
-  number3?: number;
-  string4?: string;
-  number4?: number;
+  // string1?: string;
+  // number1?: number;
+  // string2?: string;
+  // number2?: number;
+  // string3?: string;
+  // number3?: number;
+  // string4?: string;
+  // number4?: number;
 
   leadID?: string;
   userID?: string;
+  link?: string;
+  certificate?: string;
 
   method?: string;
   answeredquestions?: answer[];
@@ -45,6 +47,10 @@ export type parcel = {
   minbudget?: number;
   maxbudget?: number;
 };
+
+export interface CloudinaryResult {
+  public_id: String;
+}
 
 export interface submitted_job_SANS_Email {
   id: string;
@@ -88,6 +94,7 @@ export interface UserLoc {
   TravelRange: number;
   latitude: number;
   longitude: number;
+  isRepairman: boolean;
 }
 
 export interface Props1 {

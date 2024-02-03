@@ -7,7 +7,7 @@ import { question, answer, category, sub_category } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { CldImage, CldUploadWidget } from "next-cloudinary";
 import { useAppState } from "./iqtContext";
-import { ClickedPosition, parcel } from "@/projecttypes";
+import { ClickedPosition, CloudinaryResult, parcel } from "@/projecttypes";
 
 const QIZZTAKER = () => {
   // const [userLocationText, setUserLocationText] = useState<String>(
@@ -655,10 +655,6 @@ const QIZZTAKER = () => {
     //     setpictures(newpictures);
     //   }
     // }, [pictures2]);
-
-    interface CloudinaryResult {
-      public_id: String;
-    }
 
     return (
       <div>

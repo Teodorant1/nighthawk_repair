@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/client";
 import { parcel } from "@/projecttypes";
-import { category, sub_category } from "@prisma/client";
+import { category } from "@prisma/client";
 import { authOptions } from "../auth/authOptions";
 import { Session, getServerSession } from "next-auth";
 
@@ -18,6 +18,7 @@ export async function POST(req: NextRequest) {
         TravelRange: true,
         latitude: true,
         longitude: true,
+        isRepairman: true,
       },
     });
 
@@ -133,29 +134,77 @@ export async function POST(req: NextRequest) {
       where: { WorkerID: parcel1.userID },
     });
 
-    console.log("getreviews");
-    console.log(reviews);
-
     return NextResponse.json(reviews);
   }
   if (parcel1.method === "getcertificates") {
-    const stuffToEdit = await prisma.user.findFirst({
-      where: { id: parcel1.userID },
+    const certificates = await prisma.certificate.findMany({
+      where: { user_ID: parcel1.userID },
     });
 
-    return NextResponse.json(stuffToEdit);
+    return NextResponse.json(certificates);
   }
-  if (parcel1.method === "getworkgallery") {
-    const stuffToEdit = await prisma.user.findFirst({
-      where: { id: parcel1.userID },
 
-      select: {
-        TravelRange: true,
-        latitude: true,
-        longitude: true,
+  if (
+    parcel1.method === "Deletecertificate" &&
+    session.user.sub === parcel1.userID
+  ) {
+    await prisma.certificate.delete({
+      where: { user_ID: parcel1.userID, id: parcel1.id },
+    });
+    const certificates = await prisma.certificate.findMany({
+      where: { user_ID: parcel1.userID },
+    });
+    return NextResponse.json(certificates);
+  }
+  if (
+    parcel1.method === "addCertificate" &&
+    session.user.sub === parcel1.userID
+  ) {
+    await prisma.certificate.create({
+      data: {
+        user_ID: parcel1.userID!,
+        name: parcel1.certificate!,
+        Link: parcel1.link!,
       },
     });
 
-    return NextResponse.json(stuffToEdit);
+    const certificates = await prisma.certificate.findMany({
+      where: { user_ID: parcel1.userID },
+    });
+
+    return NextResponse.json(certificates);
+  }
+  if (parcel1.method === "getworkgallery") {
+    const workgallery = await prisma.workGalleryPicture.findMany({
+      where: { user_ID: parcel1.userID },
+    });
+
+    return NextResponse.json(workgallery);
+  }
+  if (
+    parcel1.method === "addworkgallery" &&
+    session.user.sub === parcel1.userID
+  ) {
+    await prisma.workGalleryPicture.create({
+      data: { user_ID: parcel1.userID, cloudinaryID: parcel1.id! },
+    });
+    const workgallery = await prisma.workGalleryPicture.findMany({
+      where: { user_ID: parcel1.userID },
+    });
+    return NextResponse.json(workgallery);
+  }
+  if (
+    parcel1.method === "removeworkgalleryPic" &&
+    session.user.sub === parcel1.userID
+  ) {
+    await prisma.workGalleryPicture.delete({
+      where: { id: parcel1.id, user_ID: parcel1.userID },
+    });
+
+    const workgallery = await prisma.workGalleryPicture.findMany({
+      where: { user_ID: parcel1.userID, id: parcel1.id },
+    });
+
+    return NextResponse.json(workgallery);
   }
 }
