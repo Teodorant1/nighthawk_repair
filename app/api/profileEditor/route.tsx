@@ -202,7 +202,7 @@ export async function POST(req: NextRequest) {
     });
 
     const workgallery = await prisma.workGalleryPicture.findMany({
-      where: { user_ID: parcel1.userID, id: parcel1.id },
+      where: { user_ID: parcel1.userID },
     });
 
     return NextResponse.json(workgallery);

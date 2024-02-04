@@ -13,11 +13,37 @@ import { ClickedPosition } from "@/projecttypes";
 import { Review, sub_category, workGalleryPicture } from "@prisma/client";
 import { CldImage, CldUploadWidget } from "next-cloudinary";
 
+import { trpc } from "@/app/_trpc/client";
+
 const SellerProfile = ({ params: { id } }: Props1) => {
   const context = useProfileState();
   const { status, data: session } = useSession();
   const [showmap, setshowmap] = useState<boolean>(false);
   const [showSCadder, setshowSCadder] = useState<boolean>(true);
+  const [result1, setResult1] = React.useState<user | null>(null);
+
+  interface user {
+    name: string;
+    role: string;
+  }
+
+  const mutation = trpc.procedureeeeeeeeeeee.useMutation({
+    onSuccess: (c) => {
+      // let c1: user = c;
+      setResult1(c.user);
+    },
+  });
+  const handleLogin = async () => {
+    try {
+      mutation.mutate({
+        name: "John Doe",
+      });
+
+      // Access the data returned by the mutation
+    } catch (error) {
+      console.error("Mutation failed:", error);
+    }
+  };
 
   useEffect(() => {
     let getcertificatesParcel: parcel = {
@@ -431,7 +457,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                   className='outline font-bold rounded-sm mx-auto w-5/6'
                   key={review.id}
                 >
-                  <div className='flex mx-auto w-1/2'>
+                  <div className=' mx-auto  w-[100%]'>
                     {" "}
                     <div className='px-10'>JOB ID: {review.Job_Id}</div>{" "}
                     <div className='px-10'>
@@ -537,7 +563,14 @@ const SellerProfile = ({ params: { id } }: Props1) => {
 
   return (
     <div>
-      {" "}
+      {/* <button
+        onClick={async () => {
+          await handleLogin();
+        }}
+        className='flex mx-auto w-1/2  justify-center bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full'
+      >
+        DO THE TRPC FUNNY
+      </button> */}
       {context.UserLoc.isRepairman !== false && (
         <div>
           {" "}
