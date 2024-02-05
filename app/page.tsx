@@ -1,3 +1,5 @@
+import Qbpage from "./Seller/QuoteBrowser/page";
+
 export default function Home() {
   function MyJobsRedux() {
     return <></>;
@@ -6,5 +8,10 @@ export default function Home() {
     return <></>;
   }
 
-  return <main> Main page </main>;
+  return (
+    <main>
+      {" "}
+      <Qbpage />
+    </main>
+  );
 }

@@ -57,7 +57,7 @@ export interface submitted_job_SANS_Email {
   sub_categoryID: string;
   categoryID: string;
   answeredQuestions: string;
-  isVisible: Boolean;
+  isVisible: boolean;
   // submittterEmail: string;
   date_created: Date;
   extrainfo?: string;
@@ -69,7 +69,7 @@ export interface submitted_job_SANS_Email {
   title?: string;
   timing?: string;
   hiringstage?: string;
-  first_to_buy?: Boolean;
+  first_to_buy?: boolean;
   minBudget: number;
   maxBudget: number;
   status?: string;

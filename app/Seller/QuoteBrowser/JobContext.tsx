@@ -57,6 +57,14 @@ interface JobContextValues {
   setUserLocationText: React.Dispatch<React.SetStateAction<string>>;
   COINS: number;
   setCOINS: React.Dispatch<React.SetStateAction<number>>;
+  leads_to_look_at: string;
+  setleads_to_look_at: React.Dispatch<React.SetStateAction<string>>;
+  myLead_filter_Presets: string[];
+  setmyLead_filter_Presets: React.Dispatch<React.SetStateAction<string[]>>;
+  myLead_filter_Current_Setting: string;
+  setmyLead_filter_Current_Setting: React.Dispatch<
+    React.SetStateAction<string>
+  >;
 }
 
 const JobContext = createContext<JobContextValues | undefined>(undefined);
@@ -70,14 +78,28 @@ export const useJobContext = (): JobContextValues => {
 };
 
 export const JobProvider: React.FC<JobContextProps> = ({ children }) => {
+  const [myLead_filter_Presets, setmyLead_filter_Presets] = useState<string[]>([
+    "ALL",
+    "REQUEST RATING",
+    "MARK AS WON",
+    "COULDN'T QUOTE",
+    "ARCHIVE",
+    "INVOICE",
+    "CANCEL",
+    "LOST",
+    "CONTACTED",
+  ]);
+  const [myLead_filter_Current_Setting, setmyLead_filter_Current_Setting] =
+    useState<string>("ALL");
   const [userLocationText, setUserLocationText] = useState<string>(
     "Testing the alt tab error"
   );
   const [COINS, setCOINS] = useState<number>(0);
+  const [leads_to_look_at, setleads_to_look_at] = useState<string>("newleads");
 
   const [userLocation, setUserLocation] = useState<any>(null);
   const [radius, setRadius] = useState<number>(25);
-  const [stage, setStage] = useState<number>(0);
+  const [stage, setStage] = useState<number>(3);
   const [category, setCategory] = useState<category>({
     id: "0",
     name: "faloki",
@@ -165,6 +187,12 @@ export const JobProvider: React.FC<JobContextProps> = ({ children }) => {
     setUserLocationText,
     COINS,
     setCOINS,
+    leads_to_look_at,
+    setleads_to_look_at,
+    myLead_filter_Presets,
+    setmyLead_filter_Presets,
+    myLead_filter_Current_Setting,
+    setmyLead_filter_Current_Setting,
   };
 
   return (

@@ -3,7 +3,7 @@ import React from "react";
 import { JobProvider } from "./JobContext";
 import IQBrowser from "./nopage";
 
-const qbpage = () => {
+const Qbpage = () => {
   return (
     <JobProvider>
       <IQBrowser />
@@ -11,4 +11,4 @@ const qbpage = () => {
   );
 };
 
-export default qbpage;
+export default Qbpage;

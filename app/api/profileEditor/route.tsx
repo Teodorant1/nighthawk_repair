@@ -51,12 +51,15 @@ export async function POST(req: NextRequest) {
     parcel1.method === "setTravelRange" &&
     session.user.sub === parcel1.userID
   ) {
+    // console.log("parcel1.radius");
+    // console.log(parcel1.radius);
     await prisma.user.update({
       where: { id: parcel1.userID },
       data: {
         TravelRange: parcel1.radius,
       },
     });
+    return NextResponse.json(parcel1);
   }
 
   if (parcel1.method === "getCategories") {

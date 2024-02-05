@@ -2,21 +2,21 @@
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
-import { answer, appliedJob, submitted_job } from "@prisma/client";
+import { answer, submitted_job } from "@prisma/client";
 import { useJobContext } from "./JobContext";
-import { parcel, submitted_job_SANS_Email } from "@/projecttypes";
+import { parcel } from "@/projecttypes";
+
+import { trpc } from "@/app/_trpc/client";
 
 const IQBrowser = () => {
   const { status, data: session } = useSession();
   const context = useJobContext();
 
-  // function IsAlreadyContacted(
-  //   element: submitted_job,
-  //   index: number,
-  //   array: appliedJob[]
-  // ): boolean {
-  //   return element.id === array[index].submittedJob_ID;
-  // }
+  const myjobs = trpc.getAggregatedJobsForUser.useQuery({
+    userID: session?.user.sub!,
+  });
+
+  console.log("myjobs1", myjobs.data);
 
   useEffect(() => {
     axios.post("/api/qizztaker", parcel1).then((resp) => {
@@ -186,11 +186,11 @@ const IQBrowser = () => {
       }
     }
 
-    async function BuyAlead(job: submitted_job_SANS_Email) {
+    async function BuyAlead(jobID: string) {
       let coinparcel: parcel = {
         method: "BuyAlead",
         userID: session?.user.sub,
-        leadID: job.id,
+        leadID: jobID,
       };
 
       axios
@@ -217,9 +217,9 @@ const IQBrowser = () => {
 
     return (
       <div className='ml-3 center outline text-center font-bold py-2 px-4  rounded-md my-5 h-screen overflow-y-auto'>
-        {context.submittedJobArray?.length! > 0 && (
+        {myjobs && myjobs?.data?.length! > 0 && (
           <>
-            {context.submittedJobArray!.map(
+            {myjobs!.data!.map(
               (job) =>
                 isJobVisible(job) && (
                   <div
@@ -230,7 +230,7 @@ const IQBrowser = () => {
                       <button
                         className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
                         onClick={() => {
-                          BuyAlead(job);
+                          BuyAlead(job.id);
                         }}
                       >
                         CLICK HERE TO APPLY
@@ -307,11 +307,11 @@ const IQBrowser = () => {
                   {" "}
                   <div> Question: {Answer.questionID}</div>
                   <div>Answer: {Answer.text_answer}</div>
-                  <div> ESTIMATED COST: {Answer.moneycost}£</div>
+                  {/* <div> ESTIMATED COST: {Answer.moneycost}£</div>
                   <div>
                     ESTIMATED DURATION:
                     {Answer.timecost}DAYS
-                  </div>
+                  </div> */}
                 </div>
               </div>
             ))}
@@ -568,45 +568,94 @@ const IQBrowser = () => {
     );
   };
 
+  function NewLeads() {
+    return (
+      <>
+        <div>
+          {context.stage === 3 && (
+            <div>
+              <button
+                className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                onClick={() => {
+                  if (context.filterBoxEnabled === false) {
+                    context.setFilterBoxEnabled(true);
+                  } else {
+                    context.setFilterBoxEnabled(false);
+                  }
+                }}
+              >
+                FILTERS
+              </button>{" "}
+              <button className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'>
+                AVAILABLE CREDIT: £{context.COINS}
+              </button>
+              <button
+                onClick={() => {
+                  context.setleads_to_look_at("myleads");
+                }}
+                className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+              >
+                NUMBER OF APPLIED JOBS: {context.appliedJobs.length}
+              </button>
+              <div className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'>
+                A LIST OF FRESH JOBS{" "}
+              </div>
+              {context.filterBoxEnabled === true && <FilterBox />}
+            </div>
+          )}
+          {context.stage === 0 && <Geolocatatrix />}
+          {context.stage === 1 && <CategoryBOX />}
+          {context.stage === 2 && <SubcategoryBOX />}
+          {context.stage === 3 && <JOBbox />}
+        </div>
+      </>
+    );
+  }
+
+  function AppliedJobBox(JobID: string) {
+    const [job, setjob] = useState<submitted_job[]>([]);
+    const parcel1: parcel = {
+      escalationlevel: 1,
+    };
+    useEffect(() => {
+      axios.post("/api/qizztaker", parcel1).then((resp) => {
+        console.log(resp.data);
+      });
+    }, []);
+    return <div></div>;
+  }
+
+  function MyLeads() {
+    return (
+      <div>
+        {" "}
+        <button
+          onClick={() => {
+            context.setleads_to_look_at("newleads");
+          }}
+          className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+        >
+          NUMBER OF FRESH JOBS: {myjobs?.data?.length!}
+        </button>{" "}
+        <div className='ml-3 center text-center font-bold py-2 px-4 rounded-full  my-5'>
+          <h1>MY LEADS</h1>
+          {context.appliedJobs.length > 0 && (
+            <>
+              {" "}
+              {context.appliedJobs.map((appliedJob) => (
+                <>{appliedJob.id}</>
+              ))}
+            </>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
-      <div>
-        {/* <input
-          className='mx-[20%] w-[50%] h-[10%] outline text-center font-bold text-xl py-10 px-10  my-5'
-          value={context.userLocationText.toString()}
-          onChange={(e) => context.setUserLocationText(e.target.value)}
-        />{" "} */}
-        {context.stage === 3 && (
-          <div>
-            <button
-              className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
-              onClick={() => {
-                if (context.filterBoxEnabled === false) {
-                  context.setFilterBoxEnabled(true);
-                } else {
-                  context.setFilterBoxEnabled(false);
-                }
-              }}
-            >
-              FILTERS
-            </button>{" "}
-            <button className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'>
-              AVAILABLE CREDIT: £{context.COINS}
-            </button>
-            <button className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'>
-              NUMBER OF APPLIED JOBS: {context.appliedJobs.length}
-            </button>
-            <div className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'>
-              A LIST OF FRESH JOBS{" "}
-            </div>
-            {context.filterBoxEnabled === true && <FilterBox />}
-          </div>
-        )}
-        {context.stage === 0 && <Geolocatatrix />}
-        {context.stage === 1 && <CategoryBOX />}
-        {context.stage === 2 && <SubcategoryBOX />}
-        {context.stage === 3 && <JOBbox />}
-      </div>
+      {context.leads_to_look_at === "newleads" && <NewLeads />}
+      {context.leads_to_look_at === "myleads" && <MyLeads />}
     </>
   );
 };

@@ -20,6 +20,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
   const { status, data: session } = useSession();
   const [showmap, setshowmap] = useState<boolean>(false);
   const [showSCadder, setshowSCadder] = useState<boolean>(true);
+
   const [result1, setResult1] = React.useState<user | null>(null);
 
   interface user {
@@ -654,7 +655,8 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                       };
                       axios
                         .post("/api/profileEditor", update_location_parcel)
-                        .then(() => {
+                        .then((resp) => {
+                          console.log(resp.data);
                           context.setUserLoc({
                             ...context.UserLoc,
                             TravelRange: Number(Radius),
