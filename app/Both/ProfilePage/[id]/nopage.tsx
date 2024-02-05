@@ -39,8 +39,6 @@ const SellerProfile = ({ params: { id } }: Props1) => {
       mutation.mutate({
         name: "John Doe",
       });
-
-      // Access the data returned by the mutation
     } catch (error) {
       console.error("Mutation failed:", error);
     }

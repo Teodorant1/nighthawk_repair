@@ -120,7 +120,7 @@ export async function POST(req: NextRequest) {
         data: {
           submittedJob_ID: parcel1.leadID!,
           submitterEmail: JobThatIsBeingAppliedTo?.submittterEmail!,
-          status: "contacted",
+          status: "CONTACTED",
           userID: parcel1.userID,
         },
       });

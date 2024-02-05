@@ -2,9 +2,9 @@
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
-import { answer, submitted_job } from "@prisma/client";
+import { answer, appliedJob } from "@prisma/client";
 import { useJobContext } from "./JobContext";
-import { parcel } from "@/projecttypes";
+import { parcel, MyComponentProps } from "@/projecttypes";
 
 import { trpc } from "@/app/_trpc/client";
 
@@ -40,7 +40,14 @@ const IQBrowser = () => {
         });
     }
   }, [status]);
-
+  function toggleShow(jobid: string) {
+    if (context.currentJobID !== jobid) {
+      context.setCurrentJobID(jobid.toString());
+    }
+    if (context.currentJobID === jobid) {
+      context.setCurrentJobID("");
+    }
+  }
   async function GetappliedJobs() {
     let appliedJobsParcel: parcel = {
       method: "getappliedjobs",
@@ -177,15 +184,6 @@ const IQBrowser = () => {
   }
 
   function JOBbox() {
-    function toggleShow(jobid: String) {
-      if (context.currentJobID !== jobid) {
-        context.setCurrentJobID(jobid.toString());
-      }
-      if (context.currentJobID === jobid) {
-        context.setCurrentJobID("");
-      }
-    }
-
     async function BuyAlead(jobID: string) {
       let coinparcel: parcel = {
         method: "BuyAlead",
@@ -612,17 +610,136 @@ const IQBrowser = () => {
     );
   }
 
-  function AppliedJobBox(JobID: string) {
-    const [job, setjob] = useState<submitted_job[]>([]);
-    const parcel1: parcel = {
-      escalationlevel: 1,
+  function AppliedJobBox(appliedjob: appliedJob) {
+    const job = trpc.getSingularJob.useQuery({
+      SubmittedJobID: appliedjob.submittedJob_ID,
+      userID: session?.user.sub!,
+    });
+
+    const TagAppliedJob = trpc.tag_Applied_Job.useMutation({
+      onSuccess: () => {
+        let appliedJobsParcel: parcel = {
+          method: "getappliedjobs",
+          userID: session?.user.sub,
+        };
+        axios.post("/api/qizztaker/v2", appliedJobsParcel).then((resp) => {
+          context.setappliedJobs(resp.data);
+        });
+      },
+    });
+    const handleTagJob = async (id: string, status: string) => {
+      try {
+        TagAppliedJob.mutate({
+          id: id,
+          status: status,
+          userID: session?.user.sub!,
+        });
+      } catch (error) {
+        console.error("TagAppliedJob failed:", error);
+      }
     };
-    useEffect(() => {
-      axios.post("/api/qizztaker", parcel1).then((resp) => {
-        console.log(resp.data);
-      });
-    }, []);
-    return <div></div>;
+
+    // const parcel1: parcel = {
+    //   escalationlevel: 1,
+    // };
+    // useEffect(() => {
+    //   axios.post("/api/qizztaker", parcel1).then((resp) => {
+    //     console.log(resp.data);
+    //   });
+    // }, []);
+    return (
+      <div
+        className='ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'
+        key={job?.data?.subjob?.id}
+      >
+        {/* {context.COINS > 20 && (
+      <button
+        className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+
+      >
+        CLICK HERE TO APPLY
+      </button>
+    )}{" "} */}
+        {context.currentJobID !== job?.data?.subjob?.id && (
+          <button
+            className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+            onClick={() => {
+              toggleShow(job?.data?.subjob?.id!);
+            }}
+          >
+            EXPAND LEAD{" "}
+          </button>
+        )}{" "}
+        {context.currentJobID === job?.data?.subjob?.id && (
+          <button
+            className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+            onClick={() => {
+              toggleShow(job?.data?.subjob?.id!);
+            }}
+          >
+            CLOSE LEAD{" "}
+          </button>
+        )}{" "}
+        {context.currentJobID === job?.data?.subjob?.id && (
+          <>
+            {" "}
+            {context.myLead_filter_Presets.map((preset) => (
+              <>
+                {" "}
+                {appliedjob.status === preset && (
+                  <button
+                    onClick={() => {}}
+                    className='ml-3  bg-green-600 text-white center text-center font-bold py-2 px-4 rounded-full  my-5'
+                  >
+                    {" "}
+                    {preset}
+                  </button>
+                )}{" "}
+                {appliedjob.status !== preset && (
+                  <button
+                    onClick={async () => {
+                      await handleTagJob(appliedjob.id, preset);
+                    }}
+                    className='ml-3  bg-red-600 text-white center text-center font-bold py-2 px-4 rounded-full  my-5'
+                  >
+                    {" "}
+                    TAG AS{""} {preset}
+                  </button>
+                )}
+              </>
+            ))}
+          </>
+        )}
+        <div>CLIENT EMAIL:{job?.data?.subjob?.submittterEmail}</div>
+        <div>ID:{job?.data?.subjob?.id}</div>
+        <div>
+          1ST TO BUY: {job?.data?.subjob?.first_to_buy === true && <>true</>}
+          {job?.data?.subjob?.first_to_buy === false && <>false</>}
+        </div>
+        <div>DATE OF CREATION: {String(job?.data?.subjob?.date_created)}</div>
+        <div> Calculated distance: {job?.data?.subjob?.distance} </div>
+        {/* <div>Email:{job?.data?.subjob?.submittterEmail}</div> */}
+        <div>Expected cost: {job?.data?.subjob?.moneycost}</div>
+        <div>Minimal Budget: {job?.data?.subjob?.minBudget}</div>
+        <div>Maximal Budget: {job?.data?.subjob?.maxBudget}</div>
+        <div>Expected duration: {job?.data?.subjob?.timecost}</div>
+        <div>Timing:{job?.data?.subjob?.timing}</div>
+        <div>Hiring stage:{job?.data?.subjob?.hiringstage}</div>
+        {/* picture actually exists in the schema, but is an embedded object,
+     for some reason unknown to me typescript is freaking out here */}
+        <div>PICS LENGTH:{job?.data?.subjob?.pictures.length}</div>
+        {job?.data?.subjob?.extrainfo !== "undefined" && (
+          <div>EXTRA INFO: {job?.data?.subjob?.extrainfo}</div>
+        )}
+        {context.currentJobID === job?.data?.subjob?.id && (
+          <div>
+            {" "}
+            <AnsweredQuestionBox qstns={job?.data?.subjob?.answeredQuestions} />
+          </div>
+        )}
+        <div></div>
+      </div>
+    );
   }
 
   function MyLeads() {
@@ -637,13 +754,77 @@ const IQBrowser = () => {
         >
           NUMBER OF FRESH JOBS: {myjobs?.data?.length!}
         </button>{" "}
+        {context.myLead_filter_Presets.map((preset) => (
+          <>
+            {" "}
+            {context.myLead_filter_Current_Setting === preset && (
+              <button
+                onClick={() => {
+                  context.setmyLead_filter_Current_Setting(preset);
+                }}
+                className='ml-3  bg-green-600 text-white center text-center font-bold py-2 px-4 rounded-full  my-5'
+              >
+                {" "}
+                {preset}
+              </button>
+            )}{" "}
+            {context.myLead_filter_Current_Setting !== preset && (
+              <button
+                onClick={() => {
+                  context.setmyLead_filter_Current_Setting(preset);
+                }}
+                className='ml-3  bg-red-600 text-white center text-center font-bold py-2 px-4 rounded-full  my-5'
+              >
+                {" "}
+                DISPLAY{""} {preset}
+              </button>
+            )}
+          </>
+        ))}
         <div className='ml-3 center text-center font-bold py-2 px-4 rounded-full  my-5'>
-          <h1>MY LEADS</h1>
+          <div className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'>
+            MY LEADS
+          </div>
           {context.appliedJobs.length > 0 && (
             <>
               {" "}
               {context.appliedJobs.map((appliedJob) => (
-                <>{appliedJob.id}</>
+                <>
+                  {context.myLead_filter_Current_Setting ===
+                    appliedJob.status &&
+                    context.myLead_filter_Current_Setting !== "ALL" && (
+                      <>
+                        {" "}
+                        <h1>JOB ID:{appliedJob.submittedJob_ID}</h1>
+                        <>
+                          {" "}
+                          <AppliedJobBox
+                            id={appliedJob.id}
+                            submittedJob_ID={appliedJob.submittedJob_ID}
+                            submitterEmail={appliedJob.submitterEmail}
+                            status={appliedJob.status}
+                            userID={appliedJob.userID}
+                          />{" "}
+                        </>
+                      </>
+                    )}{" "}
+                  {context.myLead_filter_Current_Setting === "ALL" && (
+                    <>
+                      {" "}
+                      <h1>JOB ID:{appliedJob.submittedJob_ID}</h1>
+                      <>
+                        {" "}
+                        <AppliedJobBox
+                          id={appliedJob.id}
+                          submittedJob_ID={appliedJob.submittedJob_ID}
+                          submitterEmail={appliedJob.submitterEmail}
+                          status={appliedJob.status}
+                          userID={appliedJob.userID}
+                        />{" "}
+                      </>
+                    </>
+                  )}
+                </>
               ))}
             </>
           )}

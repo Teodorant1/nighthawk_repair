@@ -1,6 +1,10 @@
 import { JobPicture, answer } from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime/library";
 
+export interface MyComponentProps {
+  myStringProp: string;
+}
+
 export type parcel = {
   id?: string;
   escalationlevel?: number;

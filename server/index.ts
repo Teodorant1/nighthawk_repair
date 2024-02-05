@@ -5,7 +5,7 @@ import { Session, getServerSession } from "next-auth";
 import prisma from "@/prisma/client";
 import { distanceParcel, submitted_job_SANS_Email } from "@/projecttypes";
 import axios from "axios";
-import { createInitialRouterState } from "next/dist/client/components/router-reducer/create-initial-router-state";
+import { submitted_job } from "@prisma/client";
 
 export const t = initTRPC.create();
 interface user {
@@ -130,7 +130,52 @@ export const appRouter = t.router({
         return result;
       }
     }),
+  getSingularJob: t.procedure
+    .input(
+      z.object({
+        SubmittedJobID: z.string(),
+        userID: z.string(),
+      })
+    )
+    .query(async (opts) => {
+      const session = (await getServerSession(authOptions)) as Session;
 
+      if (session.user.sub === opts.input.userID) {
+        const subjob = await prisma.submitted_job.findFirst({
+          where: { id: opts.input.SubmittedJobID },
+          include: { pictures: true },
+        });
+
+        return {
+          subjob,
+        };
+      }
+    }),
+  tag_Applied_Job: t.procedure
+    .input(
+      z.object({
+        id: z.string(),
+        status: z.string(),
+        userID: z.string(),
+      })
+    )
+    .mutation(async (opts) => {
+      const session = (await getServerSession(authOptions)) as Session;
+      console.log(opts.input.id);
+      console.log;
+      if (session.user.sub === opts.input.userID) {
+        const newappliedjob = await prisma.appliedJob.update({
+          where: { id: opts.input.id },
+          data: {
+            status: opts.input.status,
+          },
+        });
+
+        return {
+          newappliedjob,
+        };
+      }
+    }),
   procedureeeeeeeeeeee: t.procedure
     .input(
       z.object({
