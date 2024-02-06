@@ -40,6 +40,7 @@ export async function POST(req: NextRequest) {
           categoryID: parcel1.category,
           sub_categoryID: parcel1.subcategory,
           isVisible: true,
+          number_of_applications: { lte: 3 },
         },
 
         select: {
@@ -114,6 +115,14 @@ export async function POST(req: NextRequest) {
 
       const JobThatIsBeingAppliedTo = await prisma.submitted_job.findFirst({
         where: { id: parcel1.leadID },
+      });
+
+      await prisma.submitted_job.update({
+        where: { id: parcel1.leadID },
+        data: {
+          number_of_applications:
+            JobThatIsBeingAppliedTo?.number_of_applications! + 1,
+        },
       });
 
       await prisma.appliedJob.create({

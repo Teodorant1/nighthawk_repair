@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 import { answer, appliedJob } from "@prisma/client";
 import { useJobContext } from "./JobContext";
-import { parcel, MyComponentProps } from "@/projecttypes";
+import { parcel } from "@/projecttypes";
 
 import { trpc } from "@/app/_trpc/client";
 
@@ -686,7 +686,7 @@ const IQBrowser = () => {
             {context.myLead_filter_Presets.map((preset) => (
               <>
                 {" "}
-                {appliedjob.status === preset && (
+                {appliedjob.status === preset && preset !== "ALL" && (
                   <button
                     onClick={() => {}}
                     className='ml-3  bg-green-600 text-white center text-center font-bold py-2 px-4 rounded-full  my-5'
@@ -695,7 +695,7 @@ const IQBrowser = () => {
                     {preset}
                   </button>
                 )}{" "}
-                {appliedjob.status !== preset && (
+                {appliedjob.status !== preset && preset !== "ALL" && (
                   <button
                     onClick={async () => {
                       await handleTagJob(appliedjob.id, preset);

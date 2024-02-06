@@ -5,7 +5,6 @@ import { Session, getServerSession } from "next-auth";
 import prisma from "@/prisma/client";
 import { distanceParcel, submitted_job_SANS_Email } from "@/projecttypes";
 import axios from "axios";
-import { submitted_job } from "@prisma/client";
 
 export const t = initTRPC.create();
 interface user {
@@ -175,6 +174,96 @@ export const appRouter = t.router({
           newappliedjob,
         };
       }
+    }),
+  GetBuyerJoblist: t.procedure
+    .input(
+      z.object({
+        submitterEmail: z.string(),
+        userID: z.string(),
+      })
+    )
+    .query(async (opts) => {
+      const session = (await getServerSession(authOptions)) as Session;
+
+      if (session.user.sub === opts.input.userID) {
+        const subjobs = await prisma.submitted_job.findMany({
+          where: { submittterEmail: opts.input.submitterEmail },
+          include: { pictures: true },
+        });
+
+        return {
+          subjobs,
+        };
+      }
+    }),
+  GetBuyerJobApplications: t.procedure
+    .input(
+      z.object({
+        SubmittedJobID: z.string(),
+        userID: z.string(),
+      })
+    )
+    .query(async (opts) => {
+      const session = (await getServerSession(authOptions)) as Session;
+
+      if (session.user.sub === opts.input.userID) {
+        const subjob_applications = await prisma.appliedJob.findMany({
+          where: { submittedJob_ID: opts.input.SubmittedJobID },
+          select: {
+            id: true,
+            submittedJob_ID: true,
+            submitterEmail: true,
+            status: false,
+            userID: true,
+          },
+        });
+
+        return {
+          subjob_applications,
+        };
+      }
+    }),
+  ToggleJobVisibility: t.procedure
+    .input(
+      z.object({
+        SubmittedJobID: z.string(),
+        submitterEmail: z.string(),
+      })
+    )
+    .mutation(async (opts) => {
+      const session = (await getServerSession(authOptions)) as Session;
+      console.log(opts.input.submitterEmail);
+      console.log;
+
+      let user: user = {
+        name: opts.input.submitterEmail,
+        role: "ADMIN",
+      };
+
+      return {
+        user,
+      };
+    }),
+  MarkJobAs: t.procedure
+    .input(
+      z.object({
+        SubmittedJobID: z.string(),
+        submitterEmail: z.string(),
+      })
+    )
+    .mutation(async (opts) => {
+      const session = (await getServerSession(authOptions)) as Session;
+      console.log(opts.input.submitterEmail);
+      console.log;
+
+      let user: user = {
+        name: opts.input.submitterEmail,
+        role: "ADMIN",
+      };
+
+      return {
+        user,
+      };
     }),
   procedureeeeeeeeeeee: t.procedure
     .input(

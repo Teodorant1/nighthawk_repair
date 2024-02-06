@@ -119,6 +119,7 @@ model submitted_job {
   extrainfo                  String?      @db.Text
   timecost                   Int
   moneycost                  Int
+  number_of_applications     Int          @default(0)
   //this one is used in a bit of a hacky way, 
   //since we never initialize it except in our Java haversin formula endpoint
   distance                   Int?
