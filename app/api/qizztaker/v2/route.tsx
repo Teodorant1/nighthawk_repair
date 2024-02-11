@@ -143,6 +143,7 @@ export async function POST(req: NextRequest) {
   ) {
     const AppliedJobs = await prisma.appliedJob.findMany({
       where: { userID: parcel1.userID },
+      orderBy: { dateCreated: "desc" },
     });
 
     return NextResponse.json(AppliedJobs);

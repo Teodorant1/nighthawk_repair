@@ -31,7 +31,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
   const mutation = trpc.procedureeeeeeeeeeee.useMutation({
     onSuccess: (c) => {
       // let c1: user = c;
-      setResult1(c.user);
+      setResult1(c);
     },
   });
   const handleLogin = async () => {
@@ -190,16 +190,16 @@ const SellerProfile = ({ params: { id } }: Props1) => {
     }
 
     return (
-      <div className='ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'>
+      <div className='ml-3 center  text-center font-bold py-2 px-4 rounded-md my-5'>
         {/* {context.my_Sub_Categories.length} {context.all_subcategories.length} */}
         {context.my_Sub_Categories?.length! > 0 && (
-          <div className='ml-3 center outline text-center font-bold py-2 px-4  rounded-sm my-5'>
+          <div className='bg-green-800 text-yellow-300 ml-3 center outline text-center font-bold py-2 px-4  rounded-sm my-5'>
             <h1>INTERESTED IN: </h1>
             {context.my_Sub_Categories!.map((sub_category) => (
               <div
                 key={sub_category.id}
                 onClick={() => {}}
-                className='ml-3 center outline text-center font-bold py-2 px-4 rounded-sm my-5'
+                className='bg-yellow-300 text-green-800 ml-3 center outline text-center font-bold py-2 px-4 rounded-sm my-5'
               >
                 {sub_category.subcategory}
                 {""} {""} |{""} Category: {sub_category.category}{" "}
@@ -236,7 +236,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                 setshowSCadder(false);
               }
             }}
-            className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'
+            className='ml-3 center  bg-green-800 text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
           >
             {" "}
             Click here to toggle the dropdown list of Interests{" "}
@@ -245,7 +245,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
         {session?.user.sub === id && showSCadder === true && (
           <div>
             {context.all_subcategories.length > 0 && (
-              <div className='ml-3 center outline text-center font-bold py-2 px-4 rounded-sm my-5'>
+              <div className='bg-green-800 text-yellow-300 ml-3 center outline text-center font-bold py-2 px-4 rounded-sm my-5'>
                 <h1>ADD NEW SUBCATEGORIES HERE</h1>
 
                 {context.all_subcategories!.map((sub_category) => (
@@ -254,7 +254,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                     {check_IF_PresentInMyInterests(sub_category) && (
                       <div
                         key={sub_category.id}
-                        className='ml-3 center outline text-center font-bold py-2 px-4 rounded-sm my-5'
+                        className='bg-yellow-300 text-green-800 ml-3 center outline text-center font-bold py-2 px-4 rounded-sm my-5'
                       >
                         {sub_category.name}/ Category: {sub_category.categoryID}{" "}
                         <button
@@ -264,7 +264,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                               sub_category.name
                             );
                           }}
-                          className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                          className='ml-3 center bg-green-800 text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
                         >
                           ADD THIS INTEREST{" "}
                         </button>
@@ -363,13 +363,13 @@ const SellerProfile = ({ params: { id } }: Props1) => {
             {" "}
             <div className='flex items-center justify-center'>
               <button
-                className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                className='ml-3 center  bg-green-800 text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
                 onClick={handlePrevImage}
               >
                 Previous
               </button>
               <button
-                className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                className='ml-3 center  bg-green-800 text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
                 onClick={handleNextImage}
               >
                 Next
@@ -409,36 +409,36 @@ const SellerProfile = ({ params: { id } }: Props1) => {
 
   function ReviewBox() {
     return (
-      <div className='outline text-center font-bold py-2 px-4 rounded-sm my-5'>
+      <div className=' bg-green-800  text-center font-bold py-2 px-4 rounded-md my-5'>
         {context.reviewCounter.average !== 0 && (
           <>
             {" "}
-            <button className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'>
+            <button className='ml-3 center bg-yellow-300 text-green-800 text-center font-bold py-2 px-4 rounded-full my-5'>
               {" "}
               Average Rating: {context.reviewCounter.average}
             </button>{" "}
             {context.reviewCounter.ones && (
-              <button className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'>
+              <button className='ml-3 center bg-yellow-300 text-green-800 text-center font-bold py-2 px-4 rounded-full my-5'>
                 Number of 1 star reviews : {context.reviewCounter.ones}
               </button>
             )}
             {context.reviewCounter.twos && (
-              <button className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'>
+              <button className='ml-3 center bg-yellow-300 text-green-800 text-center font-bold py-2 px-4 rounded-full my-5'>
                 Number of 2 star reviews : {context.reviewCounter.twos}
               </button>
             )}{" "}
             {context.reviewCounter.threes && (
-              <button className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'>
+              <button className='ml-3 center bg-yellow-300 text-green-800 text-center font-bold py-2 px-4 rounded-full my-5'>
                 Number of 3 star reviews : {context.reviewCounter.threes}
               </button>
             )}{" "}
             {context.reviewCounter.fours && (
-              <button className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'>
+              <button className='ml-3 center bg-yellow-300 text-green-800 text-center font-bold py-2 px-4 rounded-full my-5'>
                 Number of 4 star reviews : {context.reviewCounter.fours}
               </button>
             )}{" "}
             {context.reviewCounter.fives && (
-              <button className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'>
+              <button className='ml-3 center bg-yellow-300 text-green-800 text-center font-bold py-2 px-4 rounded-full my-5'>
                 Number of 5 star reviews : {context.reviewCounter.fives}
               </button>
             )}
@@ -449,11 +449,13 @@ const SellerProfile = ({ params: { id } }: Props1) => {
         {context.reviews.length > 0 && (
           <>
             {" "}
-            <h1>LIST OF REVIEWS</h1>{" "}
-            <div className='outline text-center font-bold py-2 px-4 rounded-sm my-5'>
+            <h1 className=' bg-yellow-300 text-green-800 rounded-md p-2'>
+              LIST OF REVIEWS
+            </h1>{" "}
+            <div className=' text-center font-bold py-2 px-4 rounded-sm my-5'>
               {context.reviews.map((review) => (
                 <div
-                  className='outline font-bold rounded-sm mx-auto w-5/6'
+                  className=' bg-yellow-300 text-green-800 m-5 outline font-bold rounded-sm mx-auto w-5/6'
                   key={review.id}
                 >
                   <div className=' mx-auto  w-[100%]'>
@@ -477,7 +479,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
 
   function CertificateBox() {
     return (
-      <div className='ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'>
+      <div className='ml-3 bg-green-800 text-yellow-300 center outline text-center font-bold py-2 px-4 rounded-md my-5'>
         {context.certificates.length === 0 && (
           <h1>This user currently has no Certificates</h1>
         )}
@@ -487,7 +489,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
             {context.certificates.map((certificate) => (
               <div
                 key={certificate.id}
-                className='ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'
+                className='ml-3 bg-yellow-300 text-green-800 center outline text-center font-bold py-2 px-4 rounded-md my-5'
               >
                 {certificate.name} / {certificate.Link}{" "}
                 {session?.user.sub === id && (
@@ -549,7 +551,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                     context.setcertificates(resp.data);
                   });
               }}
-              className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'
+              className='ml-3 center  bg-green-800 text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
             >
               {" "}
               Click here to add a new certificate to your profile{" "}
@@ -605,7 +607,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
               {({ open }) => (
                 <button
                   onClick={() => open()}
-                  className='flex mx-auto w-1/2  justify-center bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full'
+                  className='flex mx-auto w-1/2  justify-center bg-green-800 text-yellow-300 font-bold py-2 px-4 rounded-full'
                 >
                   Upload
                 </button>
@@ -624,7 +626,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                     setshowmap(false);
                   }
                 }}
-                className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                className='ml-3 center bg-green-800 text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
               >
                 {" "}
                 Click here to toggle the map{" "}

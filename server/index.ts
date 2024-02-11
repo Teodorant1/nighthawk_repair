@@ -145,9 +145,7 @@ export const appRouter = t.router({
           include: { pictures: true },
         });
 
-        return {
-          subjob,
-        };
+        return subjob;
       }
     }),
   tag_Applied_Job: t.procedure
@@ -170,9 +168,7 @@ export const appRouter = t.router({
           },
         });
 
-        return {
-          newappliedjob,
-        };
+        return newappliedjob;
       }
     }),
   GetBuyerJoblist: t.procedure
@@ -186,14 +182,13 @@ export const appRouter = t.router({
       const session = (await getServerSession(authOptions)) as Session;
 
       if (session.user.sub === opts.input.userID) {
-        const subjobs = await prisma.submitted_job.findMany({
+        const buyerjoblist = await prisma.submitted_job.findMany({
           where: { submittterEmail: opts.input.submitterEmail },
           include: { pictures: true },
+          orderBy: { date_created: "desc" },
         });
 
-        return {
-          subjobs,
-        };
+        return buyerjoblist;
       }
     }),
   GetBuyerJobApplications: t.procedure
@@ -213,57 +208,60 @@ export const appRouter = t.router({
             id: true,
             submittedJob_ID: true,
             submitterEmail: true,
-            status: false,
+            // status: false,
             userID: true,
           },
         });
 
-        return {
-          subjob_applications,
-        };
+        return subjob_applications;
       }
     }),
+  getAllSubcategories: t.procedure.query(async (opts) => {
+    const subcategories = await prisma.sub_category.findMany();
+
+    return subcategories;
+  }),
   ToggleJobVisibility: t.procedure
     .input(
       z.object({
+        userID: z.string(),
         SubmittedJobID: z.string(),
         submitterEmail: z.string(),
+        visibility: z.boolean(),
       })
     )
     .mutation(async (opts) => {
       const session = (await getServerSession(authOptions)) as Session;
-      console.log(opts.input.submitterEmail);
-      console.log;
+      if (session.user.sub === opts.input.userID) {
+        await prisma.submitted_job.update({
+          where: {
+            submittterEmail: opts.input.submitterEmail,
+            id: opts.input.SubmittedJobID,
+          },
+          data: { isVisible: opts.input.visibility },
+        });
 
-      let user: user = {
-        name: opts.input.submitterEmail,
-        role: "ADMIN",
-      };
-
-      return {
-        user,
-      };
+        return null;
+      }
     }),
   MarkJobAs: t.procedure
     .input(
       z.object({
+        userID: z.string(),
+        status: z.string(),
         SubmittedJobID: z.string(),
         submitterEmail: z.string(),
       })
     )
     .mutation(async (opts) => {
       const session = (await getServerSession(authOptions)) as Session;
-      console.log(opts.input.submitterEmail);
-      console.log;
 
       let user: user = {
         name: opts.input.submitterEmail,
         role: "ADMIN",
       };
 
-      return {
-        user,
-      };
+      return user;
     }),
   procedureeeeeeeeeeee: t.procedure
     .input(
@@ -273,17 +271,13 @@ export const appRouter = t.router({
     )
     .mutation(async (opts) => {
       const session = (await getServerSession(authOptions)) as Session;
-      console.log(opts.input.name);
-      console.log;
 
       let user: user = {
         name: opts.input.name,
         role: "ADMIN",
       };
 
-      return {
-        user,
-      };
+      return user;
     }),
 });
 

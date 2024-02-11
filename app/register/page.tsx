@@ -1,5 +1,5 @@
 import React from "react";
-import Details from "./details/page";
+import Details from "./details/nopage";
 
 const page = () => {
   return (

@@ -285,7 +285,9 @@ const QIZZTAKER = () => {
   function CategoryBOX() {
     return (
       <div>
-        PICK A CATEGORY
+        <div className='ml-3 center outline outline-green-800  bg-yellow-300  text-green-800 text-center font-bold py-2 px-4 rounded-full my-5'>
+          STEP 1. PICK A CATEGORY{" "}
+        </div>
         {category_Array?.length! > 0 && (
           <>
             {category_Array!.map((category) => (
@@ -296,7 +298,7 @@ const QIZZTAKER = () => {
                   setstage(2);
                   GetData(2, category.name);
                 }}
-                className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5 '
+                className='ml-3 center outline outline-yellow-300  bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
               >
                 {category.name}
               </div>
@@ -309,7 +311,9 @@ const QIZZTAKER = () => {
   function SubcategoryBOX() {
     return (
       <div>
-        PICK A SUBCATEGORY{" "}
+        <div className='ml-3 center outline outline-green-800  bg-yellow-300  text-green-800 text-center font-bold py-2 px-4 rounded-full my-5'>
+          STEP 2. PICK A SUBCATEGORY{" "}
+        </div>
         {sub_category_Array?.length! > 0 && (
           <>
             {sub_category_Array!.map((sub_category) => (
@@ -321,7 +325,7 @@ const QIZZTAKER = () => {
                   GetData(3, sub_category!.name);
                   GetData(3.5, sub_category!.name);
                 }}
-                className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5 '
+                className='ml-3 center outline outline-yellow-300  bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
               >
                 {sub_category.name}
               </div>
@@ -389,11 +393,14 @@ const QIZZTAKER = () => {
   function QuestionBOX() {
     return (
       <div>
-        <div> Questionare Stage</div>
+        <div className='ml-3 center outline outline-green-800  bg-yellow-300  text-green-800 text-center font-bold py-2 px-4 rounded-full my-5'>
+          {" "}
+          Questionare Stage
+        </div>
         {true && (
           <>
             {" "}
-            <div>
+            <div className='ml-3 center outline outline-green-800  bg-yellow-300  text-green-800 text-center font-bold py-2 px-4 rounded-full my-5'>
               {" "}
               You have answered {AnsweredQuestionsArray?.length!}/
               {Question_Array?.length!} questions{" "}
@@ -407,7 +414,7 @@ const QIZZTAKER = () => {
               onClick={() => {
                 setstage(3.4);
               }}
-              className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'
+              className='ml-3 center outline outline-yellow-300  bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
             >
               {" "}
               Click here to proceed to the next step{" "}
@@ -424,7 +431,7 @@ const QIZZTAKER = () => {
                     {AnsweredQuestionsArray.includes(question.id) === false && (
                       <div
                         key={question.id}
-                        className='ml-3 center outline text-center font-bold py-2 px-4  my-5'
+                        className='ml-3 center outline outline-yellow-300  bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-sm my-5'
                       >
                         <div> {question.text_Question}?</div>
                         <div>
@@ -475,7 +482,6 @@ const QIZZTAKER = () => {
               {answers?.length! > 0 && (
                 <>
                   {" "}
-                  <div> Pick an answer from one of the following</div>
                   {answers?.map((answer) => (
                     <div
                       onClick={() => {
@@ -489,7 +495,7 @@ const QIZZTAKER = () => {
                         ]);
                       }}
                       key={answer.text_answer}
-                      className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5'
+                      className='ml-3 center outline outline-green-800  bg-yellow-300  text-green-800 text-center font-bold py-2 px-4 rounded-full my-5'
                     >
                       {" "}
                       {answer.text_answer}{" "}
@@ -529,7 +535,7 @@ const QIZZTAKER = () => {
                       onClick={() => {
                         setcoordsTouched(true);
                       }}
-                      className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                      className='ml-3 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
                     >
                       {" "}
                       Click here to finalize coordinates and go to the final
@@ -552,7 +558,7 @@ const QIZZTAKER = () => {
                           onClick={() => {
                             GetData(5);
                           }}
-                          className=' bg-blue-600  hover:bg-blue-900 ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
+                          className=' bg-green-800  text-yellow-300  ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5'
                         >
                           CLICK HERE TO SUBMIT{" "}
                         </div>
@@ -663,12 +669,12 @@ const QIZZTAKER = () => {
             setstage(4);
             setpictures(pictures2);
           }}
-          className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'
+          className='ml-3 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
         >
           {" "}
           Click here to move to the next step{" "}
         </button>{" "}
-        <button className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'>
+        <button className='ml-3 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'>
           {" "}
           You have uploaded {pictures2.length} pictures so far.
         </button>
@@ -686,7 +692,7 @@ const QIZZTAKER = () => {
           {({ open }) => (
             <button
               onClick={() => open()}
-              className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'
+              className='ml-3 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
             >
               Upload
             </button>
@@ -752,23 +758,19 @@ const QIZZTAKER = () => {
   }
 
   function ExtraDetailsBox() {
-    const [title2, settitle2] = useState<String>("Title goes here");
-
     function uploadState() {
       setstage(3.5);
     }
 
     return (
       <div>
-        EXTRA DETAILS{" "}
         <div>
           {" "}
-          <div>TITLE: {title1}</div>
           <input
             type='text'
             className='mx-[20%] w-[50%] h-[10%] outline text-center font-bold text-xl py-10 px-10  my-5'
             id='title2'
-            defaultValue={title1.toString()}
+            defaultValue={title1}
             onBlur={(e) => {
               settitle1(e.target.value);
             }}
@@ -795,14 +797,14 @@ const QIZZTAKER = () => {
             onClick={() => {
               setfirst_to_buy(true);
             }}
-            className='ml-3 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+            className='ml-3 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
           >
             Click here to enable first to buy
           </button>
         )}
         <div>
-          <div className='ml-3 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'>
-            Current timing value: {timing}
+          <div className='ml-3 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'>
+            Timing : {timing}
           </div>
           {timingPRESETS!.map((preset) => (
             <div
@@ -810,15 +812,15 @@ const QIZZTAKER = () => {
               onClick={() => {
                 settiming(preset.toString());
               }}
-              className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5 '
+              className='outline-green-800  bg-yellow-300  text-green-800 ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5 '
             >
               {preset}
             </div>
           ))}
         </div>
         <div>
-          <div className='ml-3 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'>
-            Current hiringstage value: {hiringstage}
+          <div className='ml-3 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'>
+            Hiring Stage : {hiringstage}
           </div>
           {hiringstagePRESETS!.map((preset) => (
             <div
@@ -826,15 +828,15 @@ const QIZZTAKER = () => {
               onClick={() => {
                 sethiringstage(preset.toString());
               }}
-              className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5 '
+              className='outline-green-800  bg-yellow-300  ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5 '
             >
               {preset}
             </div>
           ))}
         </div>
         <div>
-          <div className='ml-3 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'>
-            Current minbudget value: {minbudget}
+          <div className='ml-3 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'>
+            Minimum Budget : {minbudget}
           </div>
           {minbudgetPRESETS!.map((preset) => (
             <div
@@ -842,15 +844,15 @@ const QIZZTAKER = () => {
               onClick={() => {
                 setminbudget(preset);
               }}
-              className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5 '
+              className='outline-green-800  bg-yellow-300  ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5 '
             >
               {preset}
             </div>
           ))}
         </div>{" "}
         <div>
-          <div className='ml-3 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'>
-            Current maxbudget value: {maxbudget}
+          <div className='ml-3 center bg-green-800 text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'>
+            Current Maximum Budget : {maxbudget}
           </div>
           {maxbudgetPRESETS!.map((preset) => (
             <div
@@ -858,7 +860,7 @@ const QIZZTAKER = () => {
               onClick={() => {
                 setmaxbudget(preset);
               }}
-              className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5 '
+              className='outline-green-800  bg-yellow-300  ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5 '
             >
               {preset}
             </div>
@@ -870,7 +872,7 @@ const QIZZTAKER = () => {
             onClick={() => {
               uploadState();
             }}
-            className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'
+            className='ml-3 center  bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
           >
             {" "}
             Click here to move to the next step{" "}

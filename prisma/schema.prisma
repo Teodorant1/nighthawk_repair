@@ -81,7 +81,7 @@ model sub_category {
   id         String @id @default(cuid())
   name       String @unique
   categoryID String @db.Text
-  questions  Json?
+
 }
 
 model question {
@@ -151,6 +151,7 @@ model appliedJob {
   submitterEmail  String
   status          String?
   userID          String
+  dateCreated     DateTime @default(now())
 }
 
 // model job_application {

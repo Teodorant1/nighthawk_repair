@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+.backgroundTools {
+  background-image: url("/images/tools.png");
+  /* Add any other background properties you need */
+  background-size: cover;
+  background-position: center;
+}
+
 /* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;

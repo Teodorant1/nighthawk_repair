@@ -16,8 +16,6 @@ const IQBrowser = () => {
     userID: session?.user.sub!,
   });
 
-  console.log("myjobs1", myjobs.data);
-
   useEffect(() => {
     axios.post("/api/qizztaker", parcel1).then((resp) => {
       context.setCategoryArray(resp.data);
@@ -208,13 +206,16 @@ const IQBrowser = () => {
               })
               .then(async () => {
                 await GetappliedJobs();
+              })
+              .then(async () => {
+                myjobs.refetch();
               });
           }
         });
     }
 
     return (
-      <div className='ml-3 center outline text-center font-bold py-2 px-4  rounded-md my-5 h-screen overflow-y-auto'>
+      <div className='bg-yellow-300 text-green-800 ml-3 center outline text-center font-bold py-2 px-4  rounded-md my-5 h-screen overflow-y-auto'>
         {myjobs && myjobs?.data?.length! > 0 && (
           <>
             {myjobs!.data!.map(
@@ -226,7 +227,7 @@ const IQBrowser = () => {
                   >
                     {context.COINS > 20 && (
                       <button
-                        className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                        className='ml-3 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
                         onClick={() => {
                           BuyAlead(job.id);
                         }}
@@ -236,7 +237,7 @@ const IQBrowser = () => {
                     )}{" "}
                     {context.currentJobID !== job.id && (
                       <button
-                        className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                        className='ml-3 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
                         onClick={() => {
                           toggleShow(job.id);
                         }}
@@ -246,7 +247,7 @@ const IQBrowser = () => {
                     )}{" "}
                     {context.currentJobID === job.id && (
                       <button
-                        className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                        className='ml-3 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
                         onClick={() => {
                           toggleShow(job.id);
                         }}
@@ -254,6 +255,7 @@ const IQBrowser = () => {
                         CLOSE LEAD{" "}
                       </button>
                     )}
+                    <h1>TITLE:{job?.title}</h1>
                     <div>ID:{job.id}</div>
                     <div>
                       1ST TO BUY: {job.first_to_buy === true && <>true</>}
@@ -301,7 +303,7 @@ const IQBrowser = () => {
           <>
             {AnswerArray!.map((Answer) => (
               <div key={Answer.id}>
-                <div className='ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'>
+                <div className='bg-green-800 text-yellow-300 ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'>
                   {" "}
                   <div> Question: {Answer.questionID}</div>
                   <div>Answer: {Answer.text_answer}</div>
@@ -339,7 +341,7 @@ const IQBrowser = () => {
     return (
       <div className='ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'>
         <div className='ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'>
-          <h1>SORTING HAPPENS HERE</h1>
+          <h1>SORT BY</h1>
           <button
             className='ml-3 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
             onClick={() => {
@@ -573,7 +575,7 @@ const IQBrowser = () => {
           {context.stage === 3 && (
             <div>
               <button
-                className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                className='ml-3 center outline  outline-yellow-300   bg-green-800 text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
                 onClick={() => {
                   if (context.filterBoxEnabled === false) {
                     context.setFilterBoxEnabled(true);
@@ -584,18 +586,18 @@ const IQBrowser = () => {
               >
                 FILTERS
               </button>{" "}
-              <button className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'>
+              <button className='ml-3 center outline outline-yellow-300  bg-green-800 text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'>
                 AVAILABLE CREDIT: £{context.COINS}
               </button>
               <button
                 onClick={() => {
                   context.setleads_to_look_at("myleads");
                 }}
-                className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                className='ml-3 center outline outline-yellow-300   bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
               >
                 NUMBER OF APPLIED JOBS: {context.appliedJobs.length}
               </button>
-              <div className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'>
+              <div className='ml-3 center outline outline-yellow-300  bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'>
                 A LIST OF FRESH JOBS{" "}
               </div>
               {context.filterBoxEnabled === true && <FilterBox />}
@@ -649,8 +651,8 @@ const IQBrowser = () => {
     // }, []);
     return (
       <div
-        className='ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'
-        key={job?.data?.subjob?.id}
+        className='ml-3 center bg-green-800 text-yellow-300 outline text-center font-bold py-2 px-4 rounded-md my-5 break-words'
+        key={job?.data?.id}
       >
         {/* {context.COINS > 20 && (
       <button
@@ -660,27 +662,27 @@ const IQBrowser = () => {
         CLICK HERE TO APPLY
       </button>
     )}{" "} */}
-        {context.currentJobID !== job?.data?.subjob?.id && (
+        {context.currentJobID !== job?.data?.id && (
           <button
-            className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+            className='ml-3 center bg-yellow-300 text-green-800 text-center font-bold py-2 px-4 rounded-full my-5'
             onClick={() => {
-              toggleShow(job?.data?.subjob?.id!);
+              toggleShow(job?.data?.id!);
             }}
           >
             EXPAND LEAD{" "}
           </button>
         )}{" "}
-        {context.currentJobID === job?.data?.subjob?.id && (
+        {context.currentJobID === job?.data?.id && (
           <button
-            className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+            className='ml-3 center bg-yellow-300 text-green-800 text-center font-bold py-2 px-4 rounded-full my-5'
             onClick={() => {
-              toggleShow(job?.data?.subjob?.id!);
+              toggleShow(job?.data?.id!);
             }}
           >
             CLOSE LEAD{" "}
           </button>
         )}{" "}
-        {context.currentJobID === job?.data?.subjob?.id && (
+        {context.currentJobID === job?.data?.id && (
           <>
             {" "}
             {context.myLead_filter_Presets.map((preset) => (
@@ -710,31 +712,32 @@ const IQBrowser = () => {
             ))}
           </>
         )}
-        <div>CLIENT EMAIL:{job?.data?.subjob?.submittterEmail}</div>
-        <div>ID:{job?.data?.subjob?.id}</div>
+        <h1>TITLE:{job?.data?.title}</h1>
+        <div>CLIENT EMAIL:{job?.data?.submittterEmail}</div>
+        <div>ID:{job?.data?.id}</div>
         <div>
-          1ST TO BUY: {job?.data?.subjob?.first_to_buy === true && <>true</>}
-          {job?.data?.subjob?.first_to_buy === false && <>false</>}
+          1ST TO BUY: {job?.data?.first_to_buy === true && <>true</>}
+          {job?.data?.first_to_buy === false && <>false</>}
         </div>
-        <div>DATE OF CREATION: {String(job?.data?.subjob?.date_created)}</div>
-        <div> Calculated distance: {job?.data?.subjob?.distance} </div>
-        {/* <div>Email:{job?.data?.subjob?.submittterEmail}</div> */}
-        <div>Expected cost: {job?.data?.subjob?.moneycost}</div>
-        <div>Minimal Budget: {job?.data?.subjob?.minBudget}</div>
-        <div>Maximal Budget: {job?.data?.subjob?.maxBudget}</div>
-        <div>Expected duration: {job?.data?.subjob?.timecost}</div>
-        <div>Timing:{job?.data?.subjob?.timing}</div>
-        <div>Hiring stage:{job?.data?.subjob?.hiringstage}</div>
+        <div>DATE OF CREATION: {String(job?.data?.date_created)}</div>
+        <div> Calculated distance: {job?.data?.distance} </div>
+        {/* <div>Email:{job?.data?.submittterEmail}</div> */}
+        <div>Expected cost: {job?.data?.moneycost}</div>
+        <div>Minimal Budget: {job?.data?.minBudget}</div>
+        <div>Maximal Budget: {job?.data?.maxBudget}</div>
+        <div>Expected duration: {job?.data?.timecost}</div>
+        <div>Timing:{job?.data?.timing}</div>
+        <div>Hiring stage:{job?.data?.hiringstage}</div>
         {/* picture actually exists in the schema, but is an embedded object,
      for some reason unknown to me typescript is freaking out here */}
-        <div>PICS LENGTH:{job?.data?.subjob?.pictures.length}</div>
-        {job?.data?.subjob?.extrainfo !== "undefined" && (
-          <div>EXTRA INFO: {job?.data?.subjob?.extrainfo}</div>
+        <div>PICS LENGTH:{job?.data?.pictures.length}</div>
+        {job?.data?.extrainfo !== "undefined" && (
+          <div>EXTRA INFO: {job?.data?.extrainfo}</div>
         )}
-        {context.currentJobID === job?.data?.subjob?.id && (
+        {context.currentJobID === job?.data?.id && (
           <div>
             {" "}
-            <AnsweredQuestionBox qstns={job?.data?.subjob?.answeredQuestions} />
+            <AnsweredQuestionBox qstns={job?.data?.answeredQuestions} />
           </div>
         )}
         <div></div>
@@ -750,9 +753,9 @@ const IQBrowser = () => {
           onClick={() => {
             context.setleads_to_look_at("newleads");
           }}
-          className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+          className='ml-3 center bg-green-800 text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
         >
-          NUMBER OF FRESH JOBS: {myjobs?.data?.length!}
+          GO TO FRESH JOBS
         </button>{" "}
         {context.myLead_filter_Presets.map((preset) => (
           <>
@@ -782,7 +785,7 @@ const IQBrowser = () => {
           </>
         ))}
         <div className='ml-3 center text-center font-bold py-2 px-4 rounded-full  my-5'>
-          <div className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'>
+          <div className='ml-3 center bg-green-800 text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'>
             MY LEADS
           </div>
           {context.appliedJobs.length > 0 && (
@@ -795,7 +798,6 @@ const IQBrowser = () => {
                     context.myLead_filter_Current_Setting !== "ALL" && (
                       <>
                         {" "}
-                        <h1>JOB ID:{appliedJob.submittedJob_ID}</h1>
                         <>
                           {" "}
                           <AppliedJobBox
@@ -804,6 +806,7 @@ const IQBrowser = () => {
                             submitterEmail={appliedJob.submitterEmail}
                             status={appliedJob.status}
                             userID={appliedJob.userID}
+                            dateCreated={appliedJob.dateCreated}
                           />{" "}
                         </>
                       </>
@@ -811,7 +814,6 @@ const IQBrowser = () => {
                   {context.myLead_filter_Current_Setting === "ALL" && (
                     <>
                       {" "}
-                      <h1>JOB ID:{appliedJob.submittedJob_ID}</h1>
                       <>
                         {" "}
                         <AppliedJobBox
@@ -820,6 +822,7 @@ const IQBrowser = () => {
                           submitterEmail={appliedJob.submitterEmail}
                           status={appliedJob.status}
                           userID={appliedJob.userID}
+                          dateCreated={appliedJob.dateCreated}
                         />{" "}
                       </>
                     </>

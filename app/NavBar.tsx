@@ -1,11 +1,10 @@
 "use client";
 
-import { GetSessionParams, getSession, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import logo from "@/public/images/IQTlogo.png";
-import { parcel } from "@/projecttypes";
 
 const NavBar = () => {
   const { status, data: session } = useSession();
@@ -23,7 +22,7 @@ const NavBar = () => {
   function MyAccount() {
     return (
       // <div>
-      <div className='center outline text-center font-bold py-2 px-4   z-10 ml-auto top-[20%]  right-[10%]'>
+      <div className=' bg-green-800 center outline text-center font-bold py-2 px-4   z-10 ml-auto top-[10%]  right-[10%]'>
         {" "}
         {status === "unauthenticated" && (
           <div>
@@ -31,14 +30,21 @@ const NavBar = () => {
               className=' p-2 font-bold'
               href='/register'
             >
-              Register
+              <button className=' bg-yellow-300 text-green-800 rounded-sm p-2'>
+                {" "}
+                Register
+              </button>
             </Link>
 
             <Link
               className=' p-2 font-bold'
               href='/api/auth/signin'
             >
-              Login
+              {" "}
+              <button className=' bg-yellow-300 text-green-800 rounded-sm p-2'>
+                {" "}
+                Login
+              </button>
             </Link>
           </div>
         )}{" "}
@@ -48,7 +54,12 @@ const NavBar = () => {
             <div className=''>
               {" "}
               {/* <div> {session?.user.email} </div> */}
-              <div onClick={() => toggleShow()}>My Account - </div>{" "}
+              <div
+                className=' bg-yellow-300 text-green-800 rounded-sm p-2'
+                onClick={() => toggleShow()}
+              >
+                My Account -{" "}
+              </div>{" "}
               <div>{show === true && <AccountDropdown />}</div>{" "}
             </div>
           )}
@@ -61,28 +72,28 @@ const NavBar = () => {
     // const profileURL = "/Both/ProfilePage/" + session?.user.sub;
 
     return (
-      <div className='ml-3 outline text-center font-bold py-2 px-4 my-5 center'>
+      <div className=' ml-3  text-center font-bold py-2 px-4 my-1 center'>
         <Link
-          className='flex p-1 font-bold'
+          className=' bg-yellow-300 text-green-800 rounded-sm flex px-3 py-1 m-2 font-bold'
           href={"/Both/ProfilePage/" + session?.user.sub}
         >
           My Profile
         </Link>
         <Link
-          className='flex p-1 font-bold'
+          className=' bg-yellow-300 text-green-800 rounded-sm flex px-3 py-1 m-2 font-bold'
           href='/MyJobs'
         >
           My Jobs
         </Link>
         <Link
-          className='flex p-1 font-bold'
+          className=' bg-yellow-300 text-green-800 rounded-sm flex px-3 py-1 m-2 font-bold'
           href='/Settings'
         >
           Settings
         </Link>
         <Link
           href='/api/auth/signout'
-          className='flex p-1 font-bold'
+          className=' bg-yellow-300 text-green-800 rounded-sm flex px-3 py-1 m-2 font-bold'
         >
           Log Out
         </Link>
@@ -92,81 +103,47 @@ const NavBar = () => {
   function USERBOX() {
     return (
       <div className='m-5 p-5'>
-        {session?.user.role === "USER" && (
-          <div>
-            <Link
-              href='/Seller/QuoteBrowser'
-              className='ml-3  text-center font-bold  py-2 px-4 rounded-full my-5 center'
-            >
-              {" "}
-              GO TO QUOTE BROWSER
-            </Link>
-            <Link
-              href='/FindaTrade'
-              className='ml-3  text-center font-bold  py-2 px-4 rounded-full my-5 center'
-            >
-              {" "}
-              Find a Trade
-            </Link>
-            <Link
-              href='/Ask'
-              className='ml-3 center  text-center font-bold py-2 px-4 rounded-full my-5'
-            >
-              {" "}
-              Ask
-            </Link>
-            <Link
-              href='/Advice'
-              className='ml-3 center  text-center font-bold py-2 px-4 rounded-full my-5'
-            >
-              Advice
-            </Link>{" "}
-            <Link
-              href='/LIVELEADS'
-              className='ml-3  text-center font-bold py-2 px-4 rounded-full my-5 center'
-            >
-              {" "}
-              LIVE LEADS
-            </Link>
-            <Link
-              href='/MYLEADS'
-              className='ml-3 center  text-center font-bold py-2 px-4 rounded-full my-5'
-            >
-              {" "}
-              MY LEADS
-            </Link>
-            <Link
-              href='/PROFILE'
-              className='ml-3 center  text-center font-bold py-2 px-4 rounded-full my-5'
-            >
-              PROFILE{" "}
-            </Link>{" "}
-            <Link
-              href='/MY RATINGS'
-              className='ml-3 center  text-center font-bold py-2 px-4 rounded-full my-5'
-            >
-              MY RATINGS
-            </Link>{" "}
-            <Link
-              href='/ASKANEXPERT'
-              className='ml-3 center  text-center font-bold py-2 px-4 rounded-full my-5'
-            >
-              ASK AN EXPERT{" "}
-            </Link>{" "}
-            <Link
-              href='/HELP'
-              className='ml-3 center  text-center font-bold py-2 px-4 rounded-full my-5'
-            >
-              HELP{" "}
-            </Link>{" "}
-            <Link
-              href='/CHAT'
-              className='ml-3 center  text-center font-bold py-2 px-4 rounded-full my-5'
-            >
-              CHAT{" "}
-            </Link>{" "}
-          </div>
-        )}
+        <div className='p-5 flex flex-wrap'>
+          <Link
+            href='/Seller/QuoteBrowser'
+            className=' bg-yellow-300 text-green-800 rounded-sm   text-center font-bold  py-2 px-4 m-5 center'
+          >
+            {" "}
+            GO TO QUOTE BROWSER
+          </Link>
+          <Link
+            href='/LIVELEADS'
+            className=' bg-yellow-300 text-green-800 rounded-sm   text-center font-bold py-2 px-4 m-5 center'
+          >
+            {" "}
+            LIVE LEADS
+          </Link>
+          <Link
+            href='/MYLEADS'
+            className=' bg-yellow-300 text-green-800 rounded-sm  center  text-center font-bold py-2 px-4 m-5'
+          >
+            {" "}
+            MY LEADS
+          </Link>
+          <Link
+            href='/ASKANEXPERT'
+            className=' bg-yellow-300 text-green-800 rounded-sm  center  text-center font-bold py-2 px-4 m-5'
+          >
+            ASK AN EXPERT{" "}
+          </Link>{" "}
+          <Link
+            href='/HELP'
+            className=' bg-yellow-300 text-green-800 rounded-sm  center  text-center font-bold py-2 px-4 m-5'
+          >
+            HELP{" "}
+          </Link>{" "}
+          <Link
+            href='/CHAT'
+            className=' bg-yellow-300 text-green-800 rounded-sm  center  text-center font-bold py-2 px-4 m-5'
+          >
+            CHAT{" "}
+          </Link>{" "}
+        </div>
       </div>
     );
   }
@@ -175,83 +152,76 @@ const NavBar = () => {
     return (
       <div className='m-5 p-5'>
         {" "}
-        {session?.user.role === "BUYER" && (
-          <div>
-            <Link
-              href='/FindaTrade'
-              className='ml-3 outline  text-center font-bold py-2  px-8 rounded-full my-5 center'
-            >
-              {" "}
-              Find a Trade
-            </Link>
-
-            <Link
-              href='/Ask'
-              className='ml-3 center outline  text-center font-bold py-2  px-8 rounded-full my-5'
-            >
-              {" "}
-              Ask
-            </Link>
-            <Link
-              href='/TrendsReport'
-              className='ml-3 center outline  text-center font-bold py-2  px-8 rounded-full my-5'
-            >
-              Trends Report
-            </Link>
-            <Link
-              href='/Advice'
-              className='ml-3 center outline  text-center font-bold py-2  px-8 rounded-full my-5'
-            >
-              Advice
-            </Link>
-
-            <Link
-              href='/MYJOBS'
-              className='ml-3 outline  text-center font-bold py-2  px-8 rounded-full my-5 center'
-            >
-              {" "}
-              MY JOBS{" "}
-            </Link>
-
-            <Link
-              href='/TRADESPEOPLE'
-              className='ml-3 center outline  text-center font-bold py-2  px-8 rounded-full my-5'
-            >
-              {" "}
-              TRADESPEOPLE
-            </Link>
-            <Link
-              href='/CHAT'
-              className='ml-3 center outline  text-center font-bold py-2  px-8 rounded-full my-5'
-            >
-              CHAT{" "}
-            </Link>
-            <> </>
-          </div>
-        )}
+        <div className='p-5 flex flex-wrap'>
+          {" "}
+          <Link
+            href='/FindaTrade'
+            className=' bg-yellow-300 text-green-800 rounded-sm   text-center font-bold  py-2 px-4 m-5 center'
+          >
+            {" "}
+            Find a Trade
+          </Link>
+          <Link
+            href='/Ask'
+            className=' bg-yellow-300 text-green-800 rounded-sm   text-center font-bold  py-2 px-4 m-5 center'
+          >
+            {" "}
+            Ask
+          </Link>
+          <Link
+            href='/TrendsReport'
+            className=' bg-yellow-300 text-green-800 rounded-sm   text-center font-bold  py-2 px-4 m-5 center'
+          >
+            Trends Report
+          </Link>
+          <Link
+            href='/Advice'
+            className=' bg-yellow-300 text-green-800 rounded-sm   text-center font-bold  py-2 px-4 m-5 center'
+          >
+            Advice
+          </Link>
+          <Link
+            href='/MYJOBS'
+            className=' bg-yellow-300 text-green-800 rounded-sm   text-center font-bold  py-2 px-4 m-5 center'
+          >
+            {" "}
+            MY JOBS{" "}
+          </Link>
+          <Link
+            href='/TRADESPEOPLE'
+            className=' bg-yellow-300 text-green-800 rounded-sm   text-center font-bold  py-2 px-4 m-5 center'
+          >
+            {" "}
+            TRADESPEOPLE
+          </Link>
+          <Link
+            href='/CHAT'
+            className=' bg-yellow-300 text-green-800 rounded-sm   text-center font-bold  py-2 px-4 m-5 center'
+          >
+            CHAT{" "}
+          </Link>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className='flex text-white bg-blue-700  h-fit w-[100%] right-0 top-0'>
+    <div className='flex  bg-green-800 text-yellow-300 h-fit w-[100%] right-0 top-0'>
       {" "}
       <Link
         href='/'
-        className='mr-5 w-[10%] h-[10%]'
+        className='mr-5 w-[15%] h-[15%]'
       >
         <div className='w-[100%]'>
           {" "}
           <Image
             src={logo}
-            // width={250}
-            // height={250}
-            alt='Picture of the author'
+            alt='Picture of the logo'
           />
         </div>
       </Link>
-      <USERBOX />
-      <BUYERBOX />
+      {session?.user.role === "USER" && <USERBOX />}
+      {session?.user.role === "BUYER" && <BUYERBOX />}
       <MyAccount />
     </div>
   );
