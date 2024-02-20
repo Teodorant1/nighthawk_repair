@@ -20,7 +20,7 @@ model profileSubCategory {
 model Review {
   id           String   @id @default(cuid())
   ReviewerID   String
-  WorkerID     String  
+  WorkerID     String
   Job_Id       String   @unique
   reviewText   String
   rating       Int
@@ -52,7 +52,7 @@ model user {
   isProgrammer           Boolean                 @default(false)
   phoneNum               String
   name                   String
-  coins                  Int                    @default(0)
+  coins                  Int                     @default(0)
   userNotificationConfig userNotificationConfig?
   //this one is used in a bit of a hacky way, 
   //since we never initialize it except in our Java haversin formula endpoint
@@ -61,7 +61,7 @@ model user {
   latitude               Decimal                 @default(0)
   longitude              Decimal                 @default(0)
   country                String                  @default("UK")
-  profilePic             String?                
+  profilePic             String?
 }
 
 model userNotificationConfig {
@@ -81,7 +81,6 @@ model sub_category {
   id         String @id @default(cuid())
   name       String @unique
   categoryID String @db.Text
-
 }
 
 model question {
@@ -146,12 +145,36 @@ model JobPicture {
 
 // a job that a user has applied to
 model appliedJob {
-  id              String @id @default(cuid())
+  id              String   @id @default(cuid())
   submittedJob_ID String
   submitterEmail  String
   status          String?
   userID          String
   dateCreated     DateTime @default(now())
+}
+
+model tradesmanCandidate {
+  id                   String  @id @default(cuid())
+  userID               String
+  email                String
+  phoneNumber          String
+  name                 String
+  BusinessName         String
+  BusinessAddress      String
+  CompanyNumber        String
+  Approved             Boolean @default(false)
+  LiabilityLicenseLink String
+
+  SubCategories tradesmanCandidateSubCategory[]
+}
+
+model tradesmanCandidateSubCategory {
+  id          String @id @default(cuid())
+  SubCategory String @unique
+  categoryID  String @db.Text
+
+  tradesmanCandidate   tradesmanCandidate? @relation(fields: [tradesmanCandidateId], references: [id])
+  tradesmanCandidateId String?
 }
 
 // model job_application {

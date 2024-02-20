@@ -284,19 +284,23 @@ const IQBrowser = () => {
                           <AnsweredQuestionBox qstns={job.answeredQuestions} />
                         </div>
                         <div className='flex flex-wrap p-2 m-2'>
-                          {job.pictures.map((picture) => (
-                            <div
-                              className='m-2 p-2'
-                              key={picture.id}
-                            >
-                              <CldImage
-                                src={picture.cloudinaryID}
-                                width={300}
-                                height={200}
-                                alt={picture.cloudinaryID}
-                              />{" "}
-                            </div>
-                          ))}
+                          {job.pictures.length > 0 && (
+                            <>
+                              {job.pictures.map((picture) => (
+                                <div
+                                  className='m-2 p-2'
+                                  key={picture.id}
+                                >
+                                  <CldImage
+                                    src={picture.cloudinaryID}
+                                    width={300}
+                                    height={200}
+                                    alt={picture.cloudinaryID}
+                                  />
+                                </div>
+                              ))}
+                            </>
+                          )}
                         </div>
                       </div>
                     )}
@@ -321,17 +325,22 @@ const IQBrowser = () => {
         {AnswerArray?.length! > 0 && (
           <>
             {AnswerArray!.map((Answer) => (
-              <div key={Answer.id}>
-                <div className='bg-green-800 text-white mx-5 center  text-center font-bold py-2 px-4 rounded-md my-5'>
-                  {" "}
-                  <div> Question: {Answer.questionID}</div>
-                  <div>Answer: {Answer.text_answer}</div>
-                  {/* <div> ESTIMATED COST: {Answer.moneycost}£</div>
+              <div
+                key={Answer.id}
+                className='flex flex-wrap items-center justify-center w-screen'
+              >
+                <div>
+                  <div className='bg-green-800 text-white mx-5 center  text-center font-bold py-2 px-4 rounded-md my-5'>
+                    {" "}
+                    <div> Question: {Answer.questionID}</div>
+                    <div>Answer: {Answer.text_answer}</div>
+                    {/* <div> ESTIMATED COST: {Answer.moneycost}£</div>
                   <div>
                     ESTIMATED DURATION:
                     {Answer.timecost}DAYS
                   </div> */}
-                </div>
+                  </div>
+                </div>{" "}
               </div>
             ))}
           </>
@@ -668,7 +677,7 @@ const IQBrowser = () => {
 
     return (
       <div
-        className='mx-5 center bg-green-800 text-white  text-center font-bold py-2 px-4 rounded-md my-5 break-words'
+        className='mx-5 center outline  text-center font-bold py-2 px-4 rounded-md my-5 break-words'
         key={job?.data?.id}
       >
         {context.currentJobID !== job?.data?.id && (
@@ -721,9 +730,14 @@ const IQBrowser = () => {
             ))}
           </>
         )}
+        <div className='flex items-center justify-center w-screen'>
+          {" "}
+          <div className=' rounded bg-green-800 text-white px-14 py-5'>
+            ID:{job?.data?.id}
+          </div>
+        </div>
         <h1>TITLE:{job?.data?.title}</h1>
         <div>CLIENT EMAIL:{job?.data?.submittterEmail}</div>
-        <div>ID:{job?.data?.id}</div>
         <div>
           1ST TO BUY: {job?.data?.first_to_buy === true && <>true</>}
           {job?.data?.first_to_buy === false && <>false</>}
@@ -743,6 +757,27 @@ const IQBrowser = () => {
         {job?.data?.extrainfo !== "undefined" && (
           <div>EXTRA INFO: {job?.data?.extrainfo}</div>
         )}
+        <div>
+          {" "}
+          {context.currentJobID === job?.data?.id &&
+            job.data.pictures.length > 0 && (
+              <div className='flex flex-wrap'>
+                {job.data.pictures.map((picture) => (
+                  <div
+                    className='m-2 p-2'
+                    key={picture.id}
+                  >
+                    <CldImage
+                      src={picture.cloudinaryID}
+                      width={300}
+                      height={200}
+                      alt={picture.cloudinaryID}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+        </div>
         {context.currentJobID === job?.data?.id && (
           <div>
             {" "}
@@ -794,9 +829,18 @@ const IQBrowser = () => {
           </>
         ))}
         <div className='mx-5 center text-center font-bold py-2 px-4 rounded-full  my-5'>
-          <div className='mx-5 center text-center font-bold py-2 px-4 rounded-full my-5'>
-            MY LEADS
+          <div className='flex items-center justify-center w-screen'>
+            <div className='mx-5 center text-center font-bold py-2 px-4 rounded-full my-5'>
+              MY LEADS
+            </div>{" "}
           </div>
+          {context.appliedJobs.length === 0 && (
+            <div className='flex items-center justify-center w-screen'>
+              <div className='mx-5 center text-center font-bold py-2 px-4 rounded-full my-5'>
+                NO JOBS{" "}
+              </div>{" "}
+            </div>
+          )}
           {context.appliedJobs.length > 0 && (
             <>
               {" "}

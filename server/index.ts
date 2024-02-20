@@ -5,6 +5,7 @@ import { Session, getServerSession } from "next-auth";
 import prisma from "@/prisma/client";
 import { distanceParcel, submitted_job_SANS_Email } from "@/projecttypes";
 import axios from "axios";
+import bcrypt from "bcrypt";
 
 export const t = initTRPC.create();
 interface user {
@@ -258,10 +259,74 @@ export const appRouter = t.router({
 
       let user: user = {
         name: opts.input.submitterEmail,
-        role: "ADMIN",
+        role: "ffffffffffff",
       };
 
       return user;
+    }),
+  RegisterTradesman: t.procedure
+    .input(
+      z.object({
+        email: z.string().email(),
+        password: z.string(),
+        phone_number: z.string(),
+        name: z.string(),
+        businessName: z.string(),
+        businessAddress: z.string(),
+        CompanyNumber: z.string(),
+        LiabilityLicense: z.string(),
+        subcategories: z.array(
+          z.object({
+            id: z.string(),
+            name: z.string(),
+            categoryID: z.string(),
+          })
+        ),
+      })
+    )
+    .mutation(async (opts) => {
+      const hashedpassword = await bcrypt.hash(opts.input.password, 10);
+
+      const newuser = await prisma.user.create({
+        data: {
+          email: opts.input.email,
+          password: hashedpassword,
+          role: "USER",
+          phoneNum: opts.input.phone_number,
+          name: opts.input.name,
+        },
+      });
+
+      await prisma.userNotificationConfig.create({
+        data: {
+          userId: newuser.id,
+        },
+      });
+
+      const tradesmanCandidate = await prisma.tradesmanCandidate.create({
+        data: {
+          userID: newuser.id,
+          email: opts.input.email,
+          phoneNumber: opts.input.phone_number,
+          name: opts.input.name,
+          BusinessName: opts.input.businessName,
+          BusinessAddress: opts.input.businessAddress,
+          CompanyNumber: opts.input.CompanyNumber,
+          LiabilityLicenseLink: opts.input.LiabilityLicense,
+        },
+      });
+
+      for (let i: number = 0; i < opts.input.subcategories.length; i++) {
+        await prisma.tradesmanCandidateSubCategory.create({
+          data: {
+            SubCategory: opts.input.subcategories.at(i)?.name!,
+            categoryID: opts.input.subcategories.at(i)?.categoryID!,
+            tradesmanCandidateId: tradesmanCandidate.id,
+          },
+        });
+      }
+
+      return "OP SUCCESS";
     }),
   procedureeeeeeeeeeee: t.procedure
     .input(

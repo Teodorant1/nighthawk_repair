@@ -368,6 +368,38 @@ const SellerProfile = ({ params: { id } }: Props1) => {
     return (
       <div>
         {" "}
+        {session?.user.sub === id && (
+          <CldUploadWidget
+            uploadPreset='bqhf0bxn'
+            onUpload={(result, widget) => {
+              if (result.event !== "success") {
+                return;
+              }
+              const info = result.info as CloudinaryResult;
+
+              let image_upload_parcel: parcel = {
+                method: "addworkgallery",
+                id: info.public_id.toString(),
+                userID: session?.user.sub,
+              };
+
+              axios
+                .post("/api/profileEditor", image_upload_parcel)
+                .then((resp) => {
+                  context.setworkGalleryPictures(resp.data);
+                });
+            }}
+          >
+            {({ open }) => (
+              <button
+                onClick={() => open()}
+                className='flex bg-green-800 text-white mx-auto  justify-center  font-bold py-2 px-4 rounded-sm'
+              >
+                Upload Image
+              </button>
+            )}
+          </CldUploadWidget>
+        )}{" "}
         {images.length > 0 && (
           <>
             {" "}
@@ -384,38 +416,6 @@ const SellerProfile = ({ params: { id } }: Props1) => {
               >
                 Next
               </button>{" "}
-              {session?.user.sub === id && (
-                <CldUploadWidget
-                  uploadPreset='bqhf0bxn'
-                  onUpload={(result, widget) => {
-                    if (result.event !== "success") {
-                      return;
-                    }
-                    const info = result.info as CloudinaryResult;
-
-                    let image_upload_parcel: parcel = {
-                      method: "addworkgallery",
-                      id: info.public_id.toString(),
-                      userID: session?.user.sub,
-                    };
-
-                    axios
-                      .post("/api/profileEditor", image_upload_parcel)
-                      .then((resp) => {
-                        context.setworkGalleryPictures(resp.data);
-                      });
-                  }}
-                >
-                  {({ open }) => (
-                    <button
-                      onClick={() => open()}
-                      className='flex bg-green-800 text-white mx-auto  justify-center  font-bold py-2 px-4 rounded-sm'
-                    >
-                      Upload
-                    </button>
-                  )}
-                </CldUploadWidget>
-              )}
               {session?.user.sub === id && (
                 <button
                   onClick={() => {

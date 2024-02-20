@@ -285,22 +285,28 @@ const QIZZTAKER = () => {
   function CategoryBOX() {
     return (
       <div>
-        <div className='m-5 center outline  bg-green-800 text-white   text-center font-bold py-2 px-4 rounded-full my-5'>
-          STEP 1. PICK A CATEGORY{" "}
+        <div className='flex items-center justify-center w-screen'>
+          <div className=' center outline  bg-green-800 text-white   text-center font-bold m-5 py-4 px-20 rounded-full '>
+            STEP 1. PICK A CATEGORY{" "}
+          </div>{" "}
         </div>
         {category_Array?.length! > 0 && (
           <>
             {category_Array!.map((category) => (
               <div
                 key={category.id}
-                onClick={() => {
-                  setcategory(category);
-                  setstage(2);
-                  GetData(2, category.name);
-                }}
-                className='m-5 center outline     text-center font-bold py-2 px-4 rounded-full my-5'
+                className='flex items-center justify-center w-screen'
               >
-                {category.name}
+                <div
+                  onClick={() => {
+                    setcategory(category);
+                    setstage(2);
+                    GetData(2, category.name);
+                  }}
+                  className=' center outline     text-center font-bold  rounded-full  m-5 py-4 px-20'
+                >
+                  {category.name}
+                </div>{" "}
               </div>
             ))}
           </>
@@ -311,23 +317,29 @@ const QIZZTAKER = () => {
   function SubcategoryBOX() {
     return (
       <div>
-        <div className='m-5 center outline  bg-green-800 text-white   text-center font-bold py-2 px-4 rounded-full my-5'>
-          STEP 2. PICK A SUBCATEGORY{" "}
+        <div className='flex items-center justify-center w-screen'>
+          <div className='m-5 py-4 px-20  center outline  bg-green-800 text-white   text-center font-bold  rounded-full '>
+            STEP 2. PICK A SUBCATEGORY{" "}
+          </div>{" "}
         </div>
         {sub_category_Array?.length! > 0 && (
           <>
             {sub_category_Array!.map((sub_category) => (
               <div
                 key={sub_category.id}
-                onClick={() => {
-                  // setsub_category(sub_category);
-                  setstage(3);
-                  GetData(3, sub_category!.name);
-                  GetData(3.5, sub_category!.name);
-                }}
-                className='m-5 center outline     text-center font-bold py-2 px-4 rounded-full my-5'
+                className='flex items-center justify-center w-screen'
               >
-                {sub_category.name}
+                <div
+                  onClick={() => {
+                    // setsub_category(sub_category);
+                    setstage(3);
+                    GetData(3, sub_category!.name);
+                    GetData(3.5, sub_category!.name);
+                  }}
+                  className='m-5 py-4 px-20 center outline     text-center font-bold  rounded-full '
+                >
+                  {sub_category.name}
+                </div>
               </div>
             ))}
           </>
@@ -344,7 +356,7 @@ const QIZZTAKER = () => {
           onClick={() => {
             setstage(3.4);
           }}
-          className='m-5 center outline bg-green-800 text-white    text-center font-bold py-2 px-4 rounded-full my-5'
+          className='m-5 py-4 px-20 center outline bg-green-800 text-white    text-center font-bold rounded-full '
         >
           {" "}
           Click here to proceed to the next step{" "}
@@ -364,9 +376,9 @@ const QIZZTAKER = () => {
                     {AnsweredQuestionsArray.includes(question.id) === false && (
                       <div
                         key={question.id}
-                        className='m-5 center outline text-center font-bold py-2 px-4  my-5'
+                        className=' center outline text-center font-bold m-5 py-4 px-20'
                       >
-                        <div className='m-5 center outline bg-green-800 text-white    text-center font-bold py-2 px-4 rounded-full my-5'>
+                        <div className='m-5 center outline bg-green-800 text-white    text-center font-bold py-4 px-20 rounded-full '>
                           {question.text_Question}?
                         </div>
                         <div>
@@ -395,34 +407,31 @@ const QIZZTAKER = () => {
   function QuestionBOX() {
     return (
       <div>
-        <div className='m-5 center outline bg-green-800 text-white    text-center font-bold py-2 px-4 rounded-full my-5'>
-          {" "}
-          Questionare Stage
-        </div>
-        {true && (
-          <>
+        <div className='flex items-center justify-center w-screen'>
+          <div className='m-5 py-4 px-20 center outline bg-green-800 text-white    text-center font-bold  rounded-full '>
             {" "}
-            <div className='m-5 center outline   bg-green-800 text-white  text-center font-bold py-2 px-4 rounded-full my-5'>
-              {" "}
-              You have answered {AnsweredQuestionsArray?.length!}/
-              {Question_Array?.length!} questions{" "}
-            </div>
-          </>
-        )}
+            Questionare Stage
+          </div>{" "}
+          <div className='m-5 center outline   bg-green-800 text-white  text-center font-bold py-4 px-20 rounded-full '>
+            {" "}
+            You have answered {AnsweredQuestionsArray?.length!}/
+            {Question_Array?.length!} questions{" "}
+          </div>
+        </div>
         {AnsweredQuestionsArray?.length! >= Question_Array?.length! && (
-          <>
+          <div className='flex items-center justify-center w-screen'>
             {" "}
             <div
               onClick={() => {
                 setstage(3.4);
               }}
-              className='m-5 center outline bg-green-800 text-white    text-center font-bold py-2 px-4 rounded-full my-5'
+              className='m-5 center outline bg-green-800 text-white    text-center font-bold py-4 px-20 rounded-full '
             >
               {" "}
               Click here to proceed to the next step{" "}
             </div>
             {/* <OptionalQuestionBOX /> */}
-          </>
+          </div>
         )}
         {Question_Array!.length > 0 && (
           <>
@@ -433,11 +442,13 @@ const QIZZTAKER = () => {
                     {AnsweredQuestionsArray.includes(question.id) === false && (
                       <div
                         key={question.id}
-                        className='m-5 center   text-center font-bold py-2 px-4 rounded-sm my-5'
+                        className='m-5 center   text-center font-bold py-4 px-20 rounded-sm '
                       >
-                        <div className='m-5 center outline bg-green-800 text-white    text-center font-bold py-2 px-4 rounded-full my-5'>
-                          {" "}
-                          {question.text_Question}?
+                        <div className='flex items-center justify-center w-screen'>
+                          <div className='m-5 center outline bg-green-800 text-white    text-center font-bold py-4 px-20 rounded-full '>
+                            {" "}
+                            {question.text_Question}?
+                          </div>{" "}
                         </div>
                         <div>
                           {" "}
@@ -489,21 +500,26 @@ const QIZZTAKER = () => {
                   {" "}
                   {answers?.map((answer) => (
                     <div
-                      onClick={() => {
-                        setAnsweredQuestionsArray((current) => [
-                          ...current,
-                          question.id,
-                        ]);
-                        setAnsweredQuestionsArray1((current) => [
-                          ...current,
-                          answer,
-                        ]);
-                      }}
                       key={answer.text_answer}
-                      className='m-5 center outline bg-white text-center font-bold py-2 px-4 rounded-full my-5'
+                      className='flex items-center justify-center w-screen'
                     >
-                      {" "}
-                      {answer.text_answer}{" "}
+                      <div
+                        onClick={() => {
+                          setAnsweredQuestionsArray((current) => [
+                            ...current,
+                            question.id,
+                          ]);
+                          setAnsweredQuestionsArray1((current) => [
+                            ...current,
+                            answer,
+                          ]);
+                        }}
+                        key={answer.text_answer}
+                        className=' center outline bg-white text-center font-bold  rounded-full m-5 py-4 px-20'
+                      >
+                        {" "}
+                        {answer.text_answer}{" "}
+                      </div>{" "}
                     </div>
                   ))}
                 </>
@@ -514,7 +530,7 @@ const QIZZTAKER = () => {
         {IsClicked === true && (
           <>
             {" "}
-            <div className='m-5 center outline text-center font-bold py-2 px-4 rounded-full my-5'>
+            <div className='m-5 center outline text-center font-bold py-4 px-20 rounded-full '>
               {" "}
               You have already answered this question{" "}
             </div>
@@ -526,7 +542,7 @@ const QIZZTAKER = () => {
 
   function SubmitBox() {
     return (
-      <div className='justify-center items-center'>
+      <div className='p-10 justify-center items-center'>
         {AnsweredQuestionsArray.length > 0 && (
           <>
             {AnsweredQuestionsArray.length >= Question_Array.length && (
@@ -536,15 +552,17 @@ const QIZZTAKER = () => {
                   <>
                     {" "}
                     <GeolocationBox />
-                    <div
-                      onClick={() => {
-                        setcoordsTouched(true);
-                      }}
-                      className='m-5 center bg-green-800 text-white   text-center font-bold py-2 px-4 rounded-full my-5'
-                    >
-                      {" "}
-                      Click here to finalize coordinates and go to the final
-                      page{" "}
+                    <div className='flex items-center justify-center w-screen'>
+                      <div
+                        onClick={() => {
+                          setcoordsTouched(true);
+                        }}
+                        className='m-5 center bg-green-800 text-white   text-center font-bold py-4 px-20 rounded-full '
+                      >
+                        {" "}
+                        Click here to finalize coordinates and go to the final
+                        page{" "}
+                      </div>
                     </div>
                   </>
                 )}
@@ -557,24 +575,26 @@ const QIZZTAKER = () => {
                         <div className='flex justify-center items-center'>
                           <input
                             type='text'
-                            className=' w-[80%] h-[15%]  outline text-center font-bold py-10 px-10  my-5'
+                            className=' w-[80%] h-[15%]  outline text-center font-bold py-10 px-10  '
                             id='ExtraDetails'
                             placeholder='Extra details go here'
                           />{" "}
                         </div>{" "}
-                        <div
-                          onClick={() => {
-                            GetData(5);
-                          }}
-                          className=' bg-green-800 text-white m-3 center  text-center font-bold py-2 px-4 rounded-full my-5'
-                        >
-                          CLICK HERE TO SUBMIT{" "}
+                        <div className='flex items-center justify-center w-screen'>
+                          <button
+                            onClick={() => {
+                              GetData(5);
+                            }}
+                            className=' bg-green-800 text-white m-3 center  text-center font-bold py-4 px-20 rounded-full '
+                          >
+                            CLICK HERE TO SUBMIT{" "}
+                          </button>{" "}
                         </div>
                       </>
                     )}
                     {status === "unauthenticated" && (
                       <div className='px-[40%]'>
-                        {/* <div className='bg-blue-900  m-5  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'> */}
+                        {/* <div className='bg-blue-900  m-5  text-white center outline text-center font-bold py-4 px-20 rounded-full '> */}
                         <div>
                           You are not LOGGED IN , so you can either click to
                           submit with your existing credentials OR submit and
@@ -585,7 +605,7 @@ const QIZZTAKER = () => {
                           Email
                           <input
                             type='text'
-                            className='outline text-center font-bold py-2 px-4 rounded-full my-5'
+                            className='outline text-center font-bold py-4 px-20 rounded-full '
                             id='email'
                             placeholder='email goes here'
                           />{" "}
@@ -595,7 +615,7 @@ const QIZZTAKER = () => {
                           Password
                           <input
                             type='text'
-                            className='outline text-center font-bold py-2 px-4 rounded-full my-5'
+                            className='outline text-center font-bold py-4 px-20 rounded-full '
                             id='password'
                             placeholder='password goes here'
                           />{" "}
@@ -605,7 +625,7 @@ const QIZZTAKER = () => {
                           Phone Number
                           <input
                             type='text'
-                            className='outline text-center font-bold py-2 px-4 rounded-full my-5'
+                            className='outline text-center font-bold py-4 px-20 rounded-full '
                             id='phoneNum'
                             placeholder='phoneNum goes here'
                           />{" "}
@@ -615,7 +635,7 @@ const QIZZTAKER = () => {
                           Name
                           <input
                             type='text'
-                            className='outline text-center font-bold py-2 px-4 rounded-full my-5'
+                            className='outline text-center font-bold py-4 px-20 rounded-full '
                             id='name'
                             placeholder='name goes here'
                           />{" "}
@@ -625,7 +645,7 @@ const QIZZTAKER = () => {
                           Extra Details
                           <input
                             type='text'
-                            className='mx-[20%] w-[50%] h-[10%] outline text-center font-bold py-10 px-10  my-5'
+                            className='mx-[20%] w-[50%] h-[10%] outline text-center font-bold py-10 px-10  '
                             id='ExtraDetails'
                             placeholder='Extra details go here'
                           />{" "}
@@ -634,7 +654,7 @@ const QIZZTAKER = () => {
                           onClick={() => {
                             GetData(6, "EXISTINGACCOUNT");
                           }}
-                          className=' bg-blue-600  hover:bg-blue-900 m-5  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
+                          className=' bg-blue-600  hover:bg-blue-900 m-5  text-white center outline text-center font-bold py-4 px-20 rounded-full '
                         >
                           CLICK HERE TO SUBMIT WITH YOUR EXISTING ACCOUNT{" "}
                         </div>{" "}
@@ -642,7 +662,7 @@ const QIZZTAKER = () => {
                           onClick={() => {
                             GetData(6, "CREATEACCOUNT");
                           }}
-                          className=' bg-blue-600  hover:bg-blue-900 m-5  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
+                          className=' bg-blue-600  hover:bg-blue-900 m-5  text-white center outline text-center font-bold py-4 px-20 rounded-full '
                         >
                           CLICK HERE TO SUBMIT AND CREATE ACCOUNT{" "}
                         </div>
@@ -677,12 +697,12 @@ const QIZZTAKER = () => {
             setstage(4);
             setpictures(pictures2);
           }}
-          className='m-5 center outline bg-green-800 text-white    text-center font-bold py-2 px-4 rounded-full my-5'
+          className='m-5 center outline bg-green-800 text-white    text-center font-bold py-4 px-20 rounded-full '
         >
           {" "}
           Click here to move to the next step{" "}
         </button>{" "}
-        <button className='m-5 center bg-green-800 text-white  text-center font-bold py-2 px-4 rounded-full my-5'>
+        <button className='m-5 center bg-green-800 text-white  text-center font-bold py-4 px-20 rounded-full '>
           {" "}
           You have uploaded {pictures2.length} pictures so far.
         </button>
@@ -700,7 +720,7 @@ const QIZZTAKER = () => {
           {({ open }) => (
             <button
               onClick={() => open()}
-              className='m-5 center bg-green-800 text-white  text-center font-bold py-2 px-4 rounded-full my-5'
+              className='m-5 center bg-green-800 text-white  text-center font-bold py-4 px-20 rounded-full '
             >
               Upload
             </button>
@@ -764,9 +784,10 @@ const QIZZTAKER = () => {
 
   function SuccessBox() {
     return (
-      <div className='m-5 center bg-green-800 text-white text-center font-bold py-2 px-4 rounded-full my-5'>
+      <div className='m-5 center bg-green-800 text-white text-center font-bold py-20 px-20 rounded-full '>
         {" "}
-        YOU HAVE UPLOADED THE JOB , CHECK YOUR EMAIL FOR CONFIRMATION EMAIL
+        CONGRATULATIONS! YOU HAVE UPLOADED THE JOB , CHECK YOUR EMAIL FOR OUR
+        AUTOMATED CONFIRMATION EMAIL
       </div>
     );
   }
@@ -777,12 +798,12 @@ const QIZZTAKER = () => {
     }
 
     return (
-      <div>
-        <div className='flex justify-center items-center'>
+      <div className='flex flex-wrap'>
+        <div className='flex  justify-center items-center w-screen'>
           {" "}
           <input
             type='text'
-            className='mx-20  h-[10%] outline text-center font-bold text-xl py-10 px-10  my-5'
+            className='mx-20 my-10  h-[10%] outline text-center font-bold text-xl py-10 px-10  '
             id='title2'
             defaultValue={title1}
             onBlur={(e) => {
@@ -796,108 +817,218 @@ const QIZZTAKER = () => {
             }}
           />{" "}
         </div>{" "}
-        {first_to_buy === true && (
-          <div
-            onClick={() => {
-              setfirst_to_buy(false);
-            }}
-            className='m-5 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
-          >
-            Click here to disable first to buy
-          </div>
-        )}
-        {first_to_buy === false && (
-          <div
-            onClick={() => {
-              setfirst_to_buy(true);
-            }}
-            className='m-5 center outline bg-green-800 text-white    text-center font-bold py-2 px-4 rounded-full my-5'
-          >
-            Click here to enable first to buy
-          </div>
-        )}
         <div>
-          <div className='m-5 center bg-green-800 text-white    text-center font-bold py-2 px-4 rounded-full my-5'>
-            Timing : {timing}
+          {" "}
+          {first_to_buy === true && (
+            <div className='flex items-center justify-center w-screen'>
+              <button
+                onClick={() => {
+                  setfirst_to_buy(false);
+                }}
+                className='m-5 center bg-red-600 text-white text-center font-bold py-4 px-20 rounded-full '
+              >
+                Click here to disable first to buy
+              </button>{" "}
+            </div>
+          )}
+        </div>
+        <div>
+          {" "}
+          {first_to_buy === false && (
+            <div className='flex items-center justify-center w-screen'>
+              <button
+                onClick={() => {
+                  setfirst_to_buy(true);
+                }}
+                className='m-5 center outline bg-green-800 text-white    text-center font-bold py-4 px-20 rounded-full '
+              >
+                Click here to enable first to buy
+              </button>{" "}
+            </div>
+          )}
+        </div>{" "}
+        <div>
+          <div className='flex items-center justify-center w-screen'>
+            <div className='m-5 center bg-green-800 text-white    text-center font-bold py-4 px-20 rounded-full '>
+              Timing : {timing}
+            </div>
           </div>
           {timingPRESETS!.map((preset) => (
-            <div
-              key={preset.toString()}
-              onClick={() => {
-                settiming(preset.toString());
-              }}
-              className='    m-5 center outline text-center font-bold py-2 px-4 rounded-full my-5 '
-            >
-              {preset}
-            </div>
+            <>
+              {" "}
+              {timing === preset && (
+                <div
+                  key={preset.toString()}
+                  className='flex items-center justify-center w-screen'
+                >
+                  <div
+                    onClick={() => {
+                      settiming(preset.toString());
+                    }}
+                    className=' bg-green-600 text-white   m-5 center outline text-center font-bold py-4 px-20 rounded-full  '
+                  >
+                    {preset}
+                  </div>{" "}
+                </div>
+              )}
+              {timing !== preset && (
+                <div
+                  key={preset.toString()}
+                  className='flex items-center justify-center w-screen'
+                >
+                  <div
+                    onClick={() => {
+                      settiming(preset.toString());
+                    }}
+                    className='    m-5 center outline text-center font-bold py-4 px-20 rounded-full  '
+                  >
+                    {preset}
+                  </div>{" "}
+                </div>
+              )}
+            </>
           ))}
         </div>
         <div>
-          <div className='m-5 center bg-green-800 text-white    text-center font-bold py-2 px-4 rounded-full my-5'>
-            Hiring Stage : {hiringstage}
+          <div className='flex items-center justify-center w-screen'>
+            <div className='m-5 center bg-green-800 text-white    text-center font-bold py-4 px-20 rounded-full '>
+              Hiring Stage : {hiringstage}
+            </div>{" "}
           </div>
           {hiringstagePRESETS!.map((preset) => (
-            <div
-              key={preset.toString()}
-              onClick={() => {
-                sethiringstage(preset.toString());
-              }}
-              className='   m-5 center outline text-center font-bold py-2 px-4 rounded-full my-5 '
-            >
-              {preset}
-            </div>
+            <>
+              {hiringstage === preset && (
+                <div
+                  key={preset.toString()}
+                  className='flex items-center justify-center w-screen'
+                >
+                  <div
+                    onClick={() => {
+                      sethiringstage(preset.toString());
+                    }}
+                    className='bg-green-600 text-white   m-5 center outline text-center font-bold py-4 px-20 rounded-full  '
+                  >
+                    {preset}
+                  </div>{" "}
+                </div>
+              )}{" "}
+              {hiringstage !== preset && (
+                <div
+                  key={preset.toString()}
+                  className='flex items-center justify-center w-screen'
+                >
+                  <div
+                    onClick={() => {
+                      sethiringstage(preset.toString());
+                    }}
+                    className='   m-5 center outline text-center font-bold py-4 px-20 rounded-full  '
+                  >
+                    {preset}
+                  </div>{" "}
+                </div>
+              )}
+            </>
           ))}
         </div>
         <div>
-          <div className='m-5 center bg-green-800 text-white    text-center font-bold py-2 px-4 rounded-full my-5'>
-            Minimum Budget : {minbudget}
+          <div className='flex items-center justify-center w-screen'>
+            <div className='m-5 center bg-green-800 text-white    text-center font-bold py-4 px-20 rounded-full '>
+              Minimum Budget : {minbudget}
+            </div>{" "}
           </div>
           {minbudgetPRESETS!.map((preset) => (
-            <div
-              key={preset.toString()}
-              onClick={() => {
-                setminbudget(preset);
-              }}
-              className='   m-5 center outline text-center font-bold py-2 px-4 rounded-full my-5 '
-            >
-              {preset}
-            </div>
+            <>
+              {minbudget === preset && (
+                <div
+                  key={preset.toString()}
+                  className='flex items-center justify-center w-screen'
+                >
+                  <div
+                    onClick={() => {
+                      setminbudget(preset);
+                    }}
+                    className='  bg-green-600 text-white   m-5 center outline text-center font-bold py-4 px-20 rounded-full  '
+                  >
+                    {preset}
+                  </div>{" "}
+                </div>
+              )}{" "}
+              {minbudget !== preset && (
+                <div
+                  key={preset.toString()}
+                  className='flex items-center justify-center w-screen'
+                >
+                  <div
+                    onClick={() => {
+                      setminbudget(preset);
+                    }}
+                    className='   m-5 center outline text-center font-bold py-4 px-20 rounded-full  '
+                  >
+                    {preset}
+                  </div>{" "}
+                </div>
+              )}
+            </>
           ))}
         </div>{" "}
         <div>
-          <div className='m-5 center bg-green-800 text-white   text-center font-bold py-2 px-4 rounded-full my-5'>
-            Current Maximum Budget : {maxbudget}
+          <div className='flex items-center justify-center w-screen'>
+            <div className='m-5 center bg-green-800 text-white   text-center font-bold py-4 px-20 rounded-full '>
+              Current Maximum Budget : {maxbudget}
+            </div>{" "}
           </div>
           {maxbudgetPRESETS!.map((preset) => (
-            <div
-              key={preset.toString()}
-              onClick={() => {
-                setmaxbudget(preset);
-              }}
-              className='   m-5 center outline text-center font-bold py-2 px-4 rounded-full my-5 '
-            >
-              {preset}
-            </div>
+            <>
+              {maxbudget === preset && (
+                <div
+                  key={preset.toString()}
+                  className='flex items-center justify-center w-screen'
+                >
+                  <div
+                    onClick={() => {
+                      setmaxbudget(preset);
+                    }}
+                    className=' bg-green-600 text-white  m-5 center outline text-center font-bold py-4 px-20 rounded-full  '
+                  >
+                    {preset}
+                  </div>{" "}
+                </div>
+              )}{" "}
+              {maxbudget !== preset && (
+                <div
+                  key={preset.toString()}
+                  className='flex items-center justify-center w-screen'
+                >
+                  <div
+                    onClick={() => {
+                      setmaxbudget(preset);
+                    }}
+                    className='   m-5 center outline text-center font-bold py-4 px-20 rounded-full  '
+                  >
+                    {preset}
+                  </div>{" "}
+                </div>
+              )}
+            </>
           ))}
         </div>
         <div>
           {" "}
-          <div
-            onClick={() => {
-              uploadState();
-            }}
-            className='m-5 center  bg-green-800 text-white    text-center font-bold py-2 px-4 rounded-full my-5'
-          >
-            {" "}
-            Click here to move to the next step{" "}
-          </div>{" "}
+          <div className='flex items-center justify-center w-screen'>
+            <div
+              onClick={() => {
+                uploadState();
+              }}
+              className='m-5 center  bg-green-800 text-white    text-center font-bold py-4 px-20 rounded-full '
+            >
+              {" "}
+              Click here to move to the next step{" "}
+            </div>{" "}
+          </div>
         </div>
       </div>
     );
   }
-  // useEffect(() => {
-  //   console.log("stage changed", stage);
-  // }, [stage]);
 
   return (
     <div>
