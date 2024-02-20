@@ -190,16 +190,22 @@ const SellerProfile = ({ params: { id } }: Props1) => {
     }
 
     return (
-      <div className='ml-3 center  text-center font-bold py-2 px-4 rounded-md my-5'>
+      <div className='m-5 center  text-center font-bold py-2 px-4 rounded-md '>
         {/* {context.my_Sub_Categories.length} {context.all_subcategories.length} */}
         {context.my_Sub_Categories?.length! > 0 && (
-          <div className='bg-green-800 text-yellow-300 ml-3 center outline text-center font-bold py-2 px-4  rounded-sm my-5'>
-            <h1>INTERESTED IN: </h1>
+          <div className=' m-5 center  text-center font-bold py-2 px-4  rounded-sm '>
+            <div>
+              {" "}
+              <button className=' bg-green-800 text-white p-5 rounded-md'>
+                INTERESTED IN:{" "}
+              </button>
+            </div>
+
             {context.my_Sub_Categories!.map((sub_category) => (
-              <div
+              <button
                 key={sub_category.id}
                 onClick={() => {}}
-                className='bg-yellow-300 text-green-800 ml-3 center outline text-center font-bold py-2 px-4 rounded-sm my-5'
+                className='bg-green-700 text-white m-5 center outline text-center font-bold py-2 px-4 rounded-sm '
               >
                 {sub_category.subcategory}
                 {""} {""} |{""} Category: {sub_category.category}{" "}
@@ -212,17 +218,17 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                         sub_category.id
                       );
                     }}
-                    className='ml-3 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                    className='m-5 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-sm '
                   >
                     DELETE{" "}
                   </button>
                 )}
-              </div>
+              </button>
             ))}
           </div>
         )}{" "}
         {context.my_Sub_Categories?.length! === 0 && (
-          <div className='ml-3 center outline text-center font-bold py-2 px-4 rounded-sm my-5'>
+          <div className='bg-green-800 text-white m-5 center outline text-center font-bold py-2 px-4 rounded-sm '>
             <h1>NO SUBCATEGORIES ADDED YET</h1>
           </div>
         )}{" "}
@@ -236,7 +242,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                 setshowSCadder(false);
               }
             }}
-            className='ml-3 center  bg-green-800 text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
+            className='m-5 center bg-green-800 text-white  text-center font-bold py-2 px-4 rounded-sm '
           >
             {" "}
             Click here to toggle the dropdown list of Interests{" "}
@@ -245,33 +251,37 @@ const SellerProfile = ({ params: { id } }: Props1) => {
         {session?.user.sub === id && showSCadder === true && (
           <div>
             {context.all_subcategories.length > 0 && (
-              <div className='bg-green-800 text-yellow-300 ml-3 center outline text-center font-bold py-2 px-4 rounded-sm my-5'>
-                <h1>ADD NEW SUBCATEGORIES HERE</h1>
-
-                {context.all_subcategories!.map((sub_category) => (
-                  <div key={sub_category.id}>
-                    {" "}
-                    {check_IF_PresentInMyInterests(sub_category) && (
-                      <div
-                        key={sub_category.id}
-                        className='bg-yellow-300 text-green-800 ml-3 center outline text-center font-bold py-2 px-4 rounded-sm my-5'
-                      >
-                        {sub_category.name}/ Category: {sub_category.categoryID}{" "}
+              <div className=' m-2  center  text-center font-bold py-2 px-4 rounded-sm '>
+                <button className='bg-green-800 text-white p-5 rounded-md'>
+                  ADD NEW SUBCATEGORIES HERE
+                </button>
+                <div className='flex flex-wrap'>
+                  {" "}
+                  {context.all_subcategories!.map((sub_category) => (
+                    <div key={sub_category.id}>
+                      {" "}
+                      {check_IF_PresentInMyInterests(sub_category) && (
                         <button
-                          onClick={() => {
-                            AddProfileSubcat(
-                              sub_category.categoryID,
-                              sub_category.name
-                            );
-                          }}
-                          className='ml-3 center bg-green-800 text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
+                          key={sub_category.id}
+                          className=' m-2  center  text-center font-bold p-5 rounded-sm '
                         >
-                          ADD THIS INTEREST{" "}
+                          <button
+                            onClick={() => {
+                              AddProfileSubcat(
+                                sub_category.categoryID,
+                                sub_category.name
+                              );
+                            }}
+                            className='m-5 bg-green-800 text-white center  text-center font-bold py-2 px-4 rounded-sm '
+                          >
+                            ADD {sub_category.name}/ Category:{" "}
+                            {sub_category.categoryID}{" "}
+                          </button>
                         </button>
-                      </div>
-                    )}
-                  </div>
-                ))}
+                      )}
+                    </div>
+                  ))}{" "}
+                </div>
               </div>
             )}
           </div>
@@ -361,19 +371,51 @@ const SellerProfile = ({ params: { id } }: Props1) => {
         {images.length > 0 && (
           <>
             {" "}
-            <div className='flex items-center justify-center'>
+            <div className='flex flex-wrap items-center justify-center'>
               <button
-                className='ml-3 center  bg-green-800 text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
+                className='m-5 bg-green-800 text-white center   text-center font-bold py-2 px-4 rounded-sm '
                 onClick={handlePrevImage}
               >
                 Previous
               </button>
               <button
-                className='ml-3 center  bg-green-800 text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
+                className='m-5 bg-green-800 text-white center   text-center font-bold py-2 px-4 rounded-sm '
                 onClick={handleNextImage}
               >
                 Next
               </button>{" "}
+              {session?.user.sub === id && (
+                <CldUploadWidget
+                  uploadPreset='bqhf0bxn'
+                  onUpload={(result, widget) => {
+                    if (result.event !== "success") {
+                      return;
+                    }
+                    const info = result.info as CloudinaryResult;
+
+                    let image_upload_parcel: parcel = {
+                      method: "addworkgallery",
+                      id: info.public_id.toString(),
+                      userID: session?.user.sub,
+                    };
+
+                    axios
+                      .post("/api/profileEditor", image_upload_parcel)
+                      .then((resp) => {
+                        context.setworkGalleryPictures(resp.data);
+                      });
+                  }}
+                >
+                  {({ open }) => (
+                    <button
+                      onClick={() => open()}
+                      className='flex bg-green-800 text-white mx-auto  justify-center  font-bold py-2 px-4 rounded-sm'
+                    >
+                      Upload
+                    </button>
+                  )}
+                </CldUploadWidget>
+              )}
               {session?.user.sub === id && (
                 <button
                   onClick={() => {
@@ -389,7 +431,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                         context.setworkGalleryPictures(resp.data);
                       });
                   }}
-                  className='ml-3 center  bg-red-600  text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                  className='m-5 center  bg-red-600  text-white text-center font-bold py-2 px-4 rounded-sm '
                 >
                   DELETE THIS PICTURE
                 </button>
@@ -409,69 +451,73 @@ const SellerProfile = ({ params: { id } }: Props1) => {
 
   function ReviewBox() {
     return (
-      <div className=' bg-green-800  text-center font-bold py-2 px-4 rounded-md my-5'>
+      <div className='   text-center font-bold py-2 px-4 rounded-md '>
         {context.reviewCounter.average !== 0 && (
           <>
             {" "}
-            <button className='ml-3 center bg-yellow-300 text-green-800 text-center font-bold py-2 px-4 rounded-full my-5'>
+            <button className='m-5 bg-green-800 text-white center  text-center font-bold py-2 px-4 rounded-sm '>
               {" "}
-              Average Rating: {context.reviewCounter.average}
+              Average Rating: {context.reviewCounter.average} {""} STARS
             </button>{" "}
             {context.reviewCounter.ones && (
-              <button className='ml-3 center bg-yellow-300 text-green-800 text-center font-bold py-2 px-4 rounded-full my-5'>
+              <button className='m-5 bg-green-800 text-white center  text-center font-bold py-2 px-4 rounded-sm '>
                 Number of 1 star reviews : {context.reviewCounter.ones}
               </button>
             )}
             {context.reviewCounter.twos && (
-              <button className='ml-3 center bg-yellow-300 text-green-800 text-center font-bold py-2 px-4 rounded-full my-5'>
+              <button className='m-5 bg-green-800 text-white center  text-center font-bold py-2 px-4 rounded-sm '>
                 Number of 2 star reviews : {context.reviewCounter.twos}
               </button>
             )}{" "}
             {context.reviewCounter.threes && (
-              <button className='ml-3 center bg-yellow-300 text-green-800 text-center font-bold py-2 px-4 rounded-full my-5'>
+              <button className='m-5 bg-green-800 text-white center  text-center font-bold py-2 px-4 rounded-sm '>
                 Number of 3 star reviews : {context.reviewCounter.threes}
               </button>
             )}{" "}
             {context.reviewCounter.fours && (
-              <button className='ml-3 center bg-yellow-300 text-green-800 text-center font-bold py-2 px-4 rounded-full my-5'>
+              <button className='m-5 bg-green-800 text-white center  text-center font-bold py-2 px-4 rounded-sm '>
                 Number of 4 star reviews : {context.reviewCounter.fours}
               </button>
             )}{" "}
             {context.reviewCounter.fives && (
-              <button className='ml-3 center bg-yellow-300 text-green-800 text-center font-bold py-2 px-4 rounded-full my-5'>
+              <button className='m-5 bg-green-800 text-white center  text-center font-bold py-2 px-4 rounded-sm '>
                 Number of 5 star reviews : {context.reviewCounter.fives}
               </button>
             )}
           </>
         )}
-        {context.reviews.length === 0 && <h1>THIS PERSON HAS NO REVIEWS</h1>}
+        {context.reviews.length === 0 && (
+          <button className=' bg-green-800 text-white'>
+            THIS PERSON HAS NO REVIEWS
+          </button>
+        )}
 
         {context.reviews.length > 0 && (
-          <>
+          <div>
             {" "}
-            <h1 className=' bg-yellow-300 text-green-800 rounded-md p-2'>
+            <button className='  rounded-md p-2 bg-green-800 text-white'>
               LIST OF REVIEWS
-            </h1>{" "}
-            <div className=' text-center font-bold py-2 px-4 rounded-sm my-5'>
+            </button>{" "}
+            <div className=' text-center font-bold py-2 px-4 rounded-sm '>
               {context.reviews.map((review) => (
                 <div
-                  className=' bg-yellow-300 text-green-800 m-5 outline font-bold rounded-sm mx-auto w-5/6'
+                  className='  m-5 outline font-bold rounded-sm mx-auto w-5/6'
                   key={review.id}
                 >
                   <div className=' mx-auto  w-[100%]'>
                     {" "}
-                    <div className='px-10'>JOB ID: {review.Job_Id}</div>{" "}
-                    <div className='px-10'>
-                      {" "}
-                      DATE: {review.date_created.toString()}
-                    </div>
-                    <div className='px-10'>RATING: {review.rating}</div>{" "}
+                    <div className='px-10 bg-green-800 text-white flex flex-1'>
+                      <div>JOB ID: {review.Job_Id}</div>
+                      <div> DATE: {review.date_created.toString()}</div>
+                    </div>{" "}
+                    <div className='px-10'></div>
+                    <div className='px-10'>RATING: {review.rating} STARS</div>
                   </div>{" "}
                   <div className='px-10'>COMMENT: {review.reviewText}</div>{" "}
                 </div>
               ))}
             </div>
-          </>
+          </div>
         )}
       </div>
     );
@@ -479,19 +525,27 @@ const SellerProfile = ({ params: { id } }: Props1) => {
 
   function CertificateBox() {
     return (
-      <div className='ml-3 bg-green-800 text-yellow-300 center outline text-center font-bold py-2 px-4 rounded-md my-5'>
+      <div className='m-5  center  text-center font-bold py-2 px-4 rounded-md '>
         {context.certificates.length === 0 && (
-          <h1>This user currently has no Certificates</h1>
+          <button className='bg-green-800 text-white p-5 rounded-md'>
+            This user currently has no Certificates
+          </button>
         )}
         {context.certificates.length > 0 && (
           <div>
-            <h1>CERTIFICATES</h1>
+            <button className='bg-green-800 text-white p-5 rounded-md'>
+              CERTIFICATES
+            </button>
+
             {context.certificates.map((certificate) => (
               <div
                 key={certificate.id}
-                className='ml-3 bg-yellow-300 text-green-800 center outline text-center font-bold py-2 px-4 rounded-md my-5'
+                className='m-5  center  text-center font-bold py-2 px-4 rounded-md '
               >
                 {certificate.name} / {certificate.Link}{" "}
+                <button className='m-5 center bg-green-800 text-white text-center font-bold py-2 px-4 rounded-sm '>
+                  Open in new tab{" "}
+                </button>
                 {session?.user.sub === id && (
                   <button
                     onClick={() => {
@@ -507,7 +561,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                           context.setcertificates(resp.data);
                         });
                     }}
-                    className='ml-3 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                    className='m-5 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-sm '
                   >
                     DELETE{" "}
                   </button>
@@ -519,14 +573,19 @@ const SellerProfile = ({ params: { id } }: Props1) => {
 
         {session?.user.sub === id && (
           <>
-            <h1>Create new certificates here</h1>
+            <div>
+              {" "}
+              <button className='bg-green-800  text-white p-5 rounded-sm m-5'>
+                Create new certificates here
+              </button>
+            </div>
             <input
-              className='outline text-center font-bold py-2 px-4 rounded-full my-5'
+              className='outline text-center font-bold py-2 px-4 rounded-sm m-5 '
               id='CertificateName'
               placeholder='Certificate Name Goes Here'
             />{" "}
             <input
-              className='outline text-center font-bold py-2 px-4 rounded-full my-5'
+              className='outline text-center font-bold py-2 px-4 rounded-sm m-5  '
               id='Certificatelink'
               placeholder='Certificate link Goes Here'
             />{" "}
@@ -551,7 +610,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                     context.setcertificates(resp.data);
                   });
               }}
-              className='ml-3 center  bg-green-800 text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
+              className='m-5 center   text-center font-bold py-2 px-4 rounded-sm bg-green-800  text-white p-5'
             >
               {" "}
               Click here to add a new certificate to your profile{" "}
@@ -568,11 +627,11 @@ const SellerProfile = ({ params: { id } }: Props1) => {
         onClick={async () => {
           await handleLogin();
         }}
-        className='flex mx-auto w-1/2  justify-center bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full'
+        className='flex mx-auto w-1/2  justify-center bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-sm'
       >
         DO THE TRPC FUNNY
       </button> */}
-      {context.UserLoc.isRepairman !== false && (
+      {context.UserLoc.isRepairman === true && (
         <div>
           {" "}
           <ReviewBox />
@@ -583,61 +642,38 @@ const SellerProfile = ({ params: { id } }: Props1) => {
             <ImageCarousel images={context.workGalleryPictures} />
           </div>{" "}
           {session?.user.sub === id && (
-            <CldUploadWidget
-              uploadPreset='bqhf0bxn'
-              onUpload={(result, widget) => {
-                if (result.event !== "success") {
-                  return;
-                }
-                const info = result.info as CloudinaryResult;
-
-                let image_upload_parcel: parcel = {
-                  method: "addworkgallery",
-                  id: info.public_id.toString(),
-                  userID: session?.user.sub,
-                };
-
-                axios
-                  .post("/api/profileEditor", image_upload_parcel)
-                  .then((resp) => {
-                    context.setworkGalleryPictures(resp.data);
-                  });
-              }}
-            >
-              {({ open }) => (
-                <button
-                  onClick={() => open()}
-                  className='flex mx-auto w-1/2  justify-center bg-green-800 text-yellow-300 font-bold py-2 px-4 rounded-full'
-                >
-                  Upload
-                </button>
-              )}
-            </CldUploadWidget>
+            <div className='flex items-center justify-center w-screen'>
+              <div>
+                <>
+                  {" "}
+                  <button
+                    onClick={() => {
+                      if (showmap === false) {
+                        setshowmap(true);
+                      }
+                      if (showmap === true) {
+                        setshowmap(false);
+                      }
+                    }}
+                    className='m-5 center bg-green-800 text-white text-center font-bold py-2 px-4 rounded-sm '
+                  >
+                    {" "}
+                    Click here to toggle the map{" "}
+                  </button>{" "}
+                </>
+              </div>
+            </div>
           )}
-          {session?.user.sub === id && (
-            <>
+          {showmap === true && (
+            <div>
               {" "}
-              <button
-                onClick={() => {
-                  if (showmap === false) {
-                    setshowmap(true);
-                  }
-                  if (showmap === true) {
-                    setshowmap(false);
-                  }
-                }}
-                className='ml-3 center bg-green-800 text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
-              >
-                {" "}
-                Click here to toggle the map{" "}
-              </button>
-              {showmap === true && (
-                <div>
+              <div className='flex items-center justify-center  w-screen'>
+                <div className=' p-6 rounded-lg shadow-lg'>
                   {" "}
                   <div> Current Radius : {context.UserLoc.TravelRange} KM</div>
                   <input
                     type='number'
-                    className='outline text-center font-bold py-2 px-4 rounded-full my-5'
+                    className='outline text-center font-bold py-2 px-4 rounded-sm '
                     defaultValue={context.UserLoc.TravelRange}
                     id='Radius'
                     placeholder='Radius Goes Here'
@@ -663,18 +699,18 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                           });
                         });
                     }}
-                    className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                    className='m-5 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-sm '
                   >
                     {" "}
                     Click here to update Radius{" "}
                   </button>
-                  <div>
-                    {" "}
-                    <GoogleMapsComponent />
-                  </div>
                 </div>
-              )}{" "}
-            </>
+              </div>
+              <div>
+                {" "}
+                <GoogleMapsComponent />
+              </div>
+            </div>
           )}
         </div>
       )}

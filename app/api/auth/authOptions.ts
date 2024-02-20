@@ -47,6 +47,7 @@ export const authOptions = {
       },
     }),
   ],
+
   callbacks: {
     async jwt({ token, user }: any) {
       // console.log("jwt callback", { token, user, session });

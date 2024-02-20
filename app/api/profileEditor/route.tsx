@@ -117,7 +117,7 @@ export async function POST(req: NextRequest) {
       //   categoryID: parcel1.category,
       // },
       orderBy: [{ categoryID: "desc" }],
-      select: { id: true, name: true, categoryID: true, questions: false },
+      select: { id: true, name: true, categoryID: true },
     });
 
     return NextResponse.json(subcategories);

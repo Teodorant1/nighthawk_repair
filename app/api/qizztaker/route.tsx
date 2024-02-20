@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
         where: {
           categoryID: parcel1.category,
         },
-        select: { id: true, name: true, categoryID: true, questions: false },
+        select: { id: true, name: true, categoryID: true },
       });
 
       return NextResponse.json(subcategories);

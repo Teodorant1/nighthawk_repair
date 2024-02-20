@@ -43,8 +43,8 @@ export const useAppState = (): AppState => {
 };
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [title1, settitle1] = useState<string>("Title goes here");
-  const [timing, settiming] = useState<string>("0");
-  const [hiringstage, sethiringstage] = useState<string>("0");
+  const [timing, settiming] = useState<string>("FLEXIBLE START DATE");
+  const [hiringstage, sethiringstage] = useState<string>("Insurance Quote");
   const [first_to_buy, setfirst_to_buy] = useState<boolean>(false);
   const [minbudget, setminbudget] = useState<number>(0);
   const [maxbudget, setmaxbudget] = useState<number>(0);

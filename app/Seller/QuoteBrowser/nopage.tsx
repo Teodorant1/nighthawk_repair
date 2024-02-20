@@ -7,6 +7,7 @@ import { useJobContext } from "./JobContext";
 import { parcel } from "@/projecttypes";
 
 import { trpc } from "@/app/_trpc/client";
+import { CldImage } from "next-cloudinary";
 
 const IQBrowser = () => {
   const { status, data: session } = useSession();
@@ -143,7 +144,7 @@ const IQBrowser = () => {
                   context.setStage(2);
                   GetData(2, category.name);
                 }}
-                className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5'
+                className='mx-5 center  text-center font-bold py-2 px-4 rounded-full my-5'
               >
                 {category.name}
               </div>
@@ -167,7 +168,7 @@ const IQBrowser = () => {
                   context.setStage(3);
                   GetData(3, sub_category!.name);
                 }}
-                className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5 '
+                className='mx-5 center  text-center font-bold py-2 px-4 rounded-full my-5 '
               >
                 {sub_category.name}
               </div>
@@ -215,19 +216,19 @@ const IQBrowser = () => {
     }
 
     return (
-      <div className='bg-yellow-300 text-green-800 ml-3 center outline text-center font-bold py-2 px-4  rounded-md my-5 h-screen overflow-y-auto'>
+      <div className=' mx-5 center  text-center font-bold py-2 px-4  rounded-md my-5 h-screen overflow-x-auto'>
         {myjobs && myjobs?.data?.length! > 0 && (
           <>
             {myjobs!.data!.map(
               (job) =>
                 isJobVisible(job) && (
                   <div
-                    className='ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'
+                    className='mx-5 center outline text-center font-bold py-2 px-4 rounded-md my-5 overflow-x-auto'
                     key={job.id}
                   >
                     {context.COINS > 20 && (
                       <button
-                        className='ml-3 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
+                        className='mx-5 center bg-green-800 text-white text-center font-bold py-2 px-4 rounded-full my-5'
                         onClick={() => {
                           BuyAlead(job.id);
                         }}
@@ -237,7 +238,7 @@ const IQBrowser = () => {
                     )}{" "}
                     {context.currentJobID !== job.id && (
                       <button
-                        className='ml-3 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
+                        className='mx-5 center bg-green-800 text-white text-center font-bold py-2 px-4 rounded-full my-5'
                         onClick={() => {
                           toggleShow(job.id);
                         }}
@@ -247,7 +248,7 @@ const IQBrowser = () => {
                     )}{" "}
                     {context.currentJobID === job.id && (
                       <button
-                        className='ml-3 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
+                        className='mx-5 center bg-green-800 text-white text-center font-bold py-2 px-4 rounded-full my-5'
                         onClick={() => {
                           toggleShow(job.id);
                         }}
@@ -278,7 +279,25 @@ const IQBrowser = () => {
                     )}
                     {context.currentJobID === job.id && (
                       <div>
-                        <AnsweredQuestionBox qstns={job.answeredQuestions} />
+                        {" "}
+                        <div>
+                          <AnsweredQuestionBox qstns={job.answeredQuestions} />
+                        </div>
+                        <div className='flex flex-wrap p-2 m-2'>
+                          {job.pictures.map((picture) => (
+                            <div
+                              className='m-2 p-2'
+                              key={picture.id}
+                            >
+                              <CldImage
+                                src={picture.cloudinaryID}
+                                width={300}
+                                height={200}
+                                alt={picture.cloudinaryID}
+                              />{" "}
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     )}
                     <div></div>
@@ -303,7 +322,7 @@ const IQBrowser = () => {
           <>
             {AnswerArray!.map((Answer) => (
               <div key={Answer.id}>
-                <div className='bg-green-800 text-yellow-300 ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'>
+                <div className='bg-green-800 text-white mx-5 center  text-center font-bold py-2 px-4 rounded-md my-5'>
                   {" "}
                   <div> Question: {Answer.questionID}</div>
                   <div>Answer: {Answer.text_answer}</div>
@@ -339,11 +358,11 @@ const IQBrowser = () => {
     }
 
     return (
-      <div className='ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'>
-        <div className='ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'>
+      <div className='mx-5 center  text-center font-bold py-2 px-4 rounded-md my-5'>
+        <div className='mx-5 center  text-center font-bold py-2 px-4 rounded-md my-5'>
           <h1>SORT BY</h1>
           <button
-            className='ml-3 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+            className='mx-5 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
             onClick={() => {
               filterSubjobs("budget", false);
             }}
@@ -352,7 +371,7 @@ const IQBrowser = () => {
             Sort by ASCENDING VALUE{" "}
           </button>
           <button
-            className='ml-3 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+            className='mx-5 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
             onClick={() => {
               filterSubjobs("budget", true);
             }}
@@ -361,13 +380,13 @@ const IQBrowser = () => {
             Sort by DESCENDING VALUE{" "}
           </button>
         </div>
-        <div className='ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'>
+        <div className='mx-5 center  text-center font-bold py-2 px-4 rounded-md my-5'>
           {context.firstTobuy === false && (
             <button
               onClick={() => {
                 context.setFirstToBuy(true);
               }}
-              className='ml-3 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+              className='mx-5 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
             >
               ENABLE FIRST TO BUY FILTER
             </button>
@@ -377,7 +396,7 @@ const IQBrowser = () => {
               onClick={() => {
                 context.setFirstToBuy(false);
               }}
-              className='ml-3 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+              className='mx-5 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
             >
               DISABLE FIRST TO BUY FILTER
             </button>
@@ -387,7 +406,7 @@ const IQBrowser = () => {
               onClick={() => {
                 context.setPicturesRequired(true);
               }}
-              className='ml-3 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+              className='mx-5 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
             >
               ENABLE LEADS WITH IMAGES
             </button>
@@ -397,13 +416,13 @@ const IQBrowser = () => {
               onClick={() => {
                 context.setPicturesRequired(false);
               }}
-              className='ml-3 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+              className='mx-5 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
             >
               DISABLE LEADS WITH IMAGES
             </button>
           )}{" "}
         </div>
-        <div className='ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'>
+        <div className='mx-5 center  text-center font-bold py-2 px-4 rounded-md my-5'>
           <h1>TIMING</h1>{" "}
           {context.timingPresets.map((preset) => (
             <div key={preset.toString()}>
@@ -416,7 +435,7 @@ const IQBrowser = () => {
                     );
                     context.setTimingCriteria(newcriteria);
                   }}
-                  className='ml-3 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                  className='mx-5 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
                 >
                   DISABLE {preset} CRITERIA
                 </button>
@@ -427,7 +446,7 @@ const IQBrowser = () => {
                     const newcriteria = [...context.timingCriteria, preset];
                     context.setTimingCriteria(newcriteria);
                   }}
-                  className='ml-3 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                  className='mx-5 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
                 >
                   ENABLE {preset} CRITERIA
                 </button>
@@ -435,11 +454,11 @@ const IQBrowser = () => {
             </div>
           ))}
         </div>
-        <div className='ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'>
+        <div className='mx-5 center  text-center font-bold py-2 px-4 rounded-md my-5'>
           <h1>BUDGET</h1>{" "}
           <div className='flex'>
             {" "}
-            <div className='flex-1 ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'>
+            <div className='flex-1 mx-5 center  text-center font-bold py-2 px-4 rounded-md my-5'>
               {" "}
               <h1>MINIMAL BUDGET</h1>
               {context.budgetPresets.map((preset) => (
@@ -450,7 +469,7 @@ const IQBrowser = () => {
                       // onClick={() => {
                       //   setminbudget(preset);
                       // }}
-                      className='ml-3 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                      className='mx-5 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
                     >
                       Minimal budget is set to {preset}
                     </button>
@@ -460,7 +479,7 @@ const IQBrowser = () => {
                       onClick={() => {
                         context.setMinBudget(preset);
                       }}
-                      className='ml-3 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                      className='mx-5 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
                     >
                       Set minimum budget to {preset}
                     </button>
@@ -468,7 +487,7 @@ const IQBrowser = () => {
                 </div>
               ))}
             </div>
-            <div className='flex-1 ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'>
+            <div className='flex-1 mx-5 center  text-center font-bold py-2 px-4 rounded-md my-5'>
               {" "}
               <h1>MAXIMUM BUDGET</h1>
               {context.budgetPresets.map((preset) => (
@@ -479,7 +498,7 @@ const IQBrowser = () => {
                       // onClick={() => {
 
                       // }}
-                      className='ml-3 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                      className='mx-5 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
                     >
                       Maximum budget is set to {preset}{" "}
                     </button>
@@ -489,7 +508,7 @@ const IQBrowser = () => {
                       onClick={() => {
                         context.setMaxBudget(preset);
                       }}
-                      className='ml-3 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                      className='mx-5 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
                     >
                       Set maximum budget to {preset}
                     </button>
@@ -527,11 +546,11 @@ const IQBrowser = () => {
       }
     };
     return (
-      <div className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5'>
+      <div className='mx-5 center  text-center font-bold py-2 px-4 rounded-full my-5'>
         <h1> You can filter out jobs by radius </h1>
         {/* create a button that is mapped to the function which retrieves the users location */}
         <button
-          className=' bg-blue-600  hover:bg-blue-900 ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
+          className=' bg-blue-600  hover:bg-blue-900 mx-5  text-white center  text-center font-bold py-2 px-4 rounded-full my-5'
           onClick={getUserLocation}
         >
           Load User Location
@@ -546,7 +565,7 @@ const IQBrowser = () => {
             {/* {radius} */}
             <input
               type='number'
-              className='mx-[20%] w-[50%] h-[10%] outline text-center font-bold text-xl py-10 px-10  my-5'
+              className='mx-[20%] w-[50%] h-[10%]  text-center font-bold text-xl py-10 px-10  my-5'
               id='radius'
               value={context.radius}
               onChange={(e) => context.setRadius(Number(e.target.value))}
@@ -556,7 +575,7 @@ const IQBrowser = () => {
 
         {context.userLocation !== null && (
           <button
-            className=' bg-blue-600  hover:bg-blue-900 ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
+            className=' bg-blue-600  hover:bg-blue-900 mx-5  text-white center  text-center font-bold py-2 px-4 rounded-full my-5'
             onClick={() => {
               context.setStage(1);
             }}
@@ -574,32 +593,38 @@ const IQBrowser = () => {
         <div>
           {context.stage === 3 && (
             <div>
-              <button
-                className='ml-3 center outline  outline-yellow-300   bg-green-800 text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
-                onClick={() => {
-                  if (context.filterBoxEnabled === false) {
-                    context.setFilterBoxEnabled(true);
-                  } else {
-                    context.setFilterBoxEnabled(false);
-                  }
-                }}
-              >
-                FILTERS
-              </button>{" "}
-              <button className='ml-3 center outline outline-yellow-300  bg-green-800 text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'>
-                AVAILABLE CREDIT: £{context.COINS}
-              </button>
-              <button
-                onClick={() => {
-                  context.setleads_to_look_at("myleads");
-                }}
-                className='ml-3 center outline outline-yellow-300   bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
-              >
-                NUMBER OF APPLIED JOBS: {context.appliedJobs.length}
-              </button>
-              <div className='ml-3 center outline outline-yellow-300  bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'>
-                A LIST OF FRESH JOBS{" "}
+              <div className='flex flex-wrap items-center justify-center w-screen'>
+                <button
+                  className='mx-5 center  -white text-white  bg-green-800  text-center font-bold py-2 px-4 rounded-full my-5'
+                  onClick={() => {
+                    if (context.filterBoxEnabled === false) {
+                      context.setFilterBoxEnabled(true);
+                    } else {
+                      context.setFilterBoxEnabled(false);
+                    }
+                  }}
+                >
+                  FILTERS
+                </button>{" "}
+                <button className='mx-5 center  -whit text-white  bg-green-800  text-center font-bold py-2 px-4 rounded-full my-5'>
+                  AVAILABLE CREDIT: £{context.COINS}
+                </button>
+                <button
+                  onClick={() => {
+                    context.setleads_to_look_at("myleads");
+                  }}
+                  className='mx-5 center  -white  text-white bg-green-800   text-center font-bold py-2 px-4 rounded-full my-5'
+                >
+                  NUMBER OF APPLIED JOBS: {context.appliedJobs.length}
+                </button>
               </div>
+              <div className='flex flex-wrap items-center justify-center w-screen'>
+                {" "}
+                <div className=' mx-5 center  -white text-white bg-green-800   text-center font-bold py-2 px-4 rounded-full my-5'>
+                  A LIST OF FRESH JOBS{" "}
+                </div>
+              </div>
+
               {context.filterBoxEnabled === true && <FilterBox />}
             </div>
           )}
@@ -641,30 +666,14 @@ const IQBrowser = () => {
       }
     };
 
-    // const parcel1: parcel = {
-    //   escalationlevel: 1,
-    // };
-    // useEffect(() => {
-    //   axios.post("/api/qizztaker", parcel1).then((resp) => {
-    //     console.log(resp.data);
-    //   });
-    // }, []);
     return (
       <div
-        className='ml-3 center bg-green-800 text-yellow-300 outline text-center font-bold py-2 px-4 rounded-md my-5 break-words'
+        className='mx-5 center bg-green-800 text-white  text-center font-bold py-2 px-4 rounded-md my-5 break-words'
         key={job?.data?.id}
       >
-        {/* {context.COINS > 20 && (
-      <button
-        className='ml-3 center bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
-
-      >
-        CLICK HERE TO APPLY
-      </button>
-    )}{" "} */}
         {context.currentJobID !== job?.data?.id && (
           <button
-            className='ml-3 center bg-yellow-300 text-green-800 text-center font-bold py-2 px-4 rounded-full my-5'
+            className='mx-5 center bg-green-800 text-white text-center font-bold py-2 px-4 rounded-full my-5'
             onClick={() => {
               toggleShow(job?.data?.id!);
             }}
@@ -674,7 +683,7 @@ const IQBrowser = () => {
         )}{" "}
         {context.currentJobID === job?.data?.id && (
           <button
-            className='ml-3 center bg-yellow-300 text-green-800 text-center font-bold py-2 px-4 rounded-full my-5'
+            className='mx-5 center bg-green-800 text-white text-center font-bold py-2 px-4 rounded-full my-5'
             onClick={() => {
               toggleShow(job?.data?.id!);
             }}
@@ -691,7 +700,7 @@ const IQBrowser = () => {
                 {appliedjob.status === preset && preset !== "ALL" && (
                   <button
                     onClick={() => {}}
-                    className='ml-3  bg-green-600 text-white center text-center font-bold py-2 px-4 rounded-full  my-5'
+                    className='mx-5  bg-green-600 text-white center text-center font-bold py-2 px-4 rounded-full  my-5'
                   >
                     {" "}
                     {preset}
@@ -702,7 +711,7 @@ const IQBrowser = () => {
                     onClick={async () => {
                       await handleTagJob(appliedjob.id, preset);
                     }}
-                    className='ml-3  bg-red-600 text-white center text-center font-bold py-2 px-4 rounded-full  my-5'
+                    className='mx-5  bg-red-600 text-white center text-center font-bold py-2 px-4 rounded-full  my-5'
                   >
                     {" "}
                     TAG AS{""} {preset}
@@ -747,13 +756,13 @@ const IQBrowser = () => {
 
   function MyLeads() {
     return (
-      <div>
+      <div className=' flex flex-wrap'>
         {" "}
         <button
           onClick={() => {
             context.setleads_to_look_at("newleads");
           }}
-          className='ml-3 center bg-green-800 text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
+          className='mx-5 center bg-green-800 text-white text-center font-bold py-2 px-4 rounded-full my-5'
         >
           GO TO FRESH JOBS
         </button>{" "}
@@ -765,7 +774,7 @@ const IQBrowser = () => {
                 onClick={() => {
                   context.setmyLead_filter_Current_Setting(preset);
                 }}
-                className='ml-3  bg-green-600 text-white center text-center font-bold py-2 px-4 rounded-full  my-5'
+                className='mx-5  bg-green-600 text-white center text-center font-bold py-2 px-4 rounded-full  my-5'
               >
                 {" "}
                 {preset}
@@ -776,7 +785,7 @@ const IQBrowser = () => {
                 onClick={() => {
                   context.setmyLead_filter_Current_Setting(preset);
                 }}
-                className='ml-3  bg-red-600 text-white center text-center font-bold py-2 px-4 rounded-full  my-5'
+                className='mx-5  bg-red-600 text-white center text-center font-bold py-2 px-4 rounded-full  my-5'
               >
                 {" "}
                 DISPLAY{""} {preset}
@@ -784,8 +793,8 @@ const IQBrowser = () => {
             )}
           </>
         ))}
-        <div className='ml-3 center text-center font-bold py-2 px-4 rounded-full  my-5'>
-          <div className='ml-3 center bg-green-800 text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'>
+        <div className='mx-5 center text-center font-bold py-2 px-4 rounded-full  my-5'>
+          <div className='mx-5 center text-center font-bold py-2 px-4 rounded-full my-5'>
             MY LEADS
           </div>
           {context.appliedJobs.length > 0 && (

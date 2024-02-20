@@ -34,35 +34,48 @@ const BuyerJoblist = () => {
     });
 
     return (
-      <div className='ml-3 center bg-green-800 text-yellow-300 text-center font-bold py-2 px-4 rounded-md my-5'>
+      <div className='m-5 center text-center font-bold py-2 px-4 rounded-md '>
         {" "}
-        <h1 className='m-5 p-5'>APPLICATIONS</h1>{" "}
         {applications.data?.length === 0 && (
-          <div className='ml-3 center bg-yellow-300 text-green-800 text-center font-bold py-2 px-4 rounded-md my-5'>
-            NO APPLICATIONS YET
+          <div className='flex items-center justify-center w-[100%]'>
+            <button className='m-5 center bg-green-800 text-white   text-center font-bold py-2 px-4 rounded-md '>
+              NO APPLICATIONS YET
+            </button>{" "}
+          </div>
+        )}
+        {applications.data?.length! > 0 && (
+          <div className='flex items-center justify-center w-[100%]'>
+            {" "}
+            <button className='m-5 p-5 rounded-md bg-green-800 text-white'>
+              APPLICATIONS
+            </button>{" "}
           </div>
         )}
         {applications.data?.length! > 0 &&
           applications.data?.map((application) => (
-            <div
-              className='m-5 p-5 bg-yellow-300 text-green-800'
-              key={application.userID}
-            >
+            <>
               {" "}
-              <a
-                key={application.id}
-                href={"/Both/ProfilePage/" + application.userID}
-                target='_blank'
-                rel='noopener noreferrer'
-                className='ml-3 center bg-green-800  text-yellow-300 font-bold py-2 px-4 rounded-md my-5'
+              <div
+                className='flex items-center justify-center w-[100%]'
+                key={application.userID}
               >
-                CLICK HERE TO GO TO PROFILE OF USER{""}
-                {application.userID}
-              </a>{" "}
-              <button className='ml-3 center bg-green-800  text-yellow-300 font-bold py-2 px-4 rounded-md my-5'>
-                CLICK TO CONNECT{" "}
-              </button>
-            </div>
+                <a
+                  key={application.id}
+                  href={"/Both/ProfilePage/" + application.userID}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='m-5 center bg-green-800  text-white font-bold py-2 px-4 rounded-md '
+                >
+                  PROFILE{""}
+                </a>{" "}
+              </div>
+              <div className='flex items-center justify-center w-[100%]'>
+                {" "}
+                <button className='m-5 center bg-green-800  text-white font-bold py-2 px-4 rounded-md '>
+                  E-MAIL: {application.submitterEmail}{" "}
+                </button>
+              </div>
+            </>
           ))}
       </div>
     );
@@ -97,14 +110,17 @@ const BuyerJoblist = () => {
           <>
             {mypostedjobs.data?.map((job) => (
               <div
-                className='ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'
+                className=' overflow-x-auto m-5 center outline text-center font-bold py-2 px-4 rounded-md '
                 key={job.id}
               >
-                <h1 className='ml-3 center bg-yellow-300 text-green-800 text-center font-bold py-2 px-4 rounded-md my-5'>
-                  TITLE:{job.title}
-                </h1>{" "}
-                <button
-                  className='ml-3 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
+                <div className='flex flex-wrap items-center justify-center w-[100%]'>
+                  {" "}
+                  <button className='whitespace-normal m-5 center  bg-green-800 text-white  text-center font-bold py-2 px-4 rounded-md '>
+                    TITLE:{job.title}
+                  </button>{" "}
+                </div>
+                {/* <button
+                  className='m-5 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-md '
                   onClick={() => {
                     toggleShowApplications(job.id);
                   }}
@@ -112,16 +128,16 @@ const BuyerJoblist = () => {
                   CLICK HERE TO TOGGLE APPLICATIONS
                 </button>{" "}
                 <button
-                  className='ml-3 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
+                  className='m-5 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-md '
                   onClick={() => {
                     toggleShow(job.id);
                   }}
                 >
                   CLICK HERE TO TOGGLE DETAILS
-                </button>{" "}
+                </button>{" "} */}
                 {job.isVisible === false && (
                   <button
-                    className='ml-3 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                    className='m-5 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-md '
                     onClick={() => {
                       if (job.isVisible === false) {
                         handle_ToggleVisibilityStatus_in_db(job.id, true);
@@ -136,7 +152,7 @@ const BuyerJoblist = () => {
                 )}{" "}
                 {job.isVisible === true && (
                   <button
-                    className='ml-3 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                    className='m-5 center bg-green-800 text-white text-center font-bold py-2 px-4 rounded-md '
                     onClick={() => {
                       if (job.isVisible === false) {
                         handle_ToggleVisibilityStatus_in_db(job.id, true);
@@ -149,12 +165,12 @@ const BuyerJoblist = () => {
                     CLICK HERE TO MAKE IT INVISIBLE
                   </button>
                 )}
-                <div className=''>
+                <div>
                   {" "}
                   {true && (
-                    <div className=' flex-auto ml-3 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-md my-5'>
+                    <div className='w-90p flex-auto m-5 center  text-center font-bold py-2 px-4 rounded-md '>
                       {" "}
-                      <div>ID:{job.id}</div>
+                      <div className=' whitespace-normal'>ID:{job.id}</div>
                       <div>
                         1ST TO BUY: {job.first_to_buy === true && <>true</>}
                         {job.first_to_buy === false && <>false</>}
@@ -190,7 +206,7 @@ const BuyerJoblist = () => {
   }
 
   return (
-    <div className='ml-3 center outline text-center font-bold py-2 px-4 rounded-md my-5'>
+    <div className='m-5 center text-center font-bold py-2 px-4 rounded-md overflow-y-hidden overflow-x-hidden'>
       {session && <JoblistBox />}
     </div>
   );

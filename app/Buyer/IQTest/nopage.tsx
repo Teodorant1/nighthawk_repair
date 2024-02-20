@@ -285,7 +285,7 @@ const QIZZTAKER = () => {
   function CategoryBOX() {
     return (
       <div>
-        <div className='ml-3 center outline outline-green-800  bg-yellow-300  text-green-800 text-center font-bold py-2 px-4 rounded-full my-5'>
+        <div className='m-5 center outline  bg-green-800 text-white   text-center font-bold py-2 px-4 rounded-full my-5'>
           STEP 1. PICK A CATEGORY{" "}
         </div>
         {category_Array?.length! > 0 && (
@@ -298,7 +298,7 @@ const QIZZTAKER = () => {
                   setstage(2);
                   GetData(2, category.name);
                 }}
-                className='ml-3 center outline outline-yellow-300  bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
+                className='m-5 center outline     text-center font-bold py-2 px-4 rounded-full my-5'
               >
                 {category.name}
               </div>
@@ -311,7 +311,7 @@ const QIZZTAKER = () => {
   function SubcategoryBOX() {
     return (
       <div>
-        <div className='ml-3 center outline outline-green-800  bg-yellow-300  text-green-800 text-center font-bold py-2 px-4 rounded-full my-5'>
+        <div className='m-5 center outline  bg-green-800 text-white   text-center font-bold py-2 px-4 rounded-full my-5'>
           STEP 2. PICK A SUBCATEGORY{" "}
         </div>
         {sub_category_Array?.length! > 0 && (
@@ -325,7 +325,7 @@ const QIZZTAKER = () => {
                   GetData(3, sub_category!.name);
                   GetData(3.5, sub_category!.name);
                 }}
-                className='ml-3 center outline outline-yellow-300  bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
+                className='m-5 center outline     text-center font-bold py-2 px-4 rounded-full my-5'
               >
                 {sub_category.name}
               </div>
@@ -340,15 +340,15 @@ const QIZZTAKER = () => {
     return (
       <div className='bg-green-500'>
         {" "}
-        <button
+        <div
           onClick={() => {
             setstage(3.4);
           }}
-          className='ml-3 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-full my-5'
+          className='m-5 center outline bg-green-800 text-white    text-center font-bold py-2 px-4 rounded-full my-5'
         >
           {" "}
           Click here to proceed to the next step{" "}
-        </button>
+        </div>
         {optQuestion_Array!.length === 0 && (
           <>
             This questionare has no optional questions, so you can just proceed
@@ -364,9 +364,11 @@ const QIZZTAKER = () => {
                     {AnsweredQuestionsArray.includes(question.id) === false && (
                       <div
                         key={question.id}
-                        className='ml-3 center outline text-center font-bold py-2 px-4  my-5'
+                        className='m-5 center outline text-center font-bold py-2 px-4  my-5'
                       >
-                        <div> {question.text_Question}?</div>
+                        <div className='m-5 center outline bg-green-800 text-white    text-center font-bold py-2 px-4 rounded-full my-5'>
+                          {question.text_Question}?
+                        </div>
                         <div>
                           {" "}
                           <AnswerBOX
@@ -393,14 +395,14 @@ const QIZZTAKER = () => {
   function QuestionBOX() {
     return (
       <div>
-        <div className='ml-3 center outline outline-green-800  bg-yellow-300  text-green-800 text-center font-bold py-2 px-4 rounded-full my-5'>
+        <div className='m-5 center outline bg-green-800 text-white    text-center font-bold py-2 px-4 rounded-full my-5'>
           {" "}
           Questionare Stage
         </div>
         {true && (
           <>
             {" "}
-            <div className='ml-3 center outline outline-green-800  bg-yellow-300  text-green-800 text-center font-bold py-2 px-4 rounded-full my-5'>
+            <div className='m-5 center outline   bg-green-800 text-white  text-center font-bold py-2 px-4 rounded-full my-5'>
               {" "}
               You have answered {AnsweredQuestionsArray?.length!}/
               {Question_Array?.length!} questions{" "}
@@ -410,15 +412,15 @@ const QIZZTAKER = () => {
         {AnsweredQuestionsArray?.length! >= Question_Array?.length! && (
           <>
             {" "}
-            <button
+            <div
               onClick={() => {
                 setstage(3.4);
               }}
-              className='ml-3 center outline outline-yellow-300  bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
+              className='m-5 center outline bg-green-800 text-white    text-center font-bold py-2 px-4 rounded-full my-5'
             >
               {" "}
               Click here to proceed to the next step{" "}
-            </button>
+            </div>
             {/* <OptionalQuestionBOX /> */}
           </>
         )}
@@ -431,9 +433,12 @@ const QIZZTAKER = () => {
                     {AnsweredQuestionsArray.includes(question.id) === false && (
                       <div
                         key={question.id}
-                        className='ml-3 center outline outline-yellow-300  bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-sm my-5'
+                        className='m-5 center   text-center font-bold py-2 px-4 rounded-sm my-5'
                       >
-                        <div> {question.text_Question}?</div>
+                        <div className='m-5 center outline bg-green-800 text-white    text-center font-bold py-2 px-4 rounded-full my-5'>
+                          {" "}
+                          {question.text_Question}?
+                        </div>
                         <div>
                           {" "}
                           <AnswerBOX
@@ -495,7 +500,7 @@ const QIZZTAKER = () => {
                         ]);
                       }}
                       key={answer.text_answer}
-                      className='ml-3 center outline outline-green-800  bg-yellow-300  text-green-800 text-center font-bold py-2 px-4 rounded-full my-5'
+                      className='m-5 center outline bg-white text-center font-bold py-2 px-4 rounded-full my-5'
                     >
                       {" "}
                       {answer.text_answer}{" "}
@@ -509,7 +514,7 @@ const QIZZTAKER = () => {
         {IsClicked === true && (
           <>
             {" "}
-            <div className='ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5'>
+            <div className='m-5 center outline text-center font-bold py-2 px-4 rounded-full my-5'>
               {" "}
               You have already answered this question{" "}
             </div>
@@ -521,7 +526,7 @@ const QIZZTAKER = () => {
 
   function SubmitBox() {
     return (
-      <div>
+      <div className='justify-center items-center'>
         {AnsweredQuestionsArray.length > 0 && (
           <>
             {AnsweredQuestionsArray.length >= Question_Array.length && (
@@ -531,16 +536,16 @@ const QIZZTAKER = () => {
                   <>
                     {" "}
                     <GeolocationBox />
-                    <button
+                    <div
                       onClick={() => {
                         setcoordsTouched(true);
                       }}
-                      className='ml-3 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
+                      className='m-5 center bg-green-800 text-white   text-center font-bold py-2 px-4 rounded-full my-5'
                     >
                       {" "}
                       Click here to finalize coordinates and go to the final
                       page{" "}
-                    </button>
+                    </div>
                   </>
                 )}
                 {coordsTouched && (
@@ -548,17 +553,20 @@ const QIZZTAKER = () => {
                     {" "}
                     {status === "authenticated" && (
                       <>
-                        <input
-                          type='text'
-                          className='mx-[20%] w-[50%] h-[10%]  outline text-center font-bold py-10 px-10  my-5'
-                          id='ExtraDetails'
-                          placeholder='Extra details go here'
-                        />{" "}
+                        {" "}
+                        <div className='flex justify-center items-center'>
+                          <input
+                            type='text'
+                            className=' w-[80%] h-[15%]  outline text-center font-bold py-10 px-10  my-5'
+                            id='ExtraDetails'
+                            placeholder='Extra details go here'
+                          />{" "}
+                        </div>{" "}
                         <div
                           onClick={() => {
                             GetData(5);
                           }}
-                          className=' bg-green-800  text-yellow-300  ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5'
+                          className=' bg-green-800 text-white m-3 center  text-center font-bold py-2 px-4 rounded-full my-5'
                         >
                           CLICK HERE TO SUBMIT{" "}
                         </div>
@@ -566,7 +574,7 @@ const QIZZTAKER = () => {
                     )}
                     {status === "unauthenticated" && (
                       <div className='px-[40%]'>
-                        {/* <div className='bg-blue-900  ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'> */}
+                        {/* <div className='bg-blue-900  m-5  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'> */}
                         <div>
                           You are not LOGGED IN , so you can either click to
                           submit with your existing credentials OR submit and
@@ -626,7 +634,7 @@ const QIZZTAKER = () => {
                           onClick={() => {
                             GetData(6, "EXISTINGACCOUNT");
                           }}
-                          className=' bg-blue-600  hover:bg-blue-900 ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
+                          className=' bg-blue-600  hover:bg-blue-900 m-5  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
                         >
                           CLICK HERE TO SUBMIT WITH YOUR EXISTING ACCOUNT{" "}
                         </div>{" "}
@@ -634,7 +642,7 @@ const QIZZTAKER = () => {
                           onClick={() => {
                             GetData(6, "CREATEACCOUNT");
                           }}
-                          className=' bg-blue-600  hover:bg-blue-900 ml-3  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
+                          className=' bg-blue-600  hover:bg-blue-900 m-5  text-white center outline text-center font-bold py-2 px-4 rounded-full my-5'
                         >
                           CLICK HERE TO SUBMIT AND CREATE ACCOUNT{" "}
                         </div>
@@ -669,12 +677,12 @@ const QIZZTAKER = () => {
             setstage(4);
             setpictures(pictures2);
           }}
-          className='ml-3 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
+          className='m-5 center outline bg-green-800 text-white    text-center font-bold py-2 px-4 rounded-full my-5'
         >
           {" "}
           Click here to move to the next step{" "}
         </button>{" "}
-        <button className='ml-3 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'>
+        <button className='m-5 center bg-green-800 text-white  text-center font-bold py-2 px-4 rounded-full my-5'>
           {" "}
           You have uploaded {pictures2.length} pictures so far.
         </button>
@@ -692,7 +700,7 @@ const QIZZTAKER = () => {
           {({ open }) => (
             <button
               onClick={() => open()}
-              className='ml-3 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
+              className='m-5 center bg-green-800 text-white  text-center font-bold py-2 px-4 rounded-full my-5'
             >
               Upload
             </button>
@@ -701,19 +709,22 @@ const QIZZTAKER = () => {
         <>
           {" "}
           {pictures2.length > 0 && (
-            <>
+            <div className=' p-5 flex flex-wrap'>
               {pictures2.map((id) => (
-                <div key={id.toString()}>
+                <div
+                  className='p-5 m-5'
+                  key={id}
+                >
                   {" "}
                   <CldImage
-                    src={id.toString()}
+                    src={id}
                     width={300}
                     height={200}
-                    alt={id.toString()}
+                    alt={id}
                   />{" "}
                 </div>
               ))}
-            </>
+            </div>
           )}{" "}
         </>
       </div>
@@ -740,20 +751,23 @@ const QIZZTAKER = () => {
             />
           )}
         </GoogleMap>
-        {clickPosition && (
+        {/* {clickPosition && (
           <div>
             <h3>Clicked Coordinates:</h3>
             <p>Latitude: {clickPosition.lat.toFixed(6)}</p>
             <p>Longitude: {clickPosition.lng.toFixed(6)}</p>
           </div>
-        )}
+        )} */}
       </LoadScript>
     );
   }
 
   function SuccessBox() {
     return (
-      <> YOU HAVE UPLOADED THE JOB , CHECK YOUR EMAIL FOR CONFIRMATION EMAIL</>
+      <div className='m-5 center bg-green-800 text-white text-center font-bold py-2 px-4 rounded-full my-5'>
+        {" "}
+        YOU HAVE UPLOADED THE JOB , CHECK YOUR EMAIL FOR CONFIRMATION EMAIL
+      </div>
     );
   }
 
@@ -764,11 +778,11 @@ const QIZZTAKER = () => {
 
     return (
       <div>
-        <div>
+        <div className='flex justify-center items-center'>
           {" "}
           <input
             type='text'
-            className='mx-[20%] w-[50%] h-[10%] outline text-center font-bold text-xl py-10 px-10  my-5'
+            className='mx-20  h-[10%] outline text-center font-bold text-xl py-10 px-10  my-5'
             id='title2'
             defaultValue={title1}
             onBlur={(e) => {
@@ -783,27 +797,27 @@ const QIZZTAKER = () => {
           />{" "}
         </div>{" "}
         {first_to_buy === true && (
-          <button
+          <div
             onClick={() => {
               setfirst_to_buy(false);
             }}
-            className='ml-3 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+            className='m-5 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
           >
             Click here to disable first to buy
-          </button>
+          </div>
         )}
         {first_to_buy === false && (
-          <button
+          <div
             onClick={() => {
               setfirst_to_buy(true);
             }}
-            className='ml-3 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
+            className='m-5 center outline bg-green-800 text-white    text-center font-bold py-2 px-4 rounded-full my-5'
           >
             Click here to enable first to buy
-          </button>
+          </div>
         )}
         <div>
-          <div className='ml-3 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'>
+          <div className='m-5 center bg-green-800 text-white    text-center font-bold py-2 px-4 rounded-full my-5'>
             Timing : {timing}
           </div>
           {timingPRESETS!.map((preset) => (
@@ -812,14 +826,14 @@ const QIZZTAKER = () => {
               onClick={() => {
                 settiming(preset.toString());
               }}
-              className='outline-green-800  bg-yellow-300  text-green-800 ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5 '
+              className='    m-5 center outline text-center font-bold py-2 px-4 rounded-full my-5 '
             >
               {preset}
             </div>
           ))}
         </div>
         <div>
-          <div className='ml-3 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'>
+          <div className='m-5 center bg-green-800 text-white    text-center font-bold py-2 px-4 rounded-full my-5'>
             Hiring Stage : {hiringstage}
           </div>
           {hiringstagePRESETS!.map((preset) => (
@@ -828,14 +842,14 @@ const QIZZTAKER = () => {
               onClick={() => {
                 sethiringstage(preset.toString());
               }}
-              className='outline-green-800  bg-yellow-300  ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5 '
+              className='   m-5 center outline text-center font-bold py-2 px-4 rounded-full my-5 '
             >
               {preset}
             </div>
           ))}
         </div>
         <div>
-          <div className='ml-3 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'>
+          <div className='m-5 center bg-green-800 text-white    text-center font-bold py-2 px-4 rounded-full my-5'>
             Minimum Budget : {minbudget}
           </div>
           {minbudgetPRESETS!.map((preset) => (
@@ -844,14 +858,14 @@ const QIZZTAKER = () => {
               onClick={() => {
                 setminbudget(preset);
               }}
-              className='outline-green-800  bg-yellow-300  ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5 '
+              className='   m-5 center outline text-center font-bold py-2 px-4 rounded-full my-5 '
             >
               {preset}
             </div>
           ))}
         </div>{" "}
         <div>
-          <div className='ml-3 center bg-green-800 text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'>
+          <div className='m-5 center bg-green-800 text-white   text-center font-bold py-2 px-4 rounded-full my-5'>
             Current Maximum Budget : {maxbudget}
           </div>
           {maxbudgetPRESETS!.map((preset) => (
@@ -860,7 +874,7 @@ const QIZZTAKER = () => {
               onClick={() => {
                 setmaxbudget(preset);
               }}
-              className='outline-green-800  bg-yellow-300  ml-3 center outline text-center font-bold py-2 px-4 rounded-full my-5 '
+              className='   m-5 center outline text-center font-bold py-2 px-4 rounded-full my-5 '
             >
               {preset}
             </div>
@@ -868,15 +882,15 @@ const QIZZTAKER = () => {
         </div>
         <div>
           {" "}
-          <button
+          <div
             onClick={() => {
               uploadState();
             }}
-            className='ml-3 center  bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-full my-5'
+            className='m-5 center  bg-green-800 text-white    text-center font-bold py-2 px-4 rounded-full my-5'
           >
             {" "}
             Click here to move to the next step{" "}
-          </button>{" "}
+          </div>{" "}
         </div>
       </div>
     );
