@@ -80,7 +80,7 @@ export async function POST(req: NextRequest) {
       };
 
       const result = await axios
-        .post("http://localhost:8001/", distanceParcel1)
+        .post(process.env.NEXT_PUBLIC_HaversinEndpoint!, distanceParcel1)
         .then((resp) => {
           return NextResponse.json(resp.data);
         })

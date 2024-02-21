@@ -487,7 +487,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
           </>
         )}
         {context.reviews.length === 0 && (
-          <button className=' bg-green-800 text-white'>
+          <button className=' bg-green-800 text-white p-5'>
             THIS PERSON HAS NO REVIEWS
           </button>
         )}

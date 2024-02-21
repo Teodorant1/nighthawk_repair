@@ -117,7 +117,7 @@ export const appRouter = t.router({
         console.log(distanceParcel1);
 
         const result = await axios
-          .post("http://localhost:8001/", distanceParcel1)
+          .post(process.env.NEXT_PUBLIC_HaversinEndpoint!, distanceParcel1)
           .then((resp) => {
             console.log("finalresult");
 
@@ -276,9 +276,12 @@ export const appRouter = t.router({
           });
 
           await prisma.user.delete({ where: { id: candidate?.userID } });
+          await prisma.tradesmanCandidateSubCategory.deleteMany({
+            where: { tradesmanCandidateId: candidate?.userID },
+          });
           await prisma.tradesmanCandidate.delete({
             where: { id: candidate?.id },
-            include: { SubCategories: true },
+            // include: { SubCategories: true },
           });
         }
         return "derp";
@@ -347,12 +350,20 @@ export const appRouter = t.router({
           LiabilityLicenseLink: opts.input.LiabilityLicense,
         },
       });
-
+      for (let i: number = 0; i < opts.input.subcategories.length; i++) {
+        await prisma.profileSubCategory.create({
+          data: {
+            subcategory: opts.input.subcategories[i].name!,
+            category: opts.input.subcategories[i].categoryID!,
+            user_ID: tradesmanCandidate.id,
+          },
+        });
+      }
       for (let i: number = 0; i < opts.input.subcategories.length; i++) {
         await prisma.tradesmanCandidateSubCategory.create({
           data: {
-            SubCategory: opts.input.subcategories.at(i)?.name!,
-            categoryID: opts.input.subcategories.at(i)?.categoryID!,
+            SubCategory: opts.input.subcategories[i].name!,
+            categoryID: opts.input.subcategories[i].categoryID!,
             tradesmanCandidateId: tradesmanCandidate.id,
           },
         });

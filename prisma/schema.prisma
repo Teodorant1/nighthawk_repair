@@ -68,7 +68,7 @@ model userNotificationConfig {
   id           String  @id @default(cuid())
   emailEnabled Boolean @default(false)
   pushEnabled  Boolean @default(false)
-  user         user    @relation(fields: [userId], references: [id])
+  user         user    @relation(fields: [userId], references: [id], onDelete:Cascade , onUpdate: Cascade )
   userId       String  @unique
 }
 
@@ -170,7 +170,7 @@ model tradesmanCandidate {
 
 model tradesmanCandidateSubCategory {
   id          String @id @default(cuid())
-  SubCategory String @unique
+  SubCategory String 
   categoryID  String @db.Text
 
   tradesmanCandidate   tradesmanCandidate? @relation(fields: [tradesmanCandidateId], references: [id] , onDelete:Cascade , onUpdate: Cascade)
