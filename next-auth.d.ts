@@ -11,6 +11,7 @@ declare module "next-auth" {
       role: string;
       isClient: boolean;
       isRepairman: boolean;
+      isAdmin: boolean;
       sub: string;
     } & DefaultSession["user"];
   }

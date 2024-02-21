@@ -245,25 +245,57 @@ export const appRouter = t.router({
         return null;
       }
     }),
-  MarkJobAs: t.procedure
+  handleCandidateTradesmanApproval: t.procedure
     .input(
       z.object({
-        userID: z.string(),
-        status: z.string(),
-        SubmittedJobID: z.string(),
-        submitterEmail: z.string(),
+        tradesmanID: z.string(),
+        IsApproved: z.boolean(),
       })
     )
     .mutation(async (opts) => {
       const session = (await getServerSession(authOptions)) as Session;
+      if (session.user.isAdmin === true) {
+        if (opts.input.IsApproved === true) {
+          const candidate = await prisma.tradesmanCandidate.update({
+            where: { id: opts.input.tradesmanID },
+            data: {
+              Approved: true,
+            },
+          });
 
-      let user: user = {
-        name: opts.input.submitterEmail,
-        role: "ffffffffffff",
-      };
+          await prisma.user.update({
+            where: { id: candidate.userID },
+            data: { isRepairman: true },
+          });
+        }
+        if (opts.input.IsApproved === false) {
+          const candidate = await prisma.tradesmanCandidate.findFirst({
+            where: {
+              id: opts.input.tradesmanID,
+            },
+          });
 
-      return user;
+          await prisma.user.delete({ where: { id: candidate?.userID } });
+          await prisma.tradesmanCandidate.delete({
+            where: { id: candidate?.id },
+            include: { SubCategories: true },
+          });
+        }
+        return "derp";
+      }
     }),
+  GetTradesManCandidateList: t.procedure.query(async (opts) => {
+    const session = (await getServerSession(authOptions)) as Session;
+
+    if (session.user.isAdmin === true) {
+      const candidates = await prisma.tradesmanCandidate.findMany({
+        where: { Approved: false },
+        include: { SubCategories: true },
+      });
+
+      return candidates;
+    }
+  }),
   RegisterTradesman: t.procedure
     .input(
       z.object({

@@ -173,14 +173,7 @@ model tradesmanCandidateSubCategory {
   SubCategory String @unique
   categoryID  String @db.Text
 
-  tradesmanCandidate   tradesmanCandidate? @relation(fields: [tradesmanCandidateId], references: [id])
+  tradesmanCandidate   tradesmanCandidate? @relation(fields: [tradesmanCandidateId], references: [id] , onDelete:Cascade , onUpdate: Cascade)
   tradesmanCandidateId String?
 }
 
-// model job_application {
-//   id              String @id @default(cuid())
-//   submittedJob_ID String
-//   text            String?
-//   userID          String
-//   status          String
-// }

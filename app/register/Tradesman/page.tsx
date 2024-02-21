@@ -7,8 +7,6 @@ import { CloudinaryResult, parcel } from "@/projecttypes";
 import axios from "axios";
 import { CldImage, CldUploadWidget } from "next-cloudinary";
 
-async function registerAccount(role: string) {}
-
 const Details = () => {
   const [my_subcategories, setmy_subcategories] = useState<sub_category[]>([]);
   const [hiddensubcategories, sethiddensubcategories] = useState<
@@ -220,8 +218,8 @@ const Details = () => {
               {" "}
               <button
                 className='outline outline-yellow-300  bg-green-900  text-yellow-300 font-bold m-5 py-2 px-4 rounded-full '
-                onClick={() => {
-                  registerAccount("USER");
+                onClick={async () => {
+                  await ActualRegistration();
                 }}
               >
                 Click To Register
@@ -236,39 +234,48 @@ const Details = () => {
   return (
     <div className='backgroundTools p-5 justify-items-center flex justify-center items-center h-fit'>
       {" "}
-      <div className=' flex flex-wrap p-5   bg-green-800 bg-opacity-50 outline outline-yellow-300  text-yellow-300 '>
-        <div>
-          {" "}
-          {licenseLink !== "undefined" && (
-            <CldImage
-              src={licenseLink}
-              alt={licenseLink}
-              width={600}
-              height={600}
-            />
-          )}
-          <CldUploadWidget
-            uploadPreset='bqhf0bxn'
-            onUpload={(result, widget) => {
-              if (result.event !== "success") {
-                return;
-              }
-              const info = result.info as CloudinaryResult;
-              setlicenseLink(info.public_id.toString());
-            }}
-          >
-            {({ open }) => (
-              <button
-                onClick={() => open()}
-                className='flex bg-green-800 text-white mx-auto  justify-center  font-bold py-2 px-4 rounded-sm'
-              >
-                Upload LIABILITY LICENSE
-              </button>
+      {stage === "registerScreen" && (
+        <div className=' flex flex-wrap p-5   bg-green-800 bg-opacity-50 outline outline-yellow-300  text-yellow-300 '>
+          <div>
+            {" "}
+            {licenseLink !== "undefined" && (
+              <CldImage
+                src={licenseLink}
+                alt={licenseLink}
+                width={600}
+                height={600}
+              />
             )}
-          </CldUploadWidget>
+            <CldUploadWidget
+              uploadPreset='bqhf0bxn'
+              onUpload={(result, widget) => {
+                if (result.event !== "success") {
+                  return;
+                }
+                const info = result.info as CloudinaryResult;
+                setlicenseLink(info.public_id.toString());
+              }}
+            >
+              {({ open }) => (
+                <button
+                  onClick={() => open()}
+                  className='flex bg-green-800 text-white mx-auto  justify-center  font-bold py-2 px-4 rounded-sm'
+                >
+                  Upload LIABILITY LICENSE
+                </button>
+              )}
+            </CldUploadWidget>
+          </div>
+          <InputFields /> <MySubcats /> <AllSubcats />{" "}
         </div>
-        <InputFields /> <MySubcats /> <AllSubcats />{" "}
-      </div>
+      )}{" "}
+      {stage === "successfulRegistration" && (
+        <div className='m-5 center bg-green-800 text-white text-center font-bold py-20 px-20 rounded-full '>
+          {" "}
+          CONGRATULATIONS! YOU HAVE SUBMITTED THE REQUEST , CHECK YOUR EMAIL FOR
+          OUR AUTOMATED CONFIRMATION EMAIL
+        </div>
+      )}
     </div>
   );
 };
