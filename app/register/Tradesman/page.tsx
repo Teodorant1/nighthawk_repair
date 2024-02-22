@@ -15,6 +15,14 @@ const Details = () => {
   const [stage, setstage] = useState<string>("registerScreen");
   const [licenseLink, setlicenseLink] = useState<string>("undefined");
 
+  const [email, setemail] = useState<string>("undefined");
+  const [password, setpassword] = useState<string>("undefined");
+  const [phone_number, setphone_number] = useState<string>("undefined");
+  const [name, setname] = useState<string>("undefined");
+  const [businessName, setbusinessName] = useState<string>("undefined");
+  const [businessAddress, setbusinessAddress] = useState<string>("undefined");
+  const [CompanyNumber, setCompanyNumber] = useState<string>("undefined");
+
   const RegisterFunction = trpc.RegisterTradesman.useMutation({
     onSuccess: () => {
       setstage("successfulRegistration");
@@ -235,8 +243,8 @@ const Details = () => {
     <div className='backgroundTools p-5 justify-items-center flex justify-center items-center h-fit'>
       {" "}
       {stage === "registerScreen" && (
-        <div className=' flex flex-wrap p-5   bg-green-800 bg-opacity-50 outline outline-yellow-300  text-yellow-300 '>
-          <div>
+        <div className=' w-[80%] flex flex-wrap p-5 m-5  bg-green-800 bg-opacity-50 outline outline-yellow-300  text-yellow-300 '>
+          <div className='m-10'>
             {" "}
             {licenseLink !== "undefined" && (
               <CldImage
@@ -247,7 +255,10 @@ const Details = () => {
               />
             )}
             <CldUploadWidget
-              uploadPreset='bqhf0bxn'
+              uploadPreset='wn6nts4f'
+              options={{
+                multiple: false,
+              }}
               onUpload={(result, widget) => {
                 if (result.event !== "success") {
                   return;
@@ -266,7 +277,8 @@ const Details = () => {
               )}
             </CldUploadWidget>
           </div>
-          <InputFields /> <MySubcats /> <AllSubcats />{" "}
+          <InputFields />
+          <AllSubcats /> <MySubcats />
         </div>
       )}{" "}
       {stage === "successfulRegistration" && (

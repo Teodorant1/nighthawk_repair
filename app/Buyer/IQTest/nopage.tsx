@@ -707,7 +707,7 @@ const QIZZTAKER = () => {
           You have uploaded {pictures2.length} pictures so far.
         </button>
         <CldUploadWidget
-          uploadPreset='bqhf0bxn'
+          uploadPreset='wn6nts4f'
           onUpload={(result, widget) => {
             if (result.event !== "success") {
               return;

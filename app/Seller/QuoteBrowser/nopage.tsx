@@ -891,8 +891,13 @@ const IQBrowser = () => {
 
   return (
     <>
-      {context.leads_to_look_at === "newleads" && <NewLeads />}
-      {context.leads_to_look_at === "myleads" && <MyLeads />}
+      {session?.user.isRepairman === true && (
+        <>
+          {" "}
+          {context.leads_to_look_at === "newleads" && <NewLeads />}
+          {context.leads_to_look_at === "myleads" && <MyLeads />}
+        </>
+      )}
     </>
   );
 };

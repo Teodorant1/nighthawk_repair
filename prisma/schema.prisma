@@ -1,15 +1,24 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+// generator client {
+//   provider = "prisma-client-js"
+// }
+
+// datasource db {
+//   provider = "mysql"
+//   url      = env("DATABASE_URL")
+// }
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
 generator client {
   provider = "prisma-client-js"
 }
-
-datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
-}
-
 model profileSubCategory {
   id          String @id @default(cuid())
   user_ID     String
@@ -70,6 +79,7 @@ model userNotificationConfig {
   pushEnabled  Boolean @default(false)
   user         user    @relation(fields: [userId], references: [id], onDelete:Cascade , onUpdate: Cascade )
   userId       String  @unique
+  @@index([userId])
 }
 
 model category {
@@ -141,6 +151,8 @@ model JobPicture {
   cloudinaryID    String
   submitted_job   submitted_job @relation(fields: [submitted_jobId], references: [id])
   submitted_jobId String
+  @@index([submitted_jobId])
+
 }
 
 // a job that a user has applied to
@@ -175,5 +187,6 @@ model tradesmanCandidateSubCategory {
 
   tradesmanCandidate   tradesmanCandidate? @relation(fields: [tradesmanCandidateId], references: [id] , onDelete:Cascade , onUpdate: Cascade)
   tradesmanCandidateId String?
+  @@index([tradesmanCandidateId])
 }
 

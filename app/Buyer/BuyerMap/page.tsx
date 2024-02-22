@@ -2,7 +2,8 @@
 
 import React, { useRef, useState } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
-import { ClickedPosition } from "@/projecttypes";
+import { ClickedPosition, CloudinaryResult } from "@/projecttypes";
+import { CldUploadWidget } from "next-cloudinary";
 
 const GoogleMapsComponent: React.FC = () => {
   const mapContainerStyle = {
@@ -30,30 +31,55 @@ const GoogleMapsComponent: React.FC = () => {
 
   return (
     // <div>PLACEHOLDER</div>
-    <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!}>
-      <GoogleMap
-        mapContainerStyle={mapContainerStyle}
-        center={clickedPosition!}
-        zoom={2}
-        onClick={handleMapClick}
-        onLoad={(map: any) => {
-          mapRef.current = map;
+    <>
+      {" "}
+      <LoadScript
+        googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!}
+      >
+        <GoogleMap
+          mapContainerStyle={mapContainerStyle}
+          center={clickedPosition!}
+          zoom={2}
+          onClick={handleMapClick}
+          onLoad={(map: any) => {
+            mapRef.current = map;
+          }}
+        >
+          {clickedPosition && (
+            <Marker
+              position={{ lat: clickedPosition.lat, lng: clickedPosition.lng }}
+            />
+          )}
+        </GoogleMap>
+        {clickedPosition && (
+          <div>
+            <h3>Clicked Coordinates:</h3>
+            <p>Latitude: {clickedPosition.lat.toFixed(6)}</p>
+            <p>Longitude: {clickedPosition.lng.toFixed(6)}</p>
+          </div>
+        )}
+      </LoadScript>
+      <CldUploadWidget
+        uploadPreset='wn6nts4f'
+        onUpload={(result, widget) => {
+          if (result.event !== "success") {
+            return;
+          }
+          // const info = result.info as CloudinaryResult;
+          // const pictures21 = [...pictures2, String(info.public_id)];
+          // setpictures2(pictures21);
         }}
       >
-        {clickedPosition && (
-          <Marker
-            position={{ lat: clickedPosition.lat, lng: clickedPosition.lng }}
-          />
+        {({ open }) => (
+          <button
+            onClick={() => open()}
+            className='m-5 center bg-green-800 text-white  text-center font-bold py-4 px-20 rounded-full '
+          >
+            Upload
+          </button>
         )}
-      </GoogleMap>
-      {clickedPosition && (
-        <div>
-          <h3>Clicked Coordinates:</h3>
-          <p>Latitude: {clickedPosition.lat.toFixed(6)}</p>
-          <p>Longitude: {clickedPosition.lng.toFixed(6)}</p>
-        </div>
-      )}
-    </LoadScript>
+      </CldUploadWidget>{" "}
+    </>
   );
 };
 
