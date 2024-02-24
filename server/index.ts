@@ -180,6 +180,7 @@ export const appRouter = t.router({
       })
     )
     .query(async (opts) => {
+      console.log(" ");
       const session = (await getServerSession(authOptions)) as Session;
 
       if (session.user.sub === opts.input.userID) {
