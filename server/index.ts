@@ -129,6 +129,8 @@ export const appRouter = t.router({
         //  return NextResponse.json(result);
         return result;
       }
+      const submitted_job_SANS_Email1111: submitted_job_SANS_Email[] = [];
+      return submitted_job_SANS_Email1111;
     }),
   getSingularJob: t.procedure
     .input(
