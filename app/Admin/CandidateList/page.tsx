@@ -1,6 +1,6 @@
 "use client";
 import { trpc } from "@/app/_trpc/client";
-import { parcel } from "@/projecttypes";
+import { parcel, tradesmanCandidateWSubcategories } from "@/projecttypes";
 import { tradesmanCandidate } from "@prisma/client";
 import axios from "axios";
 import { useSession } from "next-auth/react";
@@ -10,7 +10,9 @@ import React, { useEffect, useState } from "react";
 const CANDIDATELIST = () => {
   const { status, data: session } = useSession();
 
-  const [candidates, setcandidates] = useState<tradesmanCandidate[]>([]);
+  const [candidates, setcandidates] = useState<
+    tradesmanCandidateWSubcategories[]
+  >([]);
 
   useEffect(() => {
     let GetTradesManCandidateListparcel: parcel = {

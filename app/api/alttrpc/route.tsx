@@ -118,7 +118,7 @@ export async function POST(req: NextRequest) {
         })
         .catch((error) => console.log(error));
 
-      return NextResponse.json(result);
+      // return NextResponse.json(result);
     }
     const submitted_job_SANS_Email1111: submitted_job_SANS_Email[] = [];
     return NextResponse.json(submitted_job_SANS_Email1111);
@@ -292,7 +292,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    return "OP SUCCESS";
+    return NextResponse.json({ email: "newuser.email" });
   }
 
   return NextResponse.json({ email: "newuser.email" });

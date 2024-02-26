@@ -1,4 +1,9 @@
-import { JobPicture, answer, sub_category } from "@prisma/client";
+import {
+  JobPicture,
+  answer,
+  sub_category,
+  tradesmanCandidateSubCategory,
+} from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime/library";
 
 export interface MyComponentProps {
@@ -119,6 +124,20 @@ export interface submitted_job_WITH_Email {
   status?: string;
   finalWorkerID?: string;
   pictures: JobPicture[];
+}
+
+export interface tradesmanCandidateWSubcategories {
+  id: string;
+  userID: string;
+  email: string;
+  phoneNumber: string;
+  name: string;
+  BusinessName: string;
+  BusinessAddress: string;
+  CompanyNumber: string;
+  Approved: boolean;
+  LiabilityLicenseLink: string;
+  SubCategories: tradesmanCandidateSubCategory[];
 }
 
 export interface distanceParcel {
