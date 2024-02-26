@@ -1,4 +1,4 @@
-import { JobPicture, answer } from "@prisma/client";
+import { JobPicture, answer, sub_category } from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime/library";
 
 export interface MyComponentProps {
@@ -6,6 +6,7 @@ export interface MyComponentProps {
 }
 
 export type parcel = {
+  is_phone?: string;
   id?: string;
   escalationlevel?: number;
   category?: string;
@@ -26,6 +27,13 @@ export type parcel = {
 
   leadID?: string;
   userID?: string;
+  SubmittedJobID?: string;
+  status?: string;
+  submitterEmail?: string;
+  visibility?: boolean;
+  tradesmanID?: string;
+  isApproved?: boolean;
+
   link?: string;
   certificate?: string;
 
@@ -39,6 +47,13 @@ export type parcel = {
   name?: string;
   phonenum?: string;
   isOptional?: boolean;
+
+  phone_number?: string;
+  businessName?: string;
+  businessAddress?: string;
+  CompanyNumber?: string;
+  LiabilityLicense?: string;
+  subcategories?: sub_category[];
 
   lat?: number;
   long?: number;
@@ -63,6 +78,31 @@ export interface submitted_job_SANS_Email {
   answeredQuestions: string;
   isVisible: boolean;
   // submittterEmail: string;
+  date_created: Date;
+  extrainfo?: string;
+  timecost: number;
+  moneycost: number;
+  distance: number;
+  latitude: Decimal;
+  longitude: Decimal;
+  title?: string;
+  timing?: string;
+  hiringstage?: string;
+  first_to_buy?: boolean;
+  minBudget: number;
+  maxBudget: number;
+  status?: string;
+  finalWorkerID?: string;
+  pictures: JobPicture[];
+}
+
+export interface submitted_job_WITH_Email {
+  id: string;
+  sub_categoryID: string;
+  categoryID: string;
+  answeredQuestions: string;
+  isVisible: boolean;
+  submittterEmail: string;
   date_created: Date;
   extrainfo?: string;
   timecost: number;

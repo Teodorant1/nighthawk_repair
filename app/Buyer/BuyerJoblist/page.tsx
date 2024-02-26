@@ -1,18 +1,38 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { trpc } from "@/app/_trpc/client";
-import { MyComponentProps } from "@/projecttypes";
+import {
+  MyComponentProps,
+  parcel,
+  submitted_job_WITH_Email,
+} from "@/projecttypes";
+import { appliedJob } from "@prisma/client";
+import axios from "axios";
 
 const BuyerJoblist = () => {
   const [currentJob, setcurrentJob] = useState<string>("none");
   const [currentJobApplications, setcurrentJobApplications] =
     useState<string>("none");
   const { status, data: session } = useSession();
-  const mypostedjobs = trpc.GetBuyerJoblist.useQuery({
-    userID: session?.user.sub!,
-    submitterEmail: session?.user.email!,
-  });
+
+  const [mypostedjobs, setmypostedjobs] = useState<submitted_job_WITH_Email[]>(
+    []
+  );
+
+  useEffect(() => {
+    let mypostedjobsparcel: parcel = {
+      method: "GetBuyerJoblist",
+      userID: session?.user.sub,
+      submitterEmail: session?.user.email,
+    };
+
+    axios.post("/api/alttrpc", mypostedjobsparcel).then((resp) => {
+      console.log(resp.data);
+      setmypostedjobs(resp.data);
+    });
+  }, []);
+
   function toggleShow(id: string) {
     if (currentJob === id) {
       setcurrentJob("none");
@@ -28,22 +48,31 @@ const BuyerJoblist = () => {
     }
   }
   function AppliedJobBox(IDprops: MyComponentProps) {
-    const applications = trpc.GetBuyerJobApplications.useQuery({
-      SubmittedJobID: IDprops.myStringProp,
-      userID: session?.user.sub!,
-    });
+    const [applications, setapplications] = useState<appliedJob[]>([]);
+
+    useEffect(() => {
+      let applicationsparcel: parcel = {
+        method: "GetBuyerJobApplications",
+        userID: session?.user.sub,
+      };
+
+      axios.post("/api/alttrpc", applicationsparcel).then((resp) => {
+        console.log(resp.data);
+        setapplications(resp.data);
+      });
+    }, []);
 
     return (
       <div className='m-5 center text-center font-bold py-2 px-4 rounded-md '>
         {" "}
-        {applications.data?.length === 0 && (
+        {applications.length === 0 && (
           <div className='flex items-center justify-center w-[100%]'>
             <button className='m-5 center bg-green-800 text-white   text-center font-bold py-2 px-4 rounded-md '>
               NO APPLICATIONS YET
             </button>{" "}
           </div>
         )}
-        {applications.data?.length! > 0 && (
+        {applications.length! > 0 && (
           <div className='flex items-center justify-center w-[100%]'>
             {" "}
             <button className='m-5 p-5 rounded-md bg-green-800 text-white'>
@@ -51,8 +80,8 @@ const BuyerJoblist = () => {
             </button>{" "}
           </div>
         )}
-        {applications.data?.length! > 0 &&
-          applications.data?.map((application) => (
+        {applications.length! > 0 &&
+          applications.map((application) => (
             <>
               {" "}
               <div
@@ -82,33 +111,29 @@ const BuyerJoblist = () => {
   }
 
   function JoblistBox() {
-    const ToggleVisibilityStatus_in_db = trpc.ToggleJobVisibility.useMutation({
-      onSuccess: () => {
-        mypostedjobs.refetch();
-      },
-    });
-
-    const handle_ToggleVisibilityStatus_in_db = async (
+    async function handle_ToggleVisibilityStatus_in_db(
       SubmittedJobID: string,
       visibility: boolean
-    ) => {
-      try {
-        ToggleVisibilityStatus_in_db.mutate({
-          userID: session?.user.sub!,
-          SubmittedJobID: SubmittedJobID,
-          submitterEmail: session?.user.email!,
-          visibility: visibility,
+    ) {
+      let handle_ToggleVisibilityStatus_in_db_parcel: parcel = {
+        method: "",
+        userID: session?.user.sub,
+        visibility: visibility,
+        submitterEmail: session?.user.email,
+        SubmittedJobID: SubmittedJobID,
+      };
+      axios
+        .post("/api/alttrpc", handle_ToggleVisibilityStatus_in_db_parcel)
+        .then((resp) => {
+          setmypostedjobs(resp.data);
         });
-      } catch (error) {
-        console.error("Mutation failed:", error);
-      }
-    };
+    }
 
     return (
       <div>
-        {mypostedjobs.data?.length! > 0 && (
+        {mypostedjobs.length! > 0 && (
           <>
-            {mypostedjobs.data?.map((job) => (
+            {mypostedjobs.map((job) => (
               <div
                 className=' overflow-x-auto m-5 center outline text-center font-bold py-2 px-4 rounded-md '
                 key={job.id}

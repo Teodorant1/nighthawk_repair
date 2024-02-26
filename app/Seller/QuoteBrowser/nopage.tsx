@@ -2,9 +2,13 @@
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
-import { answer, appliedJob } from "@prisma/client";
+import { answer, appliedJob, submitted_job } from "@prisma/client";
 import { useJobContext } from "./JobContext";
-import { parcel } from "@/projecttypes";
+import {
+  parcel,
+  submitted_job_SANS_Email,
+  submitted_job_WITH_Email,
+} from "@/projecttypes";
 
 import { trpc } from "@/app/_trpc/client";
 import { CldImage } from "next-cloudinary";
@@ -13,9 +17,19 @@ const IQBrowser = () => {
   const { status, data: session } = useSession();
   const context = useJobContext();
 
-  const myjobs = trpc.getAggregatedJobsForUser.useQuery({
-    userID: session?.user.sub!,
-  });
+  const [myjobs, setmyjobs] = useState<submitted_job_SANS_Email[]>([]);
+
+  useEffect(() => {
+    let myjobsparcel: parcel = {
+      method: "getAggregatedJobsForUser",
+      userID: session?.user.sub,
+    };
+
+    axios.post("/api/alttrpc", myjobsparcel).then((resp) => {
+      console.log(resp.data);
+      setmyjobs(resp.data);
+    });
+  }, []);
 
   useEffect(() => {
     axios.post("/api/qizztaker", parcel1).then((resp) => {
@@ -209,7 +223,15 @@ const IQBrowser = () => {
                 await GetappliedJobs();
               })
               .then(async () => {
-                myjobs.refetch();
+                let myjobsparcel: parcel = {
+                  method: "getAggregatedJobsForUser",
+                  userID: session?.user.sub,
+                };
+
+                axios.post("/api/alttrpc", myjobsparcel).then((resp) => {
+                  console.log(resp.data);
+                  setmyjobs(resp.data);
+                });
               });
           }
         });
@@ -217,9 +239,9 @@ const IQBrowser = () => {
 
     return (
       <div className=' mx-5 center  text-center font-bold py-2 px-4  rounded-md my-5 h-screen overflow-x-auto'>
-        {myjobs && myjobs?.data?.length! > 0 && (
+        {myjobs && myjobs?.length! > 0 && (
           <>
-            {myjobs!.data!.map(
+            {myjobs!.map(
               (job) =>
                 isJobVisible(job) && (
                   <div
@@ -647,13 +669,25 @@ const IQBrowser = () => {
   }
 
   function AppliedJobBox(appliedjob: appliedJob) {
-    const job = trpc.getSingularJob.useQuery({
-      SubmittedJobID: appliedjob.submittedJob_ID,
-      userID: session?.user.sub!,
-    });
+    const [job, setjob] = useState<submitted_job_WITH_Email>();
+    useEffect(() => {
+      let myjobsparcel: parcel = {
+        method: "getAggregatedJobsForUser",
+        userID: session?.user.sub,
+      };
 
-    const TagAppliedJob = trpc.tag_Applied_Job.useMutation({
-      onSuccess: () => {
+      axios.post("/api/alttrpc", myjobsparcel).then((resp) => {
+        console.log(resp.data);
+        setmyjobs(resp.data);
+      });
+    }, []);
+
+    async function handleTagJob(id: string, status: string) {
+      let tagjobparcel: parcel = {
+        method: "tag_Applied_Job",
+        userID: session?.user.id,
+      };
+      axios.post("/api/alttrpc", tagjobparcel).then((resp) => {
         let appliedJobsParcel: parcel = {
           method: "getappliedjobs",
           userID: session?.user.sub,
@@ -661,130 +695,122 @@ const IQBrowser = () => {
         axios.post("/api/qizztaker/v2", appliedJobsParcel).then((resp) => {
           context.setappliedJobs(resp.data);
         });
-      },
-    });
-    const handleTagJob = async (id: string, status: string) => {
-      try {
-        TagAppliedJob.mutate({
-          id: id,
-          status: status,
-          userID: session?.user.sub!,
-        });
-      } catch (error) {
-        console.error("TagAppliedJob failed:", error);
-      }
-    };
+      });
+    }
 
     return (
       <div
         className='mx-5 center outline  text-center font-bold py-2 px-4 rounded-md my-5 break-words'
-        key={job?.data?.id}
+        key={job?.id}
       >
-        {context.currentJobID !== job?.data?.id && (
-          <button
-            className='mx-5 center bg-green-800 text-white text-center font-bold py-2 px-4 rounded-full my-5'
-            onClick={() => {
-              toggleShow(job?.data?.id!);
-            }}
-          >
-            EXPAND LEAD{" "}
-          </button>
-        )}{" "}
-        {context.currentJobID === job?.data?.id && (
-          <button
-            className='mx-5 center bg-green-800 text-white text-center font-bold py-2 px-4 rounded-full my-5'
-            onClick={() => {
-              toggleShow(job?.data?.id!);
-            }}
-          >
-            CLOSE LEAD{" "}
-          </button>
-        )}{" "}
-        {context.currentJobID === job?.data?.id && (
+        {job && (
           <>
             {" "}
-            {context.myLead_filter_Presets.map((preset) => (
+            {context.currentJobID !== job?.id && (
+              <button
+                className='mx-5 center bg-green-800 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                onClick={() => {
+                  toggleShow(job?.id!);
+                }}
+              >
+                EXPAND LEAD{" "}
+              </button>
+            )}{" "}
+            {context.currentJobID === job?.id && (
+              <button
+                className='mx-5 center bg-green-800 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                onClick={() => {
+                  toggleShow(job?.id!);
+                }}
+              >
+                CLOSE LEAD{" "}
+              </button>
+            )}{" "}
+            {context.currentJobID === job?.id && (
               <>
                 {" "}
-                {appliedjob.status === preset && preset !== "ALL" && (
-                  <button
-                    onClick={() => {}}
-                    className='mx-5  bg-green-600 text-white center text-center font-bold py-2 px-4 rounded-full  my-5'
-                  >
+                {context.myLead_filter_Presets.map((preset) => (
+                  <>
                     {" "}
-                    {preset}
-                  </button>
-                )}{" "}
-                {appliedjob.status !== preset && preset !== "ALL" && (
-                  <button
-                    onClick={async () => {
-                      await handleTagJob(appliedjob.id, preset);
-                    }}
-                    className='mx-5  bg-red-600 text-white center text-center font-bold py-2 px-4 rounded-full  my-5'
-                  >
-                    {" "}
-                    TAG AS{""} {preset}
-                  </button>
-                )}
-              </>
-            ))}
-          </>
-        )}
-        <div className='flex items-center justify-center w-screen'>
-          {" "}
-          <div className=' rounded bg-green-800 text-white px-14 py-5'>
-            ID:{job?.data?.id}
-          </div>
-        </div>
-        <h1>TITLE:{job?.data?.title}</h1>
-        <div>CLIENT EMAIL:{job?.data?.submittterEmail}</div>
-        <div>
-          1ST TO BUY: {job?.data?.first_to_buy === true && <>true</>}
-          {job?.data?.first_to_buy === false && <>false</>}
-        </div>
-        <div>DATE OF CREATION: {String(job?.data?.date_created)}</div>
-        <div> Calculated distance: {job?.data?.distance} </div>
-        {/* <div>Email:{job?.data?.submittterEmail}</div> */}
-        <div>Expected cost: {job?.data?.moneycost}</div>
-        <div>Minimal Budget: {job?.data?.minBudget}</div>
-        <div>Maximal Budget: {job?.data?.maxBudget}</div>
-        <div>Expected duration: {job?.data?.timecost}</div>
-        <div>Timing:{job?.data?.timing}</div>
-        <div>Hiring stage:{job?.data?.hiringstage}</div>
-        {/* picture actually exists in the schema, but is an embedded object,
-     for some reason unknown to me typescript is freaking out here */}
-        <div>PICS LENGTH:{job?.data?.pictures.length}</div>
-        {job?.data?.extrainfo !== "undefined" && (
-          <div>EXTRA INFO: {job?.data?.extrainfo}</div>
-        )}
-        <div>
-          {" "}
-          {context.currentJobID === job?.data?.id &&
-            job.data.pictures.length > 0 && (
-              <div className='flex flex-wrap'>
-                {job.data.pictures.map((picture) => (
-                  <div
-                    className='m-2 p-2'
-                    key={picture.id}
-                  >
-                    <CldImage
-                      src={picture.cloudinaryID}
-                      width={300}
-                      height={200}
-                      alt={picture.cloudinaryID}
-                    />
-                  </div>
+                    {appliedjob.status === preset && preset !== "ALL" && (
+                      <button
+                        onClick={() => {}}
+                        className='mx-5  bg-green-600 text-white center text-center font-bold py-2 px-4 rounded-full  my-5'
+                      >
+                        {" "}
+                        {preset}
+                      </button>
+                    )}{" "}
+                    {appliedjob.status !== preset && preset !== "ALL" && (
+                      <button
+                        onClick={async () => {
+                          await handleTagJob(appliedjob.id, preset);
+                        }}
+                        className='mx-5  bg-red-600 text-white center text-center font-bold py-2 px-4 rounded-full  my-5'
+                      >
+                        {" "}
+                        TAG AS{""} {preset}
+                      </button>
+                    )}
+                  </>
                 ))}
+              </>
+            )}
+            <div className='flex items-center justify-center w-screen'>
+              {" "}
+              <div className=' rounded bg-green-800 text-white px-14 py-5'>
+                ID:{job?.id}
+              </div>
+            </div>
+            <h1>TITLE:{job?.title}</h1>
+            <div>CLIENT EMAIL:{job?.submittterEmail}</div>
+            <div>
+              1ST TO BUY: {job?.first_to_buy === true && <>true</>}
+              {job?.first_to_buy === false && <>false</>}
+            </div>
+            <div>DATE OF CREATION: {String(job?.date_created)}</div>
+            <div> Calculated distance: {job?.distance} </div>
+            {/* <div>Email:{job?.submittterEmail}</div> */}
+            <div>Expected cost: {job?.moneycost}</div>
+            <div>Minimal Budget: {job?.minBudget}</div>
+            <div>Maximal Budget: {job?.maxBudget}</div>
+            <div>Expected duration: {job?.timecost}</div>
+            <div>Timing:{job?.timing}</div>
+            <div>Hiring stage:{job?.hiringstage}</div>
+            {/* picture actually exists in the schema, but is an embedded object,
+     for some reason unknown to me typescript is freaking out here */}
+            <div>PICS LENGTH:{job?.pictures.length}</div>
+            {job?.extrainfo !== "undefined" && (
+              <div>EXTRA INFO: {job?.extrainfo}</div>
+            )}
+            <div>
+              {" "}
+              {context.currentJobID === job?.id && job.pictures.length > 0 && (
+                <div className='flex flex-wrap'>
+                  {job.pictures.map((picture) => (
+                    <div
+                      className='m-2 p-2'
+                      key={picture.id}
+                    >
+                      <CldImage
+                        src={picture.cloudinaryID}
+                        width={300}
+                        height={200}
+                        alt={picture.cloudinaryID}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            {context.currentJobID === job?.id && (
+              <div>
+                {" "}
+                <AnsweredQuestionBox qstns={job?.answeredQuestions} />
               </div>
             )}
-        </div>
-        {context.currentJobID === job?.data?.id && (
-          <div>
-            {" "}
-            <AnsweredQuestionBox qstns={job?.data?.answeredQuestions} />
-          </div>
+          </>
         )}
-        <div></div>
       </div>
     );
   }

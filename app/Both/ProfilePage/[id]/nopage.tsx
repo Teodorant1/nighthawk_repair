@@ -21,29 +21,6 @@ const SellerProfile = ({ params: { id } }: Props1) => {
   const [showmap, setshowmap] = useState<boolean>(false);
   const [showSCadder, setshowSCadder] = useState<boolean>(true);
 
-  const [result1, setResult1] = React.useState<user | null>(null);
-
-  interface user {
-    name: string;
-    role: string;
-  }
-
-  const mutation = trpc.procedureeeeeeeeeeee.useMutation({
-    onSuccess: (c) => {
-      // let c1: user = c;
-      setResult1(c);
-    },
-  });
-  const handleLogin = async () => {
-    try {
-      mutation.mutate({
-        name: "John Doe",
-      });
-    } catch (error) {
-      console.error("Mutation failed:", error);
-    }
-  };
-
   useEffect(() => {
     let getcertificatesParcel: parcel = {
       method: "getcertificates",
@@ -623,14 +600,6 @@ const SellerProfile = ({ params: { id } }: Props1) => {
 
   return (
     <div>
-      {/* <button
-        onClick={async () => {
-          await handleLogin();
-        }}
-        className='flex mx-auto w-1/2  justify-center bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-sm'
-      >
-        DO THE TRPC FUNNY
-      </button> */}
       {context.UserLoc.isRepairman === true && (
         <div>
           {" "}

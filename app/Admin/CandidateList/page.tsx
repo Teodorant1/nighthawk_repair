@@ -1,39 +1,68 @@
 "use client";
 import { trpc } from "@/app/_trpc/client";
+import { parcel } from "@/projecttypes";
+import { tradesmanCandidate } from "@prisma/client";
+import axios from "axios";
 import { useSession } from "next-auth/react";
 import { CldImage } from "next-cloudinary";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const CANDIDATELIST = () => {
   const { status, data: session } = useSession();
-  const candidates = trpc.GetTradesManCandidateList.useQuery();
-  const CanditateTradesmanApprovalfunc =
-    trpc.handleCandidateTradesmanApproval.useMutation({
-      onSuccess: () => {
-        candidates.refetch();
-      },
-    });
 
-  const handle_CanditateTradesmanApproval_action = async (
+  const [candidates, setcandidates] = useState<tradesmanCandidate[]>([]);
+
+  useEffect(() => {
+    let GetTradesManCandidateListparcel: parcel = {
+      method: "GetTradesManCandidateList",
+    };
+
+    axios.post("/api/alttrpc", GetTradesManCandidateListparcel).then((resp) => {
+      console.log(resp.data);
+      setcandidates(resp.data);
+    });
+  }, []);
+
+  async function handle_CanditateTradesmanApproval_action(
     tradesmanID: string,
-    IsApproved: boolean
-  ) => {
-    try {
-      CanditateTradesmanApprovalfunc.mutate({
-        tradesmanID: tradesmanID,
-        IsApproved: IsApproved,
+    isApproved: boolean
+  ) {
+    let handle_CanditateTradesmanApproval_actionparcel: parcel = {
+      method: "handleCandidateTradesmanApproval",
+      tradesmanID: tradesmanID,
+      isApproved: isApproved,
+    };
+
+    axios
+      .post("/api/alttrpc", handle_CanditateTradesmanApproval_actionparcel)
+      .then((resp) => {
+        setcandidates(resp.data);
       });
-    } catch (error) {
-      console.error("Mutation failed:", error);
-    }
-  };
+    // .then(() => {
+    //   let GetTradesManCandidateListparcel: parcel = {
+    //     method: "GetTradesManCandidateList",
+    //   };
+
+    //   axios
+    //     .post("/api/profileEditor", GetTradesManCandidateListparcel)
+    //     .then((resp) => {
+    //       setcandidates(resp.data);
+    //     });
+    // });
+  }
 
   return (
     <div>
-      <>CANDIDATELIST</>
-      {session?.user.isAdmin === true && candidates.data?.length! > 0 && (
+      <div
+        onClick={() => {
+          console.log(candidates.length);
+        }}
+      >
+        CANDIDATELIST {candidates.length}
+      </div>
+      {session?.user.isAdmin === true && candidates?.length! > 0 && (
         <div>
-          {candidates.data?.map((candidate) => (
+          {candidates.map((candidate) => (
             <div
               key={candidate.id}
               className=' bg-green-800 text-white p-5 m-5'

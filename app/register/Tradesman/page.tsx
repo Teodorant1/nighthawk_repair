@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { trpc } from "@/app/_trpc/client";
 import { sub_category } from "@prisma/client";
 import { CloudinaryResult, parcel } from "@/projecttypes";
@@ -22,14 +22,11 @@ const Details = () => {
   const [businessName, setbusinessName] = useState<string>("undefined");
   const [businessAddress, setbusinessAddress] = useState<string>("undefined");
   const [CompanyNumber, setCompanyNumber] = useState<string>("undefined");
+  const [all_subcategories, setall_subcategories] = useState<sub_category[]>(
+    []
+  );
 
-  const RegisterFunction = trpc.RegisterTradesman.useMutation({
-    onSuccess: () => {
-      setstage("successfulRegistration");
-    },
-  });
-
-  const handle_RegisterFunction = async (
+  async function handle_RegisterFunction(
     email: string,
     password: string,
     phone_number: string,
@@ -39,23 +36,24 @@ const Details = () => {
     CompanyNumber: string,
     LiabilityLicense: string,
     subcategories: sub_category[]
-  ) => {
-    try {
-      RegisterFunction.mutate({
-        email: email,
-        password: password,
-        phone_number: phone_number,
-        name: name,
-        businessName: businessName,
-        businessAddress: businessAddress,
-        CompanyNumber: CompanyNumber,
-        LiabilityLicense: LiabilityLicense,
-        subcategories: subcategories,
-      });
-    } catch (error) {
-      console.error("Mutation failed:", error);
-    }
-  };
+  ) {
+    let registerparcel: parcel = {
+      method: "RegisterTradesman",
+      email: email,
+      password: password,
+      phone_number: phone_number,
+      name: name,
+      businessName: businessName,
+      businessAddress: businessAddress,
+      CompanyNumber: CompanyNumber,
+      LiabilityLicense: LiabilityLicense,
+      subcategories: subcategories,
+    };
+    axios.post("/api/alttrpc", registerparcel).then((resp) => {
+      console.log(resp.data);
+      setstage("successfulRegistration");
+    });
+  }
 
   async function ActualRegistration() {
     const Email = (document.getElementById("Email") as HTMLInputElement).value;
@@ -89,7 +87,16 @@ const Details = () => {
     );
   }
 
-  const all_subcategories = trpc.getAllSubcategories.useQuery();
+  useEffect(() => {
+    let allsubcatsparcel: parcel = {
+      method: "getAllSubcategories",
+    };
+
+    axios.post("/api/alttrpc", allsubcatsparcel).then((resp) => {
+      setall_subcategories(resp.data);
+    });
+  }, []);
+
   function CheckIfinMySubcats(sub_category: sub_category): boolean {
     if (
       my_subcategories.some(
@@ -133,8 +140,8 @@ const Details = () => {
       <div className='text-center justify-items-center   py-2 px-2'>
         <h1 className='py-2 text-2xl'> SELECT SUBCATEGORIES FROM HERE</h1>
         <div>
-          {all_subcategories.data?.length! > 0 &&
-            all_subcategories.data?.map((subcategory) => (
+          {all_subcategories.length! > 0 &&
+            all_subcategories.map((subcategory) => (
               <div key={subcategory.id}>
                 {CheckIfinMySubcats(subcategory) && (
                   <button
