@@ -120,7 +120,7 @@ const BuyerJoblist = () => {
       visibility: boolean
     ) {
       let handle_ToggleVisibilityStatus_in_db_parcel: parcel = {
-        method: "",
+        method: "ToggleJobVisibility",
         userID: session?.user.sub,
         visibility: visibility,
         submitterEmail: session?.user.email,
