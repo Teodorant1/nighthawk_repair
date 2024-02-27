@@ -28,7 +28,7 @@ const BuyerJoblist = () => {
     };
 
     axios.post("/api/alttrpc", mypostedjobsparcel).then((resp) => {
-      console.log(resp.data);
+      // console.log(resp.data);
       setmypostedjobs(resp.data);
     });
   }, []);
@@ -51,15 +51,17 @@ const BuyerJoblist = () => {
     const [applications, setapplications] = useState<appliedJob[]>([]);
 
     useEffect(() => {
-      let applicationsparcel: parcel = {
-        method: "GetBuyerJobApplications",
-        userID: session?.user.sub,
-      };
+      if (status === "authenticated") {
+        let applicationsparcel: parcel = {
+          method: "GetBuyerJobApplications",
+          userID: session?.user.sub,
+        };
 
-      axios.post("/api/alttrpc", applicationsparcel).then((resp) => {
-        console.log(resp.data);
-        setapplications(resp.data);
-      });
+        axios.post("/api/alttrpc", applicationsparcel).then((resp) => {
+          // console.log(resp.data);
+          setapplications(resp.data);
+        });
+      }
     }, []);
 
     return (

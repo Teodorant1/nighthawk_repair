@@ -14,11 +14,12 @@ export async function POST(req: NextRequest) {
   const session = (await getServerSession(authOptions)) as Session;
   const body = await req.json();
   const parcel1: parcel = body;
-  console.log("alttrpc");
-  console.log(parcel1);
+  // console.log("alttrpc");
+  // console.log(parcel1);
 
   if (parcel1.method === "getAggregatedJobsForUser") {
     if (session.user.sub === parcel1.userID) {
+      console.log(parcel1);
       const sevenDaysAgo = new Date();
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
@@ -28,9 +29,6 @@ export async function POST(req: NextRequest) {
           user_ID: parcel1.userID,
         },
       });
-
-      // console.log("interests");
-      // console.log(criteriaList);
 
       for (const criteria of criteriaList) {
         try {
@@ -80,26 +78,18 @@ export async function POST(req: NextRequest) {
 
           let result = result1 as submitted_job_SANS_Email[];
 
-          // console.log("criteria Result");
-          // console.log(result);
-
           // Aggregate results into the array
           aggregatedResults = aggregatedResults.concat(result);
         } catch (error) {
           console.error(`Error fetching data: ${error}`);
         }
       }
-      // console.log("aggregatedResults");
-      // console.log(aggregatedResults);
 
       const currentuser = await prisma.user.findFirst({
         where: {
           id: session.user.sub,
         },
       });
-
-      console.log("currentuser");
-      console.log(currentuser);
 
       let distanceParcel1: distanceParcel = {
         radius: Number(currentuser?.TravelRange!),
@@ -108,17 +98,14 @@ export async function POST(req: NextRequest) {
         JobsArray: aggregatedResults,
       };
 
-      console.log("distanceParcel1");
-      console.log(distanceParcel1);
-
       const result = await axios
         .post(process.env.NEXT_PUBLIC_HaversinEndpoint!, distanceParcel1)
         .then((resp) => {
-          return NextResponse.json(resp.data);
+          return resp.data;
         })
         .catch((error) => console.log(error));
 
-      // return NextResponse.json(result);
+      return NextResponse.json(result);
     }
     const submitted_job_SANS_Email1111: submitted_job_SANS_Email[] = [];
     return NextResponse.json(submitted_job_SANS_Email1111);

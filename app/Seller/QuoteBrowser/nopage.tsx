@@ -20,15 +20,21 @@ const IQBrowser = () => {
   const [myjobs, setmyjobs] = useState<submitted_job_SANS_Email[]>([]);
 
   useEffect(() => {
+    console.log("myjobs", myjobs);
+  }, [myjobs]);
+
+  useEffect(() => {
+    // if (status === "authenticated") {
     let myjobsparcel: parcel = {
       method: "getAggregatedJobsForUser",
       userID: session?.user.sub,
     };
 
     axios.post("/api/alttrpc", myjobsparcel).then((resp) => {
-      console.log(resp.data);
+      console.log("getAggregatedJobsForUser", resp.data);
       setmyjobs(resp.data);
     });
+    // }
   }, []);
 
   useEffect(() => {
@@ -118,7 +124,6 @@ const IQBrowser = () => {
           category: labelToChange,
         };
         axios.post("/api/qizztaker/v2", parcel2).then((resp) => {
-          // console.log("faloki1", resp.data);
           context.setSubCategoryArray(resp.data);
         });
         break;
@@ -135,7 +140,6 @@ const IQBrowser = () => {
           radius: context.radius,
         };
         axios.post("/api/qizztaker/v2", parcel3).then((resp) => {
-          // console.log(resp.data);
           context.setSubmittedJobArray(resp.data);
         });
         break;
@@ -229,6 +233,7 @@ const IQBrowser = () => {
                 };
 
                 axios.post("/api/alttrpc", myjobsparcel).then((resp) => {
+                  console.log("nested then");
                   console.log(resp.data);
                   setmyjobs(resp.data);
                 });
@@ -239,9 +244,9 @@ const IQBrowser = () => {
 
     return (
       <div className=' mx-5 center  text-center font-bold py-2 px-4  rounded-md my-5 h-screen overflow-x-auto'>
-        {myjobs && myjobs?.length! > 0 && (
+        {myjobs.length! > 0 && (
           <>
-            {myjobs!.map(
+            {myjobs.map(
               (job) =>
                 isJobVisible(job) && (
                   <div
@@ -651,8 +656,13 @@ const IQBrowser = () => {
               </div>
               <div className='flex flex-wrap items-center justify-center w-screen'>
                 {" "}
-                <div className=' mx-5 center  -white text-white bg-green-800   text-center font-bold py-2 px-4 rounded-full my-5'>
-                  A LIST OF FRESH JOBS{" "}
+                <div
+                  onClick={() => {
+                    console.log(myjobs);
+                  }}
+                  className=' mx-5 center  -white text-white bg-green-800   text-center font-bold py-2 px-4 rounded-full my-5'
+                >
+                  A LIST OF FRESH JOBS {myjobs.length}
                 </div>
               </div>
 
@@ -672,13 +682,13 @@ const IQBrowser = () => {
     const [job, setjob] = useState<submitted_job_WITH_Email>();
     useEffect(() => {
       let myjobsparcel: parcel = {
-        method: "getAggregatedJobsForUser",
+        method: "GetBuyerJobApplications",
         userID: session?.user.sub,
       };
 
       axios.post("/api/alttrpc", myjobsparcel).then((resp) => {
-        console.log(resp.data);
-        setmyjobs(resp.data);
+        // console.log(resp.data);
+        setjob(resp.data);
       });
     }, []);
 
@@ -828,7 +838,7 @@ const IQBrowser = () => {
           GO TO FRESH JOBS
         </button>{" "}
         {context.myLead_filter_Presets.map((preset) => (
-          <>
+          <div key={preset}>
             {" "}
             {context.myLead_filter_Current_Setting === preset && (
               <button
@@ -852,7 +862,7 @@ const IQBrowser = () => {
                 DISPLAY{""} {preset}
               </button>
             )}
-          </>
+          </div>
         ))}
         <div className='mx-5 center text-center font-bold py-2 px-4 rounded-full  my-5'>
           <div className='flex items-center justify-center w-screen'>
@@ -871,7 +881,7 @@ const IQBrowser = () => {
             <>
               {" "}
               {context.appliedJobs.map((appliedJob) => (
-                <>
+                <div key={appliedJob.id}>
                   {context.myLead_filter_Current_Setting ===
                     appliedJob.status &&
                     context.myLead_filter_Current_Setting !== "ALL" && (
@@ -906,7 +916,7 @@ const IQBrowser = () => {
                       </>
                     </>
                   )}
-                </>
+                </div>
               ))}
             </>
           )}
