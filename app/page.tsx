@@ -17,7 +17,7 @@ export default function Home() {
     <main>
       {" "}
       {session?.user.isRepairman === true && <Qbpage />}{" "}
-      {session?.user.isRepairman === true && <BuyerJoblist />}{" "}
+      {session?.user.isClient === true && <BuyerJoblist />}{" "}
     </main>
   );
 }

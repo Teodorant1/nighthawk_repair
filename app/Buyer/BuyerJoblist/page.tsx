@@ -21,17 +21,19 @@ const BuyerJoblist = () => {
   );
 
   useEffect(() => {
-    let mypostedjobsparcel: parcel = {
-      method: "GetBuyerJoblist",
-      userID: session?.user.sub,
-      submitterEmail: session?.user.email,
-    };
+    if (status === "authenticated") {
+      let mypostedjobsparcel: parcel = {
+        method: "GetBuyerJoblist",
+        userID: session?.user.sub,
+        submitterEmail: session?.user.email,
+      };
 
-    axios.post("/api/alttrpc", mypostedjobsparcel).then((resp) => {
-      // console.log(resp.data);
-      setmypostedjobs(resp.data);
-    });
-  }, []);
+      axios.post("/api/alttrpc", mypostedjobsparcel).then((resp) => {
+        // console.log(resp.data);
+        setmypostedjobs(resp.data);
+      });
+    }
+  }, [status]);
 
   function toggleShow(id: string) {
     if (currentJob === id) {
@@ -234,7 +236,7 @@ const BuyerJoblist = () => {
 
   return (
     <div className='m-5 center text-center font-bold py-2 px-4 rounded-md overflow-y-hidden overflow-x-hidden'>
-      {session && <JoblistBox />}
+      {session?.user.isClient === true && <JoblistBox />}
     </div>
   );
 };
