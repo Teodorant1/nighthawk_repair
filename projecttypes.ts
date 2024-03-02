@@ -6,7 +6,6 @@ import {
 } from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime/library";
 
-
 export interface MyComponentProps {
   myStringProp: string;
 }
@@ -20,10 +19,12 @@ export type MobileSession = {
     isRepairman: boolean;
     isAdmin: boolean;
     sub: string;
-  }
-}
+    token?: string;
+  };
+};
 
 export type parcel = {
+  session?: MobileSession;
   is_phone?: string;
   id?: string;
   escalationlevel?: number;
