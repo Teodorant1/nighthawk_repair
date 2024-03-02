@@ -11,7 +11,7 @@ import { Session, getServerSession } from "next-auth";
 import bcrypt from "bcrypt";
 
 export async function POST(req: NextRequest) {
-  const session = (await getServerSession(authOptions)) as Session;
+  const session:Session = (await getServerSession(authOptions)) as Session;
   const body = await req.json();
   const parcel1: parcel = body;
   // console.log("alttrpc");
