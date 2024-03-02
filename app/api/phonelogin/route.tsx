@@ -14,8 +14,8 @@ dotenv.config();
 export async function POST(req: NextRequest) {
   const body = await req.json();
   const parcel1: parcel = body;
-  // console.log("alttrpc");
-  // console.log(parcel1);
+   console.log("phonelogin");
+   console.log(parcel1);
 
   const foundUser = await prisma.user.findUnique({where:{
     email: parcel1.email
