@@ -52,8 +52,9 @@ export async function POST(req: NextRequest) {
 
       const reqtoken = jwt.decode(token);
       console.log(reqtoken);
+      sesh.user.token = token;
 
-      return NextResponse.json(token);
+      return NextResponse.json(sesh);
     }
   }
 
