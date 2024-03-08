@@ -210,7 +210,7 @@ const NavBar = () => {
       {" "}
       <Link
         href='/'
-        className='mr-5 w-[15%] h-[15%]'
+        className='mr-5 w-[11%] h-[11%]'
       >
         <div className='w-[100%]'>
           {" "}

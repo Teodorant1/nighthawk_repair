@@ -162,7 +162,7 @@ const IQBrowser = () => {
                   context.setStage(2);
                   GetData(2, category.name);
                 }}
-                className='mx-5 center  text-center font-bold py-2 px-4 rounded-full my-5'
+                className='m-3 center  text-center font-bold p-2 rounded-full'
               >
                 {category.name}
               </div>
@@ -186,7 +186,7 @@ const IQBrowser = () => {
                   context.setStage(3);
                   GetData(3, sub_category!.name);
                 }}
-                className='mx-5 center  text-center font-bold py-2 px-4 rounded-full my-5 '
+                className='m-3 center  text-center font-bold p-2 rounded-full '
               >
                 {sub_category.name}
               </div>
@@ -243,19 +243,19 @@ const IQBrowser = () => {
     }
 
     return (
-      <div className=' mx-5 center  text-center font-bold py-2 px-4  rounded-md my-5 h-screen overflow-x-auto'>
+      <div className=' m-3 center  text-center font-bold p-2  rounded-md h-screen overflow-x-auto'>
         {myjobs.length! > 0 && (
           <>
             {myjobs.map(
               (job) =>
                 isJobVisible(job) && (
                   <div
-                    className='mx-5 center outline text-center font-bold py-2 px-4 rounded-md my-5 overflow-x-auto'
+                    className='m-3 center outline text-center font-bold p-2 rounded-md overflow-x-auto'
                     key={job.id}
                   >
                     {context.COINS > 20 && (
                       <button
-                        className='mx-5 center bg-green-800 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                        className='m-3 center bg-green-800 text-white text-center font-bold p-2 rounded-full'
                         onClick={() => {
                           BuyAlead(job.id);
                         }}
@@ -265,7 +265,7 @@ const IQBrowser = () => {
                     )}{" "}
                     {context.currentJobID !== job.id && (
                       <button
-                        className='mx-5 center bg-green-800 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                        className='m-3 center bg-green-800 text-white text-center font-bold p-2 rounded-full'
                         onClick={() => {
                           toggleShow(job.id);
                         }}
@@ -275,7 +275,7 @@ const IQBrowser = () => {
                     )}{" "}
                     {context.currentJobID === job.id && (
                       <button
-                        className='mx-5 center bg-green-800 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                        className='m-3 center bg-green-800 text-white text-center font-bold p-2 rounded-full'
                         onClick={() => {
                           toggleShow(job.id);
                         }}
@@ -357,7 +357,7 @@ const IQBrowser = () => {
                 className='flex flex-wrap items-center justify-center w-screen'
               >
                 <div>
-                  <div className='bg-green-800 text-white mx-5 center  text-center font-bold py-2 px-4 rounded-md my-5'>
+                  <div className='bg-green-800 text-white m-3 center  text-center font-bold p-2 rounded-md'>
                     {" "}
                     <div> Question: {Answer.questionID}</div>
                     <div>Answer: {Answer.text_answer}</div>
@@ -394,71 +394,75 @@ const IQBrowser = () => {
     }
 
     return (
-      <div className='mx-5 center  text-center font-bold py-2 px-4 rounded-md my-5'>
-        <div className='mx-5 center  text-center font-bold py-2 px-4 rounded-md my-5'>
-          <h1>SORT BY</h1>
-          <button
-            className='mx-5 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
-            onClick={() => {
-              filterSubjobs("budget", false);
-            }}
-          >
-            {" "}
-            Sort by ASCENDING VALUE{" "}
-          </button>
-          <button
-            className='mx-5 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
-            onClick={() => {
-              filterSubjobs("budget", true);
-            }}
-          >
-            {" "}
-            Sort by DESCENDING VALUE{" "}
-          </button>
+      <div className='m-3 center flex flex-wrap text-center font-bold p-2'>
+        <div className='m-3 center  text-center font-bold p-2 rounded-md'>
+          <h1>SORT BY</h1>{" "}
+          <div className='m-3 center  text-center font-bold p-2 rounded-md'>
+            <div
+              className='m-3 center bg-red-600 text-white text-center font-bold p-2 rounded-full'
+              onClick={() => {
+                filterSubjobs("budget", false);
+              }}
+            >
+              {" "}
+              Sort by ASCENDING VALUE{" "}
+            </div>
+            <div
+              className='m-3 center bg-red-600 text-white text-center font-bold p-2 rounded-full'
+              onClick={() => {
+                filterSubjobs("budget", true);
+              }}
+            >
+              {" "}
+              Sort by DESCENDING VALUE{" "}
+            </div>
+          </div>{" "}
+          <div className='m-3 center  text-center  font-bold p-4 rounded-md'>
+            <h1>Enabled Filters</h1>
+            {context.firstTobuy === false && (
+              <div
+                onClick={() => {
+                  context.setFirstToBuy(true);
+                }}
+                className='m-3 center bg-red-600 text-white text-center font-bold p-2 rounded-full'
+              >
+                ENABLE FIRST TO BUY FILTER
+              </div>
+            )}
+            {context.firstTobuy === true && (
+              <div
+                onClick={() => {
+                  context.setFirstToBuy(false);
+                }}
+                className='m-3 center bg-green-600 text-white text-center font-bold p-2 rounded-full'
+              >
+                DISABLE FIRST TO BUY FILTER
+              </div>
+            )}{" "}
+            {context.picturesRequired === false && (
+              <div
+                onClick={() => {
+                  context.setPicturesRequired(true);
+                }}
+                className='m-3 center bg-red-600 text-white text-center font-bold p-2 rounded-full'
+              >
+                ENABLE LEADS WITH IMAGES
+              </div>
+            )}
+            {context.picturesRequired === true && (
+              <div
+                onClick={() => {
+                  context.setPicturesRequired(false);
+                }}
+                className='m-3 center bg-green-600 text-white text-center font-bold p-2 rounded-full'
+              >
+                DISABLE LEADS WITH IMAGES
+              </div>
+            )}{" "}
+          </div>
         </div>
-        <div className='mx-5 center  text-center font-bold py-2 px-4 rounded-md my-5'>
-          {context.firstTobuy === false && (
-            <button
-              onClick={() => {
-                context.setFirstToBuy(true);
-              }}
-              className='mx-5 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
-            >
-              ENABLE FIRST TO BUY FILTER
-            </button>
-          )}
-          {context.firstTobuy === true && (
-            <button
-              onClick={() => {
-                context.setFirstToBuy(false);
-              }}
-              className='mx-5 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
-            >
-              DISABLE FIRST TO BUY FILTER
-            </button>
-          )}{" "}
-          {context.picturesRequired === false && (
-            <button
-              onClick={() => {
-                context.setPicturesRequired(true);
-              }}
-              className='mx-5 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
-            >
-              ENABLE LEADS WITH IMAGES
-            </button>
-          )}
-          {context.picturesRequired === true && (
-            <button
-              onClick={() => {
-                context.setPicturesRequired(false);
-              }}
-              className='mx-5 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
-            >
-              DISABLE LEADS WITH IMAGES
-            </button>
-          )}{" "}
-        </div>
-        <div className='mx-5 center  text-center font-bold py-2 px-4 rounded-md my-5'>
+
+        <div className='m-3 center  text-center font-bold p-2 rounded-md'>
           <h1>TIMING</h1>{" "}
           {context.timingPresets.map((preset) => (
             <div key={preset.toString()}>
@@ -471,7 +475,7 @@ const IQBrowser = () => {
                     );
                     context.setTimingCriteria(newcriteria);
                   }}
-                  className='mx-5 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                  className='m-3 center bg-green-600 text-white text-center font-bold p-2 rounded-full'
                 >
                   DISABLE {preset} CRITERIA
                 </button>
@@ -482,7 +486,7 @@ const IQBrowser = () => {
                     const newcriteria = [...context.timingCriteria, preset];
                     context.setTimingCriteria(newcriteria);
                   }}
-                  className='mx-5 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                  className='m-3 center bg-red-600 text-white text-center font-bold p-2 rounded-full'
                 >
                   ENABLE {preset} CRITERIA
                 </button>
@@ -490,11 +494,10 @@ const IQBrowser = () => {
             </div>
           ))}
         </div>
-        <div className='mx-5 center  text-center font-bold py-2 px-4 rounded-md my-5'>
-          <h1>BUDGET</h1>{" "}
+        <div className='m-3 center  text-center font-bold p-2 rounded-md'>
           <div className='flex'>
             {" "}
-            <div className='flex-1 mx-5 center  text-center font-bold py-2 px-4 rounded-md my-5'>
+            <div className='flex-1 m-3 center  text-center font-bold p-2 rounded-md'>
               {" "}
               <h1>MINIMAL BUDGET</h1>
               {context.budgetPresets.map((preset) => (
@@ -505,7 +508,7 @@ const IQBrowser = () => {
                       // onClick={() => {
                       //   setminbudget(preset);
                       // }}
-                      className='mx-5 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                      className='m-3 center bg-green-600 text-white text-center font-bold p-2 rounded-full'
                     >
                       Minimal budget is set to {preset}
                     </button>
@@ -515,7 +518,7 @@ const IQBrowser = () => {
                       onClick={() => {
                         context.setMinBudget(preset);
                       }}
-                      className='mx-5 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                      className='m-3 center bg-red-600 text-white text-center font-bold p-2 rounded-full'
                     >
                       Set minimum budget to {preset}
                     </button>
@@ -523,7 +526,7 @@ const IQBrowser = () => {
                 </div>
               ))}
             </div>
-            <div className='flex-1 mx-5 center  text-center font-bold py-2 px-4 rounded-md my-5'>
+            <div className='flex-1 m-3 center  text-center font-bold p-2 rounded-md'>
               {" "}
               <h1>MAXIMUM BUDGET</h1>
               {context.budgetPresets.map((preset) => (
@@ -534,7 +537,7 @@ const IQBrowser = () => {
                       // onClick={() => {
 
                       // }}
-                      className='mx-5 center bg-green-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                      className='m-3 center bg-green-600 text-white text-center font-bold p-2 rounded-full'
                     >
                       Maximum budget is set to {preset}{" "}
                     </button>
@@ -544,7 +547,7 @@ const IQBrowser = () => {
                       onClick={() => {
                         context.setMaxBudget(preset);
                       }}
-                      className='mx-5 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                      className='m-3 center bg-red-600 text-white text-center font-bold p-2 rounded-full'
                     >
                       Set maximum budget to {preset}
                     </button>
@@ -582,11 +585,11 @@ const IQBrowser = () => {
       }
     };
     return (
-      <div className='mx-5 center  text-center font-bold py-2 px-4 rounded-full my-5'>
+      <div className='m-3 center  text-center font-bold p-2 rounded-full'>
         <h1> You can filter out jobs by radius </h1>
         {/* create a button that is mapped to the function which retrieves the users location */}
         <button
-          className=' bg-blue-600  hover:bg-blue-900 mx-5  text-white center  text-center font-bold py-2 px-4 rounded-full my-5'
+          className=' bg-blue-600  hover:bg-blue-900 m-3  text-white center  text-center font-bold p-2 rounded-full'
           onClick={getUserLocation}
         >
           Load User Location
@@ -601,7 +604,7 @@ const IQBrowser = () => {
             {/* {radius} */}
             <input
               type='number'
-              className='mx-[20%] w-[50%] h-[10%]  text-center font-bold text-xl py-10 px-10  my-5'
+              className='mx-[20%] w-[50%] h-[10%]  text-center font-bold text-xl py-10 px-10 '
               id='radius'
               value={context.radius}
               onChange={(e) => context.setRadius(Number(e.target.value))}
@@ -611,7 +614,7 @@ const IQBrowser = () => {
 
         {context.userLocation !== null && (
           <button
-            className=' bg-blue-600  hover:bg-blue-900 mx-5  text-white center  text-center font-bold py-2 px-4 rounded-full my-5'
+            className=' bg-blue-600  hover:bg-blue-900 m-3  text-white center  text-center font-bold p-2 rounded-full'
             onClick={() => {
               context.setStage(1);
             }}
@@ -631,7 +634,7 @@ const IQBrowser = () => {
             <div>
               <div className='flex flex-wrap items-center justify-center w-screen'>
                 <button
-                  className='mx-5 center  -white text-white  bg-green-800  text-center font-bold py-2 px-4 rounded-full my-5'
+                  className='m-3 center  -white text-white  bg-green-800  text-center font-bold p-2 rounded-full'
                   onClick={() => {
                     if (context.filterBoxEnabled === false) {
                       context.setFilterBoxEnabled(true);
@@ -642,14 +645,14 @@ const IQBrowser = () => {
                 >
                   FILTERS
                 </button>{" "}
-                <button className='mx-5 center  -whit text-white  bg-green-800  text-center font-bold py-2 px-4 rounded-full my-5'>
+                <button className='m-3 center  -whit text-white  bg-green-800  text-center font-bold p-2 rounded-full'>
                   AVAILABLE CREDIT: £{context.COINS}
                 </button>
                 <button
                   onClick={() => {
                     context.setleads_to_look_at("myleads");
                   }}
-                  className='mx-5 center  -white  text-white bg-green-800   text-center font-bold py-2 px-4 rounded-full my-5'
+                  className='m-3 center  -white  text-white bg-green-800   text-center font-bold p-2 rounded-full'
                 >
                   NUMBER OF APPLIED JOBS: {context.appliedJobs.length}
                 </button>
@@ -660,7 +663,7 @@ const IQBrowser = () => {
                   onClick={() => {
                     console.log(myjobs);
                   }}
-                  className=' mx-5 center  -white text-white bg-green-800   text-center font-bold py-2 px-4 rounded-full my-5'
+                  className=' m-3 center  -white text-white bg-green-800   text-center font-bold p-2 rounded-full'
                 >
                   A LIST OF FRESH JOBS {myjobs.length}
                 </div>
@@ -710,7 +713,7 @@ const IQBrowser = () => {
 
     return (
       <div
-        className='mx-5 center outline  text-center font-bold py-2 px-4 rounded-md my-5 break-words'
+        className='m-3 center outline  text-center font-bold p-2 rounded-md break-words'
         key={job?.id}
       >
         {job && (
@@ -718,7 +721,7 @@ const IQBrowser = () => {
             {" "}
             {context.currentJobID !== job?.id && (
               <button
-                className='mx-5 center bg-green-800 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                className='m-3 center bg-green-800 text-white text-center font-bold p-2 rounded-full'
                 onClick={() => {
                   toggleShow(job?.id!);
                 }}
@@ -728,7 +731,7 @@ const IQBrowser = () => {
             )}{" "}
             {context.currentJobID === job?.id && (
               <button
-                className='mx-5 center bg-green-800 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+                className='m-3 center bg-green-800 text-white text-center font-bold p-2 rounded-full'
                 onClick={() => {
                   toggleShow(job?.id!);
                 }}
@@ -745,7 +748,7 @@ const IQBrowser = () => {
                     {appliedjob.status === preset && preset !== "ALL" && (
                       <button
                         onClick={() => {}}
-                        className='mx-5  bg-green-600 text-white center text-center font-bold py-2 px-4 rounded-full  my-5'
+                        className='m-3  bg-green-600 text-white center text-center font-bold p-2 rounded-full '
                       >
                         {" "}
                         {preset}
@@ -756,7 +759,7 @@ const IQBrowser = () => {
                         onClick={async () => {
                           await handleTagJob(appliedjob.id, preset);
                         }}
-                        className='mx-5  bg-red-600 text-white center text-center font-bold py-2 px-4 rounded-full  my-5'
+                        className='m-3  bg-red-600 text-white center text-center font-bold p-2 rounded-full '
                       >
                         {" "}
                         TAG AS{""} {preset}
@@ -833,7 +836,7 @@ const IQBrowser = () => {
           onClick={() => {
             context.setleads_to_look_at("newleads");
           }}
-          className='mx-5 center bg-green-800 text-white text-center font-bold py-2 px-4 rounded-full my-5'
+          className='m-3 center bg-green-800 text-white text-center font-bold p-2 rounded-full'
         >
           GO TO FRESH JOBS
         </button>{" "}
@@ -845,7 +848,7 @@ const IQBrowser = () => {
                 onClick={() => {
                   context.setmyLead_filter_Current_Setting(preset);
                 }}
-                className='mx-5  bg-green-600 text-white center text-center font-bold py-2 px-4 rounded-full  my-5'
+                className='m-3  bg-green-600 text-white center text-center font-bold p-2 rounded-full '
               >
                 {" "}
                 {preset}
@@ -856,7 +859,7 @@ const IQBrowser = () => {
                 onClick={() => {
                   context.setmyLead_filter_Current_Setting(preset);
                 }}
-                className='mx-5  bg-red-600 text-white center text-center font-bold py-2 px-4 rounded-full  my-5'
+                className='m-3  bg-red-600 text-white center text-center font-bold p-2 rounded-full '
               >
                 {" "}
                 DISPLAY{""} {preset}
@@ -864,15 +867,15 @@ const IQBrowser = () => {
             )}
           </div>
         ))}
-        <div className='mx-5 center text-center font-bold py-2 px-4 rounded-full  my-5'>
+        <div className='m-3 center text-center font-bold p-2 rounded-full '>
           <div className='flex items-center justify-center w-screen'>
-            <div className='mx-5 center text-center font-bold py-2 px-4 rounded-full my-5'>
+            <div className='m-3 center text-center font-bold p-2 rounded-full'>
               MY LEADS
             </div>{" "}
           </div>
           {context.appliedJobs.length === 0 && (
             <div className='flex items-center justify-center w-screen'>
-              <div className='mx-5 center text-center font-bold py-2 px-4 rounded-full my-5'>
+              <div className='m-3 center text-center font-bold p-2 rounded-full'>
                 NO JOBS{" "}
               </div>{" "}
             </div>

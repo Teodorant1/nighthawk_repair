@@ -15,12 +15,6 @@ interface parcel {
 export async function POST(req: NextRequest) {
   const body = await req.json();
   const parcel1: parcel = body;
-  console.log(
-    typeof body.escalationlevel,
-    typeof parcel1.escalationlevel,
-    body.escalationlevel,
-    parcel1.escalationlevel
-  );
 
   switch (parcel1.escalationlevel) {
     case 1:
