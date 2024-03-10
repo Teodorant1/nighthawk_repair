@@ -1,10 +1,5 @@
 // JobContext.tsx
-import {
-  appliedJob,
-  category,
-  sub_category,
-  submitted_job,
-} from "@prisma/client";
+import { appliedJob, category, sub_category } from "@prisma/client";
 import React, { createContext, useContext, ReactNode, useState } from "react";
 import { submitted_job_SANS_Email } from "@/projecttypes";
 
@@ -65,6 +60,8 @@ interface JobContextValues {
   setmyLead_filter_Current_Setting: React.Dispatch<
     React.SetStateAction<string>
   >;
+  currentdropdown: string;
+  setcurrentdropdown: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const JobContext = createContext<JobContextValues | undefined>(undefined);
@@ -91,6 +88,7 @@ export const JobProvider: React.FC<JobContextProps> = ({ children }) => {
   ]);
   const [myLead_filter_Current_Setting, setmyLead_filter_Current_Setting] =
     useState<string>("ALL");
+  const [currentdropdown, setcurrentdropdown] = useState<string>("none");
   const [userLocationText, setUserLocationText] = useState<string>(
     "Testing the alt tab error"
   );
@@ -193,6 +191,8 @@ export const JobProvider: React.FC<JobContextProps> = ({ children }) => {
     setmyLead_filter_Presets,
     myLead_filter_Current_Setting,
     setmyLead_filter_Current_Setting,
+    currentdropdown,
+    setcurrentdropdown,
   };
 
   return (

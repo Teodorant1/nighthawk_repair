@@ -12,8 +12,9 @@ import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import { ClickedPosition } from "@/projecttypes";
 import { Review, sub_category, workGalleryPicture } from "@prisma/client";
 import { CldImage, CldUploadWidget } from "next-cloudinary";
-
-import { trpc } from "@/app/_trpc/client";
+import { FaStar } from "react-icons/fa6";
+import { GrCertificate } from "react-icons/gr";
+import { FaImages } from "react-icons/fa";
 
 const SellerProfile = ({ params: { id } }: Props1) => {
   const context = useProfileState();
@@ -173,7 +174,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
             <div>
               {" "}
               <button className=' bg-green-400 text-white p-5 rounded-md'>
-                INTERESTED IN:{" "}
+                INTERESTS:{" "}
               </button>
             </div>
 
@@ -181,7 +182,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
               <button
                 key={sub_category.id}
                 onClick={() => {}}
-                className='bg-green-400 text-white m-2 center outline text-center font-bold p-2 rounded-sm '
+                className='m-2 center outline text-center font-bold p-2 rounded-sm '
               >
                 {sub_category.subcategory}
                 {""} {""} |{""} Category: {sub_category.category}{" "}
@@ -218,7 +219,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                 setshowSCadder(false);
               }
             }}
-            className='m-2 center bg-green-400 text-white  text-center font-bold p-2 rounded-sm '
+            className='m-2 center outline text-center font-bold p-2 rounded-sm '
           >
             {" "}
             Click here to toggle the dropdown list of Interests{" "}
@@ -369,9 +370,9 @@ const SellerProfile = ({ params: { id } }: Props1) => {
             {({ open }) => (
               <button
                 onClick={() => open()}
-                className='flex bg-green-400 text-white mx-auto  justify-center  font-bold p-2 rounded-sm'
+                className='flex bg-green-400 text-white mx-auto items-center justify-center  font-bold p-2 rounded-sm'
               >
-                Upload Image
+                <FaImages className='mr-2' /> Upload image
               </button>
             )}
           </CldUploadWidget>
@@ -425,46 +426,78 @@ const SellerProfile = ({ params: { id } }: Props1) => {
       </div>
     );
   };
+  interface RatingComponentProps {
+    rating: number;
+  }
 
+  const RatingComponent: React.FC<RatingComponentProps> = ({ rating }) => {
+    const maxRating = 5; // Assuming maximum rating is 5
+
+    // Generate an array of length equal to maxRating
+    const starIcons = Array.from({ length: maxRating }, (_, index) => (
+      <FaStar
+        key={index}
+        className={index < rating ? "text-yellow-400" : "text-gray-400"}
+      />
+    ));
+
+    return <div className='flex flex-wrap'>{starIcons}</div>;
+  };
   function ReviewBox() {
     return (
-      <div className='   text-center font-bold p-2 rounded-md '>
+      <div className='items-center justify-center w-screen text-center font-bold p-2 rounded-md '>
         {context.reviewCounter.average !== 0 && (
-          <>
+          <div className='flex items-center justify-center w-screen'>
             {" "}
-            <button className='m-2 bg-green-400 text-white center  text-center font-bold p-2 rounded-sm '>
+            <button className='flex items-center justify-center m-2 bg-green-400 text-white center  text-center font-bold p-2 rounded-sm '>
               {" "}
-              Average Rating: {context.reviewCounter.average} {""} STARS
+              Average: {context.reviewCounter.average} {""}{" "}
+              <FaStar className=' text-yellow-400' />
             </button>{" "}
             {context.reviewCounter.ones && (
-              <button className='m-2 bg-green-400 text-white center  text-center font-bold p-2 rounded-sm '>
-                Number of 1 star reviews : {context.reviewCounter.ones}
+              <button className='flex items-center justify-center m-2 bg-green-400 text-white center  text-center font-bold p-2 rounded-sm '>
+                <FaStar className=' text-yellow-400' /> :{" "}
+                {context.reviewCounter.ones}
               </button>
             )}
             {context.reviewCounter.twos && (
-              <button className='m-2 bg-green-400 text-white center  text-center font-bold p-2 rounded-sm '>
-                Number of 2 star reviews : {context.reviewCounter.twos}
+              <button className='flex items-center justify-center m-2 bg-green-400 text-white center  text-center font-bold p-2 rounded-sm '>
+                <FaStar className=' text-yellow-400' />
+                <FaStar className=' text-yellow-400' />:{" "}
+                {context.reviewCounter.twos}
               </button>
             )}{" "}
             {context.reviewCounter.threes && (
-              <button className='m-2 bg-green-400 text-white center  text-center font-bold p-2 rounded-sm '>
-                Number of 3 star reviews : {context.reviewCounter.threes}
+              <button className='flex items-center justify-center m-2 bg-green-400 text-white center  text-center font-bold p-2 rounded-sm '>
+                <FaStar className=' text-yellow-400' />
+                <FaStar className=' text-yellow-400' />
+                <FaStar className=' text-yellow-400' /> :{" "}
+                {context.reviewCounter.threes}
               </button>
             )}{" "}
             {context.reviewCounter.fours && (
-              <button className='m-2 bg-green-400 text-white center  text-center font-bold p-2 rounded-sm '>
-                Number of 4 star reviews : {context.reviewCounter.fours}
+              <button className='flex items-center justify-center m-2 bg-green-400 text-white center  text-center font-bold p-2 rounded-sm '>
+                <FaStar className=' text-yellow-400' />
+                <FaStar className=' text-yellow-400' />
+                <FaStar className=' text-yellow-400' />
+                <FaStar className=' text-yellow-400' /> :{" "}
+                {context.reviewCounter.fours}
               </button>
             )}{" "}
             {context.reviewCounter.fives && (
-              <button className='m-2 bg-green-400 text-white center  text-center font-bold p-2 rounded-sm '>
-                Number of 5 star reviews : {context.reviewCounter.fives}
+              <button className='flex items-center justify-center m-2 bg-green-400 text-white center  text-center font-bold p-2 rounded-sm '>
+                <FaStar className=' text-yellow-400' />
+                <FaStar className=' text-yellow-400' />
+                <FaStar className=' text-yellow-400' />
+                <FaStar className=' text-yellow-400' />
+                <FaStar className=' text-yellow-400' /> :{" "}
+                {context.reviewCounter.fives}
               </button>
             )}
-          </>
+          </div>
         )}
         {context.reviews.length === 0 && (
-          <button className=' bg-green-400 text-white p-5'>
+          <button className='flex items-center justify-center bg-green-400 text-white p-5'>
             THIS PERSON HAS NO REVIEWS
           </button>
         )}
@@ -473,7 +506,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
           <div>
             {" "}
             <button className='  rounded-md p-2 bg-green-400 text-white'>
-              LIST OF REVIEWS
+              REVIEWS
             </button>{" "}
             <div className=' text-center font-bold p-2 rounded-sm '>
               {context.reviews.map((review) => (
@@ -485,10 +518,15 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                     {" "}
                     <div className='px-10 bg-green-400 text-white flex flex-1'>
                       <div>JOB ID: {review.Job_Id}</div>
-                      <div> DATE: {review.date_created.toString()}</div>
+                      <div className='mx-5'>
+                        {" "}
+                        DATE: {review.date_created.toString()}
+                      </div>
                     </div>{" "}
                     <div className='px-10'></div>
-                    <div className='px-10'>RATING: {review.rating} STARS</div>
+                    <div className='px-10'>
+                      <RatingComponent rating={review.rating} />
+                    </div>{" "}
                   </div>{" "}
                   <div className='px-10'>COMMENT: {review.reviewText}</div>{" "}
                 </div>
@@ -509,10 +547,14 @@ const SellerProfile = ({ params: { id } }: Props1) => {
           </button>
         )}
         {context.certificates.length > 0 && (
-          <div>
-            <button className='bg-green-400 text-white p-5 rounded-md'>
-              CERTIFICATES
-            </button>
+          <div className='items-center justify-center w-screen'>
+            <div className='flex items-center justify-center w-screen'>
+              {" "}
+              <button className='flex justify-center items-center bg-green-400 text-white p-5 rounded-md'>
+                <GrCertificate />
+                CERTIFICATES
+              </button>
+            </div>
 
             {context.certificates.map((certificate) => (
               <div
@@ -520,9 +562,6 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                 className='m-2  center  text-center font-bold p-2 rounded-md '
               >
                 {certificate.name} / {certificate.Link}{" "}
-                <button className='m-2 center bg-green-400 text-white text-center font-bold p-2 rounded-sm '>
-                  Open in new tab{" "}
-                </button>
                 {session?.user.sub === id && (
                   <button
                     onClick={() => {
@@ -550,12 +589,6 @@ const SellerProfile = ({ params: { id } }: Props1) => {
 
         {session?.user.sub === id && (
           <>
-            <div>
-              {" "}
-              <button className='bg-green-400  text-white p-5 rounded-sm m-2'>
-                Create new certificates here
-              </button>
-            </div>
             <input
               className='outline text-center font-bold p-2 rounded-sm m-2 '
               id='CertificateName'

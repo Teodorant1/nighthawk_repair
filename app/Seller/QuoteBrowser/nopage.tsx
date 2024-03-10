@@ -9,9 +9,9 @@ import {
   submitted_job_SANS_Email,
   submitted_job_WITH_Email,
 } from "@/projecttypes";
-
-import { trpc } from "@/app/_trpc/client";
 import { CldImage } from "next-cloudinary";
+import { FaArrowCircleDown } from "react-icons/fa";
+import { CiFilter } from "react-icons/ci";
 
 const IQBrowser = () => {
   const { status, data: session } = useSession();
@@ -392,27 +392,27 @@ const IQBrowser = () => {
     }
 
     return (
-      <div className='m-3 center flex flex-wrap text-center font-bold p-2'>
-        <div className='m-3 center  text-center font-bold p-2 rounded-md'>
+      <div className='flex  justify-center m-3 center flex-wrap text-center font-bold p-2 w-full h-screen'>
+        <div className='m-3 center w-1/5 text-center font-bold p-2 rounded-md'>
           <h1>SORT BY</h1>{" "}
           <div className='m-3 center  text-center font-bold p-2 rounded-md'>
             <div
-              className='m-3 center bg-red-400 text-white text-center font-bold p-2 rounded-full'
+              className='m-3 center bg-blue-400 text-white text-center font-bold p-2 rounded-full'
               onClick={() => {
                 filterSubjobs("budget", false);
               }}
             >
               {" "}
-              Sort by ASCENDING VALUE{" "}
+              ASCENDING VALUE{" "}
             </div>
             <div
-              className='m-3 center bg-red-400 text-white text-center font-bold p-2 rounded-full'
+              className='m-3 center bg-blue-400 text-white text-center font-bold p-2 rounded-full'
               onClick={() => {
                 filterSubjobs("budget", true);
               }}
             >
               {" "}
-              Sort by DESCENDING VALUE{" "}
+              DESCENDING VALUE{" "}
             </div>
           </div>{" "}
           <div className='m-3 center  text-center  font-bold p-4 rounded-md'>
@@ -460,7 +460,7 @@ const IQBrowser = () => {
           </div>
         </div>
 
-        <div className='m-3 center  text-center font-bold p-2 rounded-md'>
+        <div className='m-3 center w-1/5 text-center font-bold p-2 rounded-md'>
           <h1>TIMING</h1>{" "}
           {context.timingPresets.map((preset) => (
             <div key={preset.toString()}>
@@ -492,16 +492,26 @@ const IQBrowser = () => {
             </div>
           ))}
         </div>
-        <div className='m-3 center  text-center font-bold p-2 rounded-md'>
+        <div className='flex-1 w-1/5 m-3 center  text-center font-bold p-2 rounded-md'>
           <div className='flex'>
             {" "}
-            <div className='flex-1 m-3 center  text-center font-bold p-2 rounded-md'>
+            <div className='flex-1 m-5 center  text-center font-bold p-2 rounded-md'>
               {" "}
-              <h1>MINIMAL BUDGET</h1>
-              {context.budgetPresets.map((preset) => (
-                <div key={preset.toString()}>
+              <h1
+                onClick={() => {
+                  context.setcurrentdropdown("minbudget");
+                }}
+                className='flex outline items-center justify-center'
+              >
+                MINIMAL BUDGET <FaArrowCircleDown />
+              </h1>
+              {context.currentdropdown === "minbudget" && (
+                <div className=' relative top-5'>
                   {" "}
-                  {context.minBudget === preset && (
+                  {context.budgetPresets.map((preset) => (
+                    <div key={preset.toString()}>
+                      {" "}
+                      {/* {context.minBudget === preset && (
                     <button
                       // onClick={() => {
                       //   setminbudget(preset);
@@ -510,48 +520,65 @@ const IQBrowser = () => {
                     >
                       Minimal budget is set to {preset}
                     </button>
-                  )}
-                  {context.minBudget !== preset && (
-                    <button
-                      onClick={() => {
-                        context.setMinBudget(preset);
-                      }}
-                      className='m-3 center bg-red-400 text-white text-center font-bold p-2 rounded-full'
-                    >
-                      Set minimum budget to {preset}
-                    </button>
-                  )}
+                  )} */}
+                      {context.minBudget !== preset && (
+                        <button
+                          onClick={() => {
+                            context.setMinBudget(preset);
+                            context.setcurrentdropdown("");
+                          }}
+                          className='my-1 p-2 z-10 w-full hover:bg-blue-600 hover:text-white center outline text-center font-bold '
+                        >
+                          Set minimum budget to {preset}
+                        </button>
+                      )}
+                    </div>
+                  ))}
                 </div>
-              ))}
+              )}
             </div>
-            <div className='flex-1 m-3 center  text-center font-bold p-2 rounded-md'>
+            <div className='flex-1 m-5 center  text-center font-bold p-2 rounded-md'>
               {" "}
-              <h1>MAXIMUM BUDGET</h1>
-              {context.budgetPresets.map((preset) => (
-                <div key={preset.toString()}>
+              <h1
+                onClick={() => {
+                  context.setcurrentdropdown("maxbudget");
+                }}
+                className='flex outline items-center justify-center'
+              >
+                MAXIMUM BUDGET <FaArrowCircleDown />
+              </h1>
+              {context.currentdropdown === "maxbudget" && (
+                <div>
                   {" "}
-                  {preset === context.maxBudget && (
-                    <button
-                      // onClick={() => {
-
-                      // }}
-                      className='m-3 center bg-green-600 text-white text-center font-bold p-2 rounded-full'
-                    >
-                      Maximum budget is set to {preset}{" "}
-                    </button>
-                  )}
-                  {preset !== context.maxBudget && (
-                    <button
-                      onClick={() => {
-                        context.setMaxBudget(preset);
-                      }}
-                      className='m-3 center bg-red-400 text-white text-center font-bold p-2 rounded-full'
-                    >
-                      Set maximum budget to {preset}
-                    </button>
-                  )}
+                  {context.budgetPresets.map((preset) => (
+                    <div key={preset.toString()}>
+                      {" "}
+                      {preset !== context.maxBudget && (
+                        <button
+                          onClick={() => {
+                            context.setMaxBudget(preset);
+                            context.setcurrentdropdown("");
+                          }}
+                          className='my-1 p-2 z-10 w-full hover:bg-blue-600 hover:text-white center outline text-center font-bold '
+                        >
+                          Maximum budget is set to {preset}{" "}
+                        </button>
+                      )}
+                      {/* {preset !== context.maxBudget && (
+                        <button
+                          onClick={() => {
+                            context.setMaxBudget(preset);
+                            context.setcurrentdropdown("minbudget");
+                          }}
+                          className='m-3 center  text-center font-bold p-2 rounded-full'
+                        >
+                          Set maximum budget to {preset}
+                        </button>
+                      )} */}
+                    </div>
+                  ))}
                 </div>
-              ))}
+              )}
             </div>
           </div>
         </div>
@@ -629,10 +656,10 @@ const IQBrowser = () => {
       <>
         <div>
           {context.stage === 3 && (
-            <div>
+            <div className='flex flex-wrap items-center justify-center w-screen'>
               <div className='flex flex-wrap items-center justify-center w-screen'>
                 <button
-                  className='m-3 center  -white text-white  bg-green-400  text-center font-bold p-2 rounded-full'
+                  className='flex justify-center m-3 center  -white text-white  bg-green-400  text-center font-bold p-2 rounded-full'
                   onClick={() => {
                     if (context.filterBoxEnabled === false) {
                       context.setFilterBoxEnabled(true);
@@ -641,6 +668,7 @@ const IQBrowser = () => {
                     }
                   }}
                 >
+                  <CiFilter />
                   FILTERS
                 </button>{" "}
                 <button className='m-3 center  -whit text-white  bg-green-400  text-center font-bold p-2 rounded-full'>
