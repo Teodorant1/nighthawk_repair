@@ -67,11 +67,11 @@ const BuyerJoblist = () => {
     }, []);
 
     return (
-      <div className='m-5 center text-center font-bold py-2 px-4 rounded-md '>
+      <div className='m-3 flex flex-wrap center  font-bold p-2 rounded-md '>
         {" "}
         {applications.length === 0 && (
           <div className='flex items-center justify-center w-[100%]'>
-            <button className='m-5 center bg-green-800 text-white   text-center font-bold py-2 px-4 rounded-md '>
+            <button className='m-3 center bg-green-400 text-white    font-bold p-2 rounded-md '>
               NO APPLICATIONS YET
             </button>{" "}
           </div>
@@ -79,7 +79,7 @@ const BuyerJoblist = () => {
         {applications.length! > 0 && (
           <div className='flex items-center justify-center w-[100%]'>
             {" "}
-            <button className='m-5 p-5 rounded-md bg-green-800 text-white'>
+            <button className='m-3 p-5 rounded-md bg-green-400 text-white'>
               APPLICATIONS
             </button>{" "}
           </div>
@@ -97,14 +97,14 @@ const BuyerJoblist = () => {
                   href={"/Both/ProfilePage/" + application.userID}
                   target='_blank'
                   rel='noopener noreferrer'
-                  className='m-5 center bg-green-800  text-white font-bold py-2 px-4 rounded-md '
+                  className='m-3 center bg-green-400  text-white font-bold p-2 rounded-md '
                 >
                   PROFILE{""}
                 </a>{" "}
               </div>
               <div className='flex items-center justify-center w-[100%]'>
                 {" "}
-                <button className='m-5 center bg-green-800  text-white font-bold py-2 px-4 rounded-md '>
+                <button className='m-3 center bg-green-400  text-white font-bold p-2 rounded-md '>
                   E-MAIL: {application.submitterEmail}{" "}
                 </button>
               </div>
@@ -134,22 +134,22 @@ const BuyerJoblist = () => {
     }
 
     return (
-      <div>
+      <div className='flex flex-wrap'>
         {mypostedjobs.length! > 0 && (
           <>
             {mypostedjobs.map((job) => (
               <div
-                className=' overflow-x-auto m-5 center outline text-center font-bold py-2 px-4 rounded-md '
+                className='m-2  outline  font-bold p-2 rounded-md '
                 key={job.id}
               >
-                <div className='flex flex-wrap items-center justify-center w-[100%]'>
+                <div className='items-center justify-center w-[50%]'>
                   {" "}
-                  <button className='whitespace-normal m-5 center  bg-green-800 text-white  text-center font-bold py-2 px-4 rounded-md '>
+                  <button className='whitespace-normal m-3 center  bg-green-400 text-white   font-bold p-2 rounded-md '>
                     TITLE:{job.title}
                   </button>{" "}
                 </div>
                 {/* <button
-                  className='m-5 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-md '
+                  className='m-3 center bg-green-400  text-yellow-300  font-bold p-2 rounded-md '
                   onClick={() => {
                     toggleShowApplications(job.id);
                   }}
@@ -157,7 +157,7 @@ const BuyerJoblist = () => {
                   CLICK HERE TO TOGGLE APPLICATIONS
                 </button>{" "}
                 <button
-                  className='m-5 center bg-green-800  text-yellow-300 text-center font-bold py-2 px-4 rounded-md '
+                  className='m-3 center bg-green-400  text-yellow-300  font-bold p-2 rounded-md '
                   onClick={() => {
                     toggleShow(job.id);
                   }}
@@ -166,7 +166,7 @@ const BuyerJoblist = () => {
                 </button>{" "} */}
                 {job.isVisible === false && (
                   <button
-                    className='m-5 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-md '
+                    className='m-3 center bg-red-400 text-white  font-bold p-2 rounded-md '
                     onClick={() => {
                       if (job.isVisible === false) {
                         handle_ToggleVisibilityStatus_in_db(job.id, true);
@@ -181,7 +181,7 @@ const BuyerJoblist = () => {
                 )}{" "}
                 {job.isVisible === true && (
                   <button
-                    className='m-5 center bg-green-800 text-white text-center font-bold py-2 px-4 rounded-md '
+                    className='m-3 center bg-green-400 text-white  font-bold p-2 rounded-md '
                     onClick={() => {
                       if (job.isVisible === false) {
                         handle_ToggleVisibilityStatus_in_db(job.id, true);
@@ -197,7 +197,7 @@ const BuyerJoblist = () => {
                 <div>
                   {" "}
                   {true && (
-                    <div className='w-90p flex-auto m-5 center  text-center font-bold py-2 px-4 rounded-md '>
+                    <div className=' m-3 center   font-bold p-2 rounded-md '>
                       {" "}
                       <div className=' whitespace-normal'>ID:{job.id}</div>
                       <div>
@@ -235,7 +235,7 @@ const BuyerJoblist = () => {
   }
 
   return (
-    <div className='m-5 center text-center font-bold py-2 px-4 rounded-md overflow-y-hidden overflow-x-hidden'>
+    <div className='m-3 center  font-bold p-2 rounded-md'>
       {session?.user.isClient === true && <JoblistBox />}
     </div>
   );

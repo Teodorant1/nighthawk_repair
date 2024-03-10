@@ -11,13 +11,15 @@ import { Session, getServerSession } from "next-auth";
 import bcrypt from "bcrypt";
 
 export async function POST(req: NextRequest) {
-  const session:Session = (await getServerSession(authOptions)) as Session;
+  const session: Session = (await getServerSession(authOptions)) as Session;
   const body = await req.json();
   const parcel1: parcel = body;
   // console.log("alttrpc");
   // console.log(parcel1);
 
   if (parcel1.method === "getAggregatedJobsForUser") {
+    console.log(parcel1);
+    console.log("getAggregatedJobsForUser");
     if (session.user.sub === parcel1.userID) {
       console.log(parcel1);
       const sevenDaysAgo = new Date();
@@ -29,6 +31,8 @@ export async function POST(req: NextRequest) {
           user_ID: parcel1.userID,
         },
       });
+      console.log("aggregatedResults");
+      console.log(aggregatedResults);
 
       for (const criteria of criteriaList) {
         try {
@@ -104,7 +108,9 @@ export async function POST(req: NextRequest) {
           return resp.data;
         })
         .catch((error) => console.log(error));
+      console.log("getAggregatedJobsForUser RESULTS");
 
+      console.log(result);
       return NextResponse.json(result);
     }
     const submitted_job_SANS_Email1111: submitted_job_SANS_Email[] = [];

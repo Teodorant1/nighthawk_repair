@@ -20,22 +20,18 @@ const IQBrowser = () => {
   const [myjobs, setmyjobs] = useState<submitted_job_SANS_Email[]>([]);
 
   useEffect(() => {
-    console.log("myjobs", myjobs);
-  }, [myjobs]);
-
-  useEffect(() => {
-    // if (status === "authenticated") {
-    let myjobsparcel: parcel = {
-      method: "getAggregatedJobsForUser",
-      userID: session?.user.sub,
-    };
-
-    axios.post("/api/alttrpc", myjobsparcel).then((resp) => {
-      console.log("getAggregatedJobsForUser", resp.data);
-      setmyjobs(resp.data);
-    });
-    // }
-  }, []);
+    if (status === "authenticated") {
+      let myjobsparcel: parcel = {
+        method: "getAggregatedJobsForUser",
+        userID: session?.user.sub,
+      };
+      console.log(myjobsparcel);
+      axios.post("/api/alttrpc", myjobsparcel).then((resp) => {
+        console.log("getAggregatedJobsForUser", resp.data);
+        setmyjobs(resp.data);
+      });
+    }
+  }, [status]);
 
   useEffect(() => {
     axios.post("/api/qizztaker", parcel1).then((resp) => {
@@ -243,19 +239,19 @@ const IQBrowser = () => {
     }
 
     return (
-      <div className=' m-3 center  text-center font-bold p-2  rounded-md h-screen overflow-x-auto'>
+      <div className=' m-5 center flex flex-wrap text-center font-bold p-10  rounded-md'>
         {myjobs.length! > 0 && (
           <>
             {myjobs.map(
               (job) =>
                 isJobVisible(job) && (
                   <div
-                    className='m-3 center outline text-center font-bold p-2 rounded-md overflow-x-auto'
+                    className='m-3 center outline text-center font-bold p-2 rounded-md'
                     key={job.id}
                   >
                     {context.COINS > 20 && (
                       <button
-                        className='m-3 center bg-green-800 text-white text-center font-bold p-2 rounded-full'
+                        className='m-3 center bg-green-400 text-white text-center font-bold p-2 rounded-full'
                         onClick={() => {
                           BuyAlead(job.id);
                         }}
@@ -265,7 +261,7 @@ const IQBrowser = () => {
                     )}{" "}
                     {context.currentJobID !== job.id && (
                       <button
-                        className='m-3 center bg-green-800 text-white text-center font-bold p-2 rounded-full'
+                        className='m-3 center bg-green-400 text-white text-center font-bold p-2 rounded-full'
                         onClick={() => {
                           toggleShow(job.id);
                         }}
@@ -275,7 +271,7 @@ const IQBrowser = () => {
                     )}{" "}
                     {context.currentJobID === job.id && (
                       <button
-                        className='m-3 center bg-green-800 text-white text-center font-bold p-2 rounded-full'
+                        className='m-3 center bg-green-400 text-white text-center font-bold p-2 rounded-full'
                         onClick={() => {
                           toggleShow(job.id);
                         }}
@@ -300,7 +296,9 @@ const IQBrowser = () => {
                     <div>Hiring stage:{job.hiringstage}</div>
                     {/* picture actually exists in the schema, but is an embedded object,
                      for some reason unknown to me typescript is freaking out here */}
-                    <div>PICS LENGTH:{job.pictures.length}</div>
+                    {job.pictures && (
+                      <div>PICS LENGTH:{job.pictures.length}</div>
+                    )}
                     {job.extrainfo !== "undefined" && (
                       <div>EXTRA INFO: {job.extrainfo}</div>
                     )}
@@ -357,7 +355,7 @@ const IQBrowser = () => {
                 className='flex flex-wrap items-center justify-center w-screen'
               >
                 <div>
-                  <div className='bg-green-800 text-white m-3 center  text-center font-bold p-2 rounded-md'>
+                  <div className='bg-green-400 text-white m-3 center  text-center font-bold p-2 rounded-md'>
                     {" "}
                     <div> Question: {Answer.questionID}</div>
                     <div>Answer: {Answer.text_answer}</div>
@@ -399,7 +397,7 @@ const IQBrowser = () => {
           <h1>SORT BY</h1>{" "}
           <div className='m-3 center  text-center font-bold p-2 rounded-md'>
             <div
-              className='m-3 center bg-red-600 text-white text-center font-bold p-2 rounded-full'
+              className='m-3 center bg-red-400 text-white text-center font-bold p-2 rounded-full'
               onClick={() => {
                 filterSubjobs("budget", false);
               }}
@@ -408,7 +406,7 @@ const IQBrowser = () => {
               Sort by ASCENDING VALUE{" "}
             </div>
             <div
-              className='m-3 center bg-red-600 text-white text-center font-bold p-2 rounded-full'
+              className='m-3 center bg-red-400 text-white text-center font-bold p-2 rounded-full'
               onClick={() => {
                 filterSubjobs("budget", true);
               }}
@@ -424,7 +422,7 @@ const IQBrowser = () => {
                 onClick={() => {
                   context.setFirstToBuy(true);
                 }}
-                className='m-3 center bg-red-600 text-white text-center font-bold p-2 rounded-full'
+                className='m-3 center bg-red-400 text-white text-center font-bold p-2 rounded-full'
               >
                 ENABLE FIRST TO BUY FILTER
               </div>
@@ -444,7 +442,7 @@ const IQBrowser = () => {
                 onClick={() => {
                   context.setPicturesRequired(true);
                 }}
-                className='m-3 center bg-red-600 text-white text-center font-bold p-2 rounded-full'
+                className='m-3 center bg-red-400 text-white text-center font-bold p-2 rounded-full'
               >
                 ENABLE LEADS WITH IMAGES
               </div>
@@ -486,7 +484,7 @@ const IQBrowser = () => {
                     const newcriteria = [...context.timingCriteria, preset];
                     context.setTimingCriteria(newcriteria);
                   }}
-                  className='m-3 center bg-red-600 text-white text-center font-bold p-2 rounded-full'
+                  className='m-3 center bg-red-400 text-white text-center font-bold p-2 rounded-full'
                 >
                   ENABLE {preset} CRITERIA
                 </button>
@@ -518,7 +516,7 @@ const IQBrowser = () => {
                       onClick={() => {
                         context.setMinBudget(preset);
                       }}
-                      className='m-3 center bg-red-600 text-white text-center font-bold p-2 rounded-full'
+                      className='m-3 center bg-red-400 text-white text-center font-bold p-2 rounded-full'
                     >
                       Set minimum budget to {preset}
                     </button>
@@ -547,7 +545,7 @@ const IQBrowser = () => {
                       onClick={() => {
                         context.setMaxBudget(preset);
                       }}
-                      className='m-3 center bg-red-600 text-white text-center font-bold p-2 rounded-full'
+                      className='m-3 center bg-red-400 text-white text-center font-bold p-2 rounded-full'
                     >
                       Set maximum budget to {preset}
                     </button>
@@ -634,7 +632,7 @@ const IQBrowser = () => {
             <div>
               <div className='flex flex-wrap items-center justify-center w-screen'>
                 <button
-                  className='m-3 center  -white text-white  bg-green-800  text-center font-bold p-2 rounded-full'
+                  className='m-3 center  -white text-white  bg-green-400  text-center font-bold p-2 rounded-full'
                   onClick={() => {
                     if (context.filterBoxEnabled === false) {
                       context.setFilterBoxEnabled(true);
@@ -645,28 +643,28 @@ const IQBrowser = () => {
                 >
                   FILTERS
                 </button>{" "}
-                <button className='m-3 center  -whit text-white  bg-green-800  text-center font-bold p-2 rounded-full'>
+                <button className='m-3 center  -whit text-white  bg-green-400  text-center font-bold p-2 rounded-full'>
                   AVAILABLE CREDIT: £{context.COINS}
                 </button>
                 <button
                   onClick={() => {
                     context.setleads_to_look_at("myleads");
                   }}
-                  className='m-3 center  -white  text-white bg-green-800   text-center font-bold p-2 rounded-full'
+                  className='m-3 center  -white  text-white bg-green-400   text-center font-bold p-2 rounded-full'
                 >
                   NUMBER OF APPLIED JOBS: {context.appliedJobs.length}
                 </button>
               </div>
               <div className='flex flex-wrap items-center justify-center w-screen'>
                 {" "}
-                <div
+                {/* <div
                   onClick={() => {
                     console.log(myjobs);
                   }}
-                  className=' m-3 center  -white text-white bg-green-800   text-center font-bold p-2 rounded-full'
+                  className=' m-3 center  -white text-white bg-green-400   text-center font-bold p-2 rounded-full'
                 >
                   A LIST OF FRESH JOBS {myjobs.length}
-                </div>
+                </div> */}
               </div>
 
               {context.filterBoxEnabled === true && <FilterBox />}
@@ -721,7 +719,7 @@ const IQBrowser = () => {
             {" "}
             {context.currentJobID !== job?.id && (
               <button
-                className='m-3 center bg-green-800 text-white text-center font-bold p-2 rounded-full'
+                className='m-3 center bg-green-400 text-white text-center font-bold p-2 rounded-full'
                 onClick={() => {
                   toggleShow(job?.id!);
                 }}
@@ -731,7 +729,7 @@ const IQBrowser = () => {
             )}{" "}
             {context.currentJobID === job?.id && (
               <button
-                className='m-3 center bg-green-800 text-white text-center font-bold p-2 rounded-full'
+                className='m-3 center bg-green-400 text-white text-center font-bold p-2 rounded-full'
                 onClick={() => {
                   toggleShow(job?.id!);
                 }}
@@ -759,7 +757,7 @@ const IQBrowser = () => {
                         onClick={async () => {
                           await handleTagJob(appliedjob.id, preset);
                         }}
-                        className='m-3  bg-red-600 text-white center text-center font-bold p-2 rounded-full '
+                        className='m-3  bg-red-400 text-white center text-center font-bold p-2 rounded-full '
                       >
                         {" "}
                         TAG AS{""} {preset}
@@ -771,7 +769,7 @@ const IQBrowser = () => {
             )}
             <div className='flex items-center justify-center w-screen'>
               {" "}
-              <div className=' rounded bg-green-800 text-white px-14 py-5'>
+              <div className=' rounded bg-green-400 text-white px-14 py-5'>
                 ID:{job?.id}
               </div>
             </div>
@@ -792,7 +790,7 @@ const IQBrowser = () => {
             <div>Hiring stage:{job?.hiringstage}</div>
             {/* picture actually exists in the schema, but is an embedded object,
      for some reason unknown to me typescript is freaking out here */}
-            <div>PICS LENGTH:{job?.pictures.length}</div>
+            {job.pictures && <div>PICS LENGTH:{job.pictures.length}</div>}{" "}
             {job?.extrainfo !== "undefined" && (
               <div>EXTRA INFO: {job?.extrainfo}</div>
             )}
@@ -830,13 +828,13 @@ const IQBrowser = () => {
 
   function MyLeads() {
     return (
-      <div className=' flex flex-wrap'>
+      <div className=' flex flex-wrap items-center justify-center w-screen'>
         {" "}
         <button
           onClick={() => {
             context.setleads_to_look_at("newleads");
           }}
-          className='m-3 center bg-green-800 text-white text-center font-bold p-2 rounded-full'
+          className='m-3 center bg-green-400 text-white text-center font-bold p-2 rounded-full'
         >
           GO TO FRESH JOBS
         </button>{" "}
@@ -859,7 +857,7 @@ const IQBrowser = () => {
                 onClick={() => {
                   context.setmyLead_filter_Current_Setting(preset);
                 }}
-                className='m-3  bg-red-600 text-white center text-center font-bold p-2 rounded-full '
+                className='m-3  bg-red-400 text-white center text-center font-bold p-2 rounded-full '
               >
                 {" "}
                 DISPLAY{""} {preset}

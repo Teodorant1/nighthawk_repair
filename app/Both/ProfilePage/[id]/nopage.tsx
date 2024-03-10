@@ -19,7 +19,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
   const context = useProfileState();
   const { status, data: session } = useSession();
   const [showmap, setshowmap] = useState<boolean>(false);
-  const [showSCadder, setshowSCadder] = useState<boolean>(true);
+  const [showSCadder, setshowSCadder] = useState<boolean>(false);
 
   useEffect(() => {
     let getcertificatesParcel: parcel = {
@@ -117,7 +117,6 @@ const SellerProfile = ({ params: { id } }: Props1) => {
         context.setreviews(resp.data);
         if (resp.data.length > 0) {
           const revcount = await GetReviewCounter(resp.data);
-          console.log("revcount", revcount);
           context.setreviewCounter(revcount);
         }
       })
@@ -167,13 +166,13 @@ const SellerProfile = ({ params: { id } }: Props1) => {
     }
 
     return (
-      <div className='m-5 center  text-center font-bold py-2 px-4 rounded-md '>
+      <div className='m-2 center outline text-center font-bold p-2 rounded-md '>
         {/* {context.my_Sub_Categories.length} {context.all_subcategories.length} */}
         {context.my_Sub_Categories?.length! > 0 && (
-          <div className=' m-5 center  text-center font-bold py-2 px-4  rounded-sm '>
+          <div className=' m-2 center  text-center font-bold p-2  rounded-sm '>
             <div>
               {" "}
-              <button className=' bg-green-800 text-white p-5 rounded-md'>
+              <button className=' bg-green-400 text-white p-5 rounded-md'>
                 INTERESTED IN:{" "}
               </button>
             </div>
@@ -182,7 +181,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
               <button
                 key={sub_category.id}
                 onClick={() => {}}
-                className='bg-green-700 text-white m-5 center outline text-center font-bold py-2 px-4 rounded-sm '
+                className='bg-green-400 text-white m-2 center outline text-center font-bold p-2 rounded-sm '
               >
                 {sub_category.subcategory}
                 {""} {""} |{""} Category: {sub_category.category}{" "}
@@ -195,7 +194,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                         sub_category.id
                       );
                     }}
-                    className='m-5 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-sm '
+                    className='m-2 center bg-red-400 text-white text-center font-bold p-2 rounded-sm '
                   >
                     DELETE{" "}
                   </button>
@@ -205,7 +204,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
           </div>
         )}{" "}
         {context.my_Sub_Categories?.length! === 0 && (
-          <div className='bg-green-800 text-white m-5 center outline text-center font-bold py-2 px-4 rounded-sm '>
+          <div className='bg-green-400 text-white m-2 center outline text-center font-bold p-2 rounded-sm '>
             <h1>NO SUBCATEGORIES ADDED YET</h1>
           </div>
         )}{" "}
@@ -219,7 +218,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                 setshowSCadder(false);
               }
             }}
-            className='m-5 center bg-green-800 text-white  text-center font-bold py-2 px-4 rounded-sm '
+            className='m-2 center bg-green-400 text-white  text-center font-bold p-2 rounded-sm '
           >
             {" "}
             Click here to toggle the dropdown list of Interests{" "}
@@ -228,8 +227,8 @@ const SellerProfile = ({ params: { id } }: Props1) => {
         {session?.user.sub === id && showSCadder === true && (
           <div>
             {context.all_subcategories.length > 0 && (
-              <div className=' m-2  center  text-center font-bold py-2 px-4 rounded-sm '>
-                <button className='bg-green-800 text-white p-5 rounded-md'>
+              <div className=' m-2  center  text-center font-bold p-2 rounded-sm '>
+                <button className='bg-green-400 text-white p-5 rounded-md'>
                   ADD NEW SUBCATEGORIES HERE
                 </button>
                 <div className='flex flex-wrap'>
@@ -249,7 +248,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                                 sub_category.name
                               );
                             }}
-                            className='m-5 bg-green-800 text-white center  text-center font-bold py-2 px-4 rounded-sm '
+                            className='m-2 bg-green-400 text-white center  text-center font-bold p-2 rounded-sm '
                           >
                             ADD {sub_category.name}/ Category:{" "}
                             {sub_category.categoryID}{" "}
@@ -370,7 +369,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
             {({ open }) => (
               <button
                 onClick={() => open()}
-                className='flex bg-green-800 text-white mx-auto  justify-center  font-bold py-2 px-4 rounded-sm'
+                className='flex bg-green-400 text-white mx-auto  justify-center  font-bold p-2 rounded-sm'
               >
                 Upload Image
               </button>
@@ -382,13 +381,13 @@ const SellerProfile = ({ params: { id } }: Props1) => {
             {" "}
             <div className='flex flex-wrap items-center justify-center'>
               <button
-                className='m-5 bg-green-800 text-white center   text-center font-bold py-2 px-4 rounded-sm '
+                className='m-2 bg-green-400 text-white center   text-center font-bold p-2 rounded-sm '
                 onClick={handlePrevImage}
               >
                 Previous
               </button>
               <button
-                className='m-5 bg-green-800 text-white center   text-center font-bold py-2 px-4 rounded-sm '
+                className='m-2 bg-green-400 text-white center   text-center font-bold p-2 rounded-sm '
                 onClick={handleNextImage}
               >
                 Next
@@ -408,12 +407,13 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                         context.setworkGalleryPictures(resp.data);
                       });
                   }}
-                  className='m-5 center  bg-red-600  text-white text-center font-bold py-2 px-4 rounded-sm '
+                  className='m-2 center  bg-red-400  text-white text-center font-bold p-2 rounded-sm '
                 >
                   DELETE THIS PICTURE
                 </button>
               )}
             </div>{" "}
+            {}
             <CldImage
               src={images[currentImageIndex].cloudinaryID}
               alt={`Image ${currentImageIndex + 1}`}
@@ -428,43 +428,43 @@ const SellerProfile = ({ params: { id } }: Props1) => {
 
   function ReviewBox() {
     return (
-      <div className='   text-center font-bold py-2 px-4 rounded-md '>
+      <div className='   text-center font-bold p-2 rounded-md '>
         {context.reviewCounter.average !== 0 && (
           <>
             {" "}
-            <button className='m-5 bg-green-800 text-white center  text-center font-bold py-2 px-4 rounded-sm '>
+            <button className='m-2 bg-green-400 text-white center  text-center font-bold p-2 rounded-sm '>
               {" "}
               Average Rating: {context.reviewCounter.average} {""} STARS
             </button>{" "}
             {context.reviewCounter.ones && (
-              <button className='m-5 bg-green-800 text-white center  text-center font-bold py-2 px-4 rounded-sm '>
+              <button className='m-2 bg-green-400 text-white center  text-center font-bold p-2 rounded-sm '>
                 Number of 1 star reviews : {context.reviewCounter.ones}
               </button>
             )}
             {context.reviewCounter.twos && (
-              <button className='m-5 bg-green-800 text-white center  text-center font-bold py-2 px-4 rounded-sm '>
+              <button className='m-2 bg-green-400 text-white center  text-center font-bold p-2 rounded-sm '>
                 Number of 2 star reviews : {context.reviewCounter.twos}
               </button>
             )}{" "}
             {context.reviewCounter.threes && (
-              <button className='m-5 bg-green-800 text-white center  text-center font-bold py-2 px-4 rounded-sm '>
+              <button className='m-2 bg-green-400 text-white center  text-center font-bold p-2 rounded-sm '>
                 Number of 3 star reviews : {context.reviewCounter.threes}
               </button>
             )}{" "}
             {context.reviewCounter.fours && (
-              <button className='m-5 bg-green-800 text-white center  text-center font-bold py-2 px-4 rounded-sm '>
+              <button className='m-2 bg-green-400 text-white center  text-center font-bold p-2 rounded-sm '>
                 Number of 4 star reviews : {context.reviewCounter.fours}
               </button>
             )}{" "}
             {context.reviewCounter.fives && (
-              <button className='m-5 bg-green-800 text-white center  text-center font-bold py-2 px-4 rounded-sm '>
+              <button className='m-2 bg-green-400 text-white center  text-center font-bold p-2 rounded-sm '>
                 Number of 5 star reviews : {context.reviewCounter.fives}
               </button>
             )}
           </>
         )}
         {context.reviews.length === 0 && (
-          <button className=' bg-green-800 text-white p-5'>
+          <button className=' bg-green-400 text-white p-5'>
             THIS PERSON HAS NO REVIEWS
           </button>
         )}
@@ -472,18 +472,18 @@ const SellerProfile = ({ params: { id } }: Props1) => {
         {context.reviews.length > 0 && (
           <div>
             {" "}
-            <button className='  rounded-md p-2 bg-green-800 text-white'>
+            <button className='  rounded-md p-2 bg-green-400 text-white'>
               LIST OF REVIEWS
             </button>{" "}
-            <div className=' text-center font-bold py-2 px-4 rounded-sm '>
+            <div className=' text-center font-bold p-2 rounded-sm '>
               {context.reviews.map((review) => (
                 <div
-                  className='  m-5 outline font-bold rounded-sm mx-auto w-5/6'
+                  className='  m-2 outline font-bold rounded-sm mx-auto w-5/6'
                   key={review.id}
                 >
                   <div className=' mx-auto  w-[100%]'>
                     {" "}
-                    <div className='px-10 bg-green-800 text-white flex flex-1'>
+                    <div className='px-10 bg-green-400 text-white flex flex-1'>
                       <div>JOB ID: {review.Job_Id}</div>
                       <div> DATE: {review.date_created.toString()}</div>
                     </div>{" "}
@@ -502,25 +502,25 @@ const SellerProfile = ({ params: { id } }: Props1) => {
 
   function CertificateBox() {
     return (
-      <div className='m-5  center  text-center font-bold py-2 px-4 rounded-md '>
+      <div className='m-2 outline center  text-center font-bold p-2 rounded-md '>
         {context.certificates.length === 0 && (
-          <button className='bg-green-800 text-white p-5 rounded-md'>
+          <button className='bg-green-400 text-white p-5 rounded-md'>
             This user currently has no Certificates
           </button>
         )}
         {context.certificates.length > 0 && (
           <div>
-            <button className='bg-green-800 text-white p-5 rounded-md'>
+            <button className='bg-green-400 text-white p-5 rounded-md'>
               CERTIFICATES
             </button>
 
             {context.certificates.map((certificate) => (
               <div
                 key={certificate.id}
-                className='m-5  center  text-center font-bold py-2 px-4 rounded-md '
+                className='m-2  center  text-center font-bold p-2 rounded-md '
               >
                 {certificate.name} / {certificate.Link}{" "}
-                <button className='m-5 center bg-green-800 text-white text-center font-bold py-2 px-4 rounded-sm '>
+                <button className='m-2 center bg-green-400 text-white text-center font-bold p-2 rounded-sm '>
                   Open in new tab{" "}
                 </button>
                 {session?.user.sub === id && (
@@ -538,7 +538,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                           context.setcertificates(resp.data);
                         });
                     }}
-                    className='m-5 center bg-red-600 text-white text-center font-bold py-2 px-4 rounded-sm '
+                    className='m-2 center bg-red-400 text-white text-center font-bold p-2 rounded-sm '
                   >
                     DELETE{" "}
                   </button>
@@ -552,17 +552,17 @@ const SellerProfile = ({ params: { id } }: Props1) => {
           <>
             <div>
               {" "}
-              <button className='bg-green-800  text-white p-5 rounded-sm m-5'>
+              <button className='bg-green-400  text-white p-5 rounded-sm m-2'>
                 Create new certificates here
               </button>
             </div>
             <input
-              className='outline text-center font-bold py-2 px-4 rounded-sm m-5 '
+              className='outline text-center font-bold p-2 rounded-sm m-2 '
               id='CertificateName'
               placeholder='Certificate Name Goes Here'
             />{" "}
             <input
-              className='outline text-center font-bold py-2 px-4 rounded-sm m-5  '
+              className='outline text-center font-bold p-2 rounded-sm m-2  '
               id='Certificatelink'
               placeholder='Certificate link Goes Here'
             />{" "}
@@ -587,7 +587,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                     context.setcertificates(resp.data);
                   });
               }}
-              className='m-5 center   text-center font-bold py-2 px-4 rounded-sm bg-green-800  text-white p-5'
+              className='m-2 center   text-center font-bold p-2 rounded-sm bg-green-400  text-white p-5'
             >
               {" "}
               Click here to add a new certificate to your profile{" "}
@@ -606,10 +606,12 @@ const SellerProfile = ({ params: { id } }: Props1) => {
           <ReviewBox />
           <GreaterCategoryBox />
           <CertificateBox />{" "}
-          <div className='flex items-center justify-center h-screen'>
-            {" "}
-            <ImageCarousel images={context.workGalleryPictures} />
-          </div>{" "}
+          {context.workGalleryPictures && (
+            <div className='flex items-center justify-center h-auto'>
+              {" "}
+              <ImageCarousel images={context.workGalleryPictures} />
+            </div>
+          )}
           {session?.user.sub === id && (
             <div className='flex items-center justify-center w-screen'>
               <div>
@@ -624,7 +626,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                         setshowmap(false);
                       }
                     }}
-                    className='m-5 center bg-green-800 text-white text-center font-bold py-2 px-4 rounded-sm '
+                    className='m-2 center bg-green-400 text-white text-center font-bold p-2 rounded-sm '
                   >
                     {" "}
                     Click here to toggle the map{" "}
@@ -642,7 +644,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                   <div> Current Radius : {context.UserLoc.TravelRange} KM</div>
                   <input
                     type='number'
-                    className='outline text-center font-bold py-2 px-4 rounded-sm '
+                    className='outline text-center font-bold p-2 rounded-sm '
                     defaultValue={context.UserLoc.TravelRange}
                     id='Radius'
                     placeholder='Radius Goes Here'
@@ -668,7 +670,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                           });
                         });
                     }}
-                    className='m-5 center  bg-blue-950  text-white text-center font-bold py-2 px-4 rounded-sm '
+                    className='m-2 center  bg-blue-950  text-white text-center font-bold p-2 rounded-sm '
                   >
                     {" "}
                     Click here to update Radius{" "}

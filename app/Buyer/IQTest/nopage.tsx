@@ -8,12 +8,34 @@ import { useSession } from "next-auth/react";
 import { CldImage, CldUploadWidget } from "next-cloudinary";
 import { useAppState } from "./iqtContext";
 import { ClickedPosition, CloudinaryResult, parcel } from "@/projecttypes";
+import { VscDebugRestart } from "react-icons/vsc";
+import { MdCategory, MdDriveFolderUpload } from "react-icons/md";
+import { BiCategoryAlt, BiMailSend } from "react-icons/bi";
+import { FaClipboardQuestion, FaRegHourglass } from "react-icons/fa6";
+import { FcViewDetails } from "react-icons/fc";
+import { FaImages } from "react-icons/fa";
+import { ImCheckmark } from "react-icons/im";
+import { PiNumberCircleOneFill } from "react-icons/pi";
+import { BsListOl, BsArrowRightSquareFill } from "react-icons/bs";
+import { RiMoneyPoundCircleLine } from "react-icons/ri";
+import { useRouter } from "next/navigation";
 
 const QIZZTAKER = () => {
   // const [userLocationText, setUserLocationText] = useState<String>(
   //   "Testing the alt tab error"
   // );
+  const router = useRouter();
+  const [restartText, setrestartText] = useState<String>("RESTART TEST");
 
+  const handleRefresh = () => {
+    if (restartText === "RESTART TEST") {
+      setrestartText("CLICK AGAIN TO CONFIRM");
+    }
+    // Reload the current page
+    if (restartText === "CLICK AGAIN TO CONFIRM") {
+      window.location.reload();
+    }
+  };
   const {
     title1,
     settitle1,
@@ -99,6 +121,16 @@ const QIZZTAKER = () => {
   const parcel1: parcel = {
     escalationlevel: 1,
   };
+
+  useEffect(() => {
+    if (
+      AnsweredQuestionsArray?.length! >= Question_Array?.length! &&
+      AnsweredQuestionsArray?.length > 0
+    ) {
+      setstage(3.4);
+    }
+  }, [AnsweredQuestionsArray]);
+
   useEffect(() => {
     axios.post("/api/qizztaker", parcel1).then((resp) => {
       setcategory_Array(resp.data);
@@ -286,7 +318,7 @@ const QIZZTAKER = () => {
     return (
       <div>
         <div className='flex items-center justify-center w-screen'>
-          <div className=' center outline  bg-green-800 text-white   text-center font-bold m-3 py-4 px-12 rounded-full '>
+          <div className=' center outline  bg-green-400 text-white   text-center font-bold m-3 py-4 px-12 rounded-full '>
             STEP 1. PICK A CATEGORY{" "}
           </div>{" "}
         </div>
@@ -318,7 +350,7 @@ const QIZZTAKER = () => {
     return (
       <div>
         <div className='flex items-center justify-center w-screen'>
-          <div className='m-3 py-4 px-12  center outline  bg-green-800 text-white   text-center font-bold  rounded-full '>
+          <div className='m-3 py-4 px-12  center outline  bg-green-400 text-white   text-center font-bold  rounded-full '>
             STEP 2. PICK A SUBCATEGORY{" "}
           </div>{" "}
         </div>
@@ -335,6 +367,8 @@ const QIZZTAKER = () => {
                     setstage(3);
                     GetData(3, sub_category!.name);
                     GetData(3.5, sub_category!.name);
+                    setAnsweredQuestionsArray([]);
+                    setAnsweredQuestionsArray1([]);
                   }}
                   className='m-3 py-4 px-12 center outline     text-center font-bold  rounded-full '
                 >
@@ -350,13 +384,13 @@ const QIZZTAKER = () => {
 
   function OptionalQuestionBOX() {
     return (
-      <div className='bg-green-500'>
+      <div className='bg-green-400'>
         {" "}
         <div
           onClick={() => {
             setstage(3.4);
           }}
-          className='m-3 py-4 px-12 center outline bg-green-800 text-white    text-center font-bold rounded-full '
+          className='m-3 py-4 px-12 center outline bg-green-400 text-white    text-center font-bold rounded-full '
         >
           {" "}
           Click here to proceed to the next step{" "}
@@ -378,7 +412,7 @@ const QIZZTAKER = () => {
                         key={question.id}
                         className=' center outline text-center font-bold m-3 py-4 px-12'
                       >
-                        <div className='m-3 center outline bg-green-800 text-white    text-center font-bold py-4 px-12 rounded-full '>
+                        <div className='m-3 center outline bg-green-400 text-white    text-center font-bold py-4 px-12 rounded-full '>
                           {question.text_Question}?
                         </div>
                         <div>
@@ -408,11 +442,11 @@ const QIZZTAKER = () => {
     return (
       <div>
         <div className='flex items-center justify-center w-screen'>
-          <div className='m-3 py-4 px-12 center outline bg-green-800 text-white    text-center font-bold  rounded-full '>
+          {/* <div className='m-3 py-4 px-12 center outline bg-green-400 text-white    text-center font-bold  rounded-full '>
             {" "}
             Questionare Stage
-          </div>{" "}
-          <div className='m-3 center outline   bg-green-800 text-white  text-center font-bold py-4 px-12 rounded-full '>
+          </div>{" "} */}
+          <div className='m-3 center  text-center font-bold py-4 px-12 rounded-full '>
             {" "}
             You have answered {AnsweredQuestionsArray?.length!}/
             {Question_Array?.length!} questions{" "}
@@ -425,7 +459,7 @@ const QIZZTAKER = () => {
               onClick={() => {
                 setstage(3.4);
               }}
-              className='m-3 center outline bg-green-800 text-white    text-center font-bold py-4 px-12 rounded-full '
+              className='m-3 center outline bg-green-400 text-white    text-center font-bold py-4 px-12 rounded-full '
             >
               {" "}
               Click here to proceed to the next step{" "}
@@ -445,7 +479,7 @@ const QIZZTAKER = () => {
                         className='m-3 center   text-center font-bold py-4 px-12 rounded-sm '
                       >
                         <div className='flex items-center justify-center w-screen'>
-                          <div className='m-3 center outline bg-green-800 text-white    text-center font-bold py-4 px-12 rounded-full '>
+                          <div className='m-3 center outline bg-green-400 text-white    text-center font-bold py-4 px-12 rounded-full '>
                             {" "}
                             {question.text_Question}?
                           </div>{" "}
@@ -557,7 +591,7 @@ const QIZZTAKER = () => {
                         onClick={() => {
                           setcoordsTouched(true);
                         }}
-                        className='m-3 center bg-green-800 text-white   text-center font-bold py-4 px-12 rounded-full '
+                        className='m-3 center bg-green-400 text-white   text-center font-bold py-4 px-12 rounded-full '
                       >
                         {" "}
                         Click here to finalize coordinates and go to the final
@@ -585,7 +619,7 @@ const QIZZTAKER = () => {
                             onClick={() => {
                               GetData(5);
                             }}
-                            className=' bg-green-800 text-white m-3 center  text-center font-bold py-4 px-12 rounded-full '
+                            className=' bg-green-400 text-white m-3 center  text-center font-bold py-4 px-12 rounded-full '
                           >
                             CLICK HERE TO SUBMIT{" "}
                           </button>{" "}
@@ -691,41 +725,45 @@ const QIZZTAKER = () => {
     // }, [pictures2]);
 
     return (
-      <div className='flex items-center justify-center w-screen'>
-        <button
-          onClick={() => {
-            setstage(4);
-            setpictures(pictures2);
-          }}
-          className='m-3 center outline bg-green-800 text-white    text-center font-bold py-4 px-12 rounded-full '
-        >
-          {" "}
-          Click here to move to the next step{" "}
-        </button>{" "}
-        <button className='m-3 center bg-green-800 text-white  text-center font-bold py-4 px-12 rounded-full '>
-          {" "}
-          You have uploaded {pictures2.length} pictures so far.
-        </button>
-        <CldUploadWidget
-          uploadPreset='wn6nts4f'
-          onUpload={(result, widget) => {
-            if (result.event !== "success") {
-              return;
-            }
-            const info = result.info as CloudinaryResult;
-            const pictures21 = [...pictures2, String(info.public_id)];
-            setpictures2(pictures21);
-          }}
-        >
-          {({ open }) => (
-            <button
-              onClick={() => open()}
-              className='m-3 center bg-blue-800 text-white  text-center font-bold py-4 px-12 rounded-full '
-            >
-              Click here to upload
-            </button>
-          )}
-        </CldUploadWidget>{" "}
+      <>
+        {" "}
+        <div className='flex items-center justify-center w-screen'>
+          <button className='m-3 center  text-center font-bold py-4 px-12 rounded-full '>
+            {" "}
+            You have uploaded {pictures2.length} pictures so far.
+          </button>
+          <CldUploadWidget
+            uploadPreset='wn6nts4f'
+            onUpload={(result, widget) => {
+              if (result.event !== "success") {
+                return;
+              }
+              const info = result.info as CloudinaryResult;
+              const pictures21 = [...pictures2, String(info.public_id)];
+              setpictures2(pictures21);
+            }}
+          >
+            {({ open }) => (
+              <button
+                onClick={() => open()}
+                className='m-3 flex items-center center bg-green-800 text-white  text-center font-bold py-4 px-12 rounded-full '
+              >
+                <MdDriveFolderUpload />
+                Upload
+              </button>
+            )}
+          </CldUploadWidget>{" "}
+          <button
+            onClick={() => {
+              setstage(4);
+              setpictures(pictures2);
+            }}
+            className='m-3 flex items-center center outline bg-red-400 text-white    text-center font-bold py-4 px-12 rounded-full '
+          >
+            {" "}
+            Next step <BsArrowRightSquareFill className='ml-2' />
+          </button>{" "}
+        </div>{" "}
         <>
           {" "}
           {pictures2.length > 0 && (
@@ -738,16 +776,17 @@ const QIZZTAKER = () => {
                   {" "}
                   <CldImage
                     src={id}
-                    width={300}
-                    height={200}
+                    width={500}
+                    height={500}
                     alt={id}
+                    style={{ objectFit: "cover" }}
                   />{" "}
                 </div>
               ))}
             </div>
           )}{" "}
         </>
-      </div>
+      </>
     );
   }
 
@@ -783,8 +822,11 @@ const QIZZTAKER = () => {
   }
 
   function SuccessBox() {
+    useEffect(() => {
+      router.push("/Buyer/BuyerJoblist");
+    }, []);
     return (
-      <div className='m-3 center bg-green-800 text-white text-center font-bold py-20 px-12 rounded-full '>
+      <div className='m-3 center bg-green-400 text-white text-center font-bold py-20 px-12 rounded-full '>
         {" "}
         CONGRATULATIONS! YOU HAVE UPLOADED THE JOB , CHECK YOUR EMAIL FOR OUR
         AUTOMATED CONFIRMATION EMAIL
@@ -798,241 +840,395 @@ const QIZZTAKER = () => {
     }
 
     return (
-      <div className='flex flex-wrap'>
-        {/* <div className='flex flex-wrap  justify-center items-center '>
+      <div>
+        {" "}
+        <div className='flex justify-center w-screen '>
           {" "}
-          <input
-            type='text'
-            className='mx-20 my-10  h-[10%] outline text-center font-bold text-xl py-10 px-10  '
-            id='title2'
-            placeholder=""
-            defaultValue={title1}
-            onBlur={(e) => {
-              settitle1(e.target.value);
-            }}
-            onMouseMove={(e) => {
-              const thetitle = (
-                document.getElementById("title2") as HTMLInputElement
-              )?.value;
-              settitle1(thetitle);
-            }}
-          />{" "}
-        </div>{" "} */}
-        <div>
-          {" "}
+          <div className='flex flex-wrap  justify-center items-center '>
+            {" "}
+            <div className='justify-center'>
+              {" "}
+              <input
+                type='text'
+                className='mx-20 my-10  h-[10%] outline text-center font-bold text-xl py-10 px-10  '
+                id='title2'
+                placeholder=''
+                defaultValue={title1}
+                onBlur={(e) => {
+                  settitle1(e.target.value);
+                }}
+                onMouseMove={(e) => {
+                  const thetitle = (
+                    document.getElementById("title2") as HTMLInputElement
+                  )?.value;
+                  settitle1(thetitle);
+                }}
+              />{" "}
+            </div>
+          </div>{" "}
           {first_to_buy === true && (
             <div className='flex items-center justify-center '>
               <button
                 onClick={() => {
                   setfirst_to_buy(false);
                 }}
-                className='m-3 center bg-red-600 text-white text-center font-bold py-4 px-12 rounded-full '
+                className='m-3 center flex items-center bg-red-400 text-white text-center font-bold py-4 px-12 rounded-full '
               >
-                Click here to disable first to buy
+                <PiNumberCircleOneFill />
+                Disable first to buy
               </button>{" "}
             </div>
-          )}
-        </div>
-        <div>
-          {" "}
+          )}{" "}
           {first_to_buy === false && (
             <div className='flex items-center justify-center '>
               <button
                 onClick={() => {
                   setfirst_to_buy(true);
                 }}
-                className='m-3 center outline bg-green-800 text-white    text-center font-bold py-4 px-12 rounded-full '
+                className='m-3 center outline flex items-center bg-green-400 text-white    text-center font-bold py-4 px-12 rounded-full '
               >
-                Click here to enable first to buy
+                <PiNumberCircleOneFill />
+                Enable first to buy
               </button>{" "}
             </div>
-          )}
-        </div>{" "}
-        <div>
-          <div className='flex items-center justify-center '>
-            <div className='m-3 center bg-green-800 text-white    text-center font-bold py-4 px-12 rounded-full '>
-              Timing : {timing}
-            </div>
-          </div>
-          {timingPRESETS!.map((preset) => (
-            <>
-              {" "}
-              {timing === preset && (
-                <div
-                  key={preset.toString()}
-                  className='flex items-center justify-center '
-                >
-                  <div
-                    onClick={() => {
-                      settiming(preset.toString());
-                    }}
-                    className=' bg-green-600 text-white   m-3 center outline text-center font-bold py-4 px-12 rounded-full  '
-                  >
-                    {preset}
-                  </div>{" "}
-                </div>
-              )}
-              {timing !== preset && (
-                <div
-                  key={preset.toString()}
-                  className='flex items-center justify-center '
-                >
-                  <div
-                    onClick={() => {
-                      settiming(preset.toString());
-                    }}
-                    className='    m-3 center outline text-center font-bold py-4 px-12 rounded-full  '
-                  >
-                    {preset}
-                  </div>{" "}
-                </div>
-              )}
-            </>
-          ))}
-        </div>
-        <div>
-          <div className='flex items-center justify-center '>
-            <div className='m-3 center bg-green-800 text-white    text-center font-bold py-4 px-12 rounded-full '>
-              Hiring Stage : {hiringstage}
-            </div>{" "}
-          </div>
-          {hiringstagePRESETS!.map((preset) => (
-            <>
-              {hiringstage === preset && (
-                <div
-                  key={preset.toString()}
-                  className='flex items-center justify-center '
-                >
-                  <div
-                    onClick={() => {
-                      sethiringstage(preset.toString());
-                    }}
-                    className='bg-green-600 text-white   m-3 center outline text-center font-bold py-4 px-12 rounded-full  '
-                  >
-                    {preset}
-                  </div>{" "}
-                </div>
-              )}{" "}
-              {hiringstage !== preset && (
-                <div
-                  key={preset.toString()}
-                  className='flex items-center justify-center '
-                >
-                  <div
-                    onClick={() => {
-                      sethiringstage(preset.toString());
-                    }}
-                    className='   m-3 center outline text-center font-bold py-4 px-12 rounded-full  '
-                  >
-                    {preset}
-                  </div>{" "}
-                </div>
-              )}
-            </>
-          ))}
-        </div>
-        <div>
-          <div className='flex items-center justify-center '>
-            <div className='m-3 center bg-green-800 text-white    text-center font-bold py-4 px-12 rounded-full '>
-              Minimum Budget : {minbudget}
-            </div>{" "}
-          </div>
-          {minbudgetPRESETS!.map((preset) => (
-            <>
-              {minbudget === preset && (
-                <div
-                  key={preset.toString()}
-                  className='flex items-center justify-center '
-                >
-                  <div
-                    onClick={() => {
-                      setminbudget(preset);
-                    }}
-                    className='  bg-green-600 text-white   m-3 center outline text-center font-bold py-4 px-12 rounded-full  '
-                  >
-                    {preset}
-                  </div>{" "}
-                </div>
-              )}{" "}
-              {minbudget !== preset && (
-                <div
-                  key={preset.toString()}
-                  className='flex items-center justify-center '
-                >
-                  <div
-                    onClick={() => {
-                      setminbudget(preset);
-                    }}
-                    className='   m-3 center outline text-center font-bold py-4 px-12 rounded-full  '
-                  >
-                    {preset}
-                  </div>{" "}
-                </div>
-              )}
-            </>
-          ))}
-        </div>{" "}
-        <div>
-          <div className='flex items-center justify-center '>
-            <div className='m-3 center bg-green-800 text-white   text-center font-bold py-4 px-12 rounded-full '>
-              Current Maximum Budget : {maxbudget}
-            </div>{" "}
-          </div>
-          {maxbudgetPRESETS!.map((preset) => (
-            <>
-              {maxbudget === preset && (
-                <div
-                  key={preset.toString()}
-                  className='flex items-center justify-center '
-                >
-                  <div
-                    onClick={() => {
-                      setmaxbudget(preset);
-                    }}
-                    className=' bg-green-600 text-white  m-3 center outline text-center font-bold py-4 px-12 rounded-full  '
-                  >
-                    {preset}
-                  </div>{" "}
-                </div>
-              )}{" "}
-              {maxbudget !== preset && (
-                <div
-                  key={preset.toString()}
-                  className='flex items-center justify-center '
-                >
-                  <div
-                    onClick={() => {
-                      setmaxbudget(preset);
-                    }}
-                    className='   m-3 center outline text-center font-bold py-4 px-12 rounded-full  '
-                  >
-                    {preset}
-                  </div>{" "}
-                </div>
-              )}
-            </>
-          ))}
-        </div>
-        <div>
-          {" "}
+          )}{" "}
           <div className='flex items-center justify-center '>
             <div
               onClick={() => {
                 uploadState();
               }}
-              className='m-3 center  bg-red-800 text-white    text-center font-bold py-4 px-12 rounded-full '
+              className='m-3 center flex items-center   bg-red-400 text-white    text-center font-bold py-4 px-12 rounded-full '
             >
-              {" "}
-              Click here to move to the next step{" "}
+              Go to Upload Images <BsArrowRightSquareFill className='ml-2' />
             </div>{" "}
+          </div>
+        </div>
+        <div> </div>{" "}
+        <div className='flex flex-wrap justify-center w-screen'>
+          <div>
+            <div className='flex items-center justify-center '>
+              <div className='m-3 center flex items-center  bg-green-400 text-white    text-center font-bold py-4 px-12 rounded-full '>
+                <FaRegHourglass />
+                Timing
+              </div>
+            </div>
+            {timingPRESETS!.map((preset) => (
+              <>
+                {" "}
+                {timing === preset && (
+                  <div
+                    key={preset.toString()}
+                    className='flex items-center justify-center '
+                  >
+                    <div
+                      onClick={() => {
+                        settiming(preset.toString());
+                      }}
+                      className=' bg-green-400 text-white   m-3 center outline text-center font-bold py-4 px-12 rounded-full  '
+                    >
+                      {preset}
+                    </div>{" "}
+                  </div>
+                )}
+                {timing !== preset && (
+                  <div
+                    key={preset.toString()}
+                    className='flex items-center justify-center '
+                  >
+                    <div
+                      onClick={() => {
+                        settiming(preset.toString());
+                      }}
+                      className='    m-3 center outline text-center font-bold py-4 px-12 rounded-full  '
+                    >
+                      {preset}
+                    </div>{" "}
+                  </div>
+                )}
+              </>
+            ))}
+          </div>
+          <div>
+            <div className='flex items-center justify-center '>
+              <div className='m-3 flex items-center  center bg-green-400 text-white    text-center font-bold py-4 px-12 rounded-full '>
+                <BsListOl />
+                Hiring Stage
+              </div>{" "}
+            </div>
+            {hiringstagePRESETS!.map((preset) => (
+              <>
+                {hiringstage === preset && (
+                  <div
+                    key={preset.toString()}
+                    className='flex items-center justify-center '
+                  >
+                    <div
+                      onClick={() => {
+                        sethiringstage(preset.toString());
+                      }}
+                      className='bg-green-400 text-white   m-3 center outline text-center font-bold py-4 px-12 rounded-full  '
+                    >
+                      {preset}
+                    </div>{" "}
+                  </div>
+                )}{" "}
+                {hiringstage !== preset && (
+                  <div
+                    key={preset.toString()}
+                    className='flex items-center justify-center '
+                  >
+                    <div
+                      onClick={() => {
+                        sethiringstage(preset.toString());
+                      }}
+                      className='   m-3 center outline text-center font-bold py-4 px-12 rounded-full  '
+                    >
+                      {preset}
+                    </div>{" "}
+                  </div>
+                )}
+              </>
+            ))}
+          </div>
+          <div>
+            <div className='flex items-center justify-center '>
+              <div className='m-3 center flex items-center bg-green-400 text-white    text-center font-bold py-4 px-12 rounded-full '>
+                <RiMoneyPoundCircleLine />
+                Minimum Budget
+              </div>{" "}
+            </div>
+            {minbudgetPRESETS!.map((preset) => (
+              <>
+                {minbudget === preset && (
+                  <div
+                    key={preset.toString()}
+                    className='flex items-center justify-center '
+                  >
+                    <div
+                      onClick={() => {
+                        setminbudget(preset);
+                      }}
+                      className='  bg-green-400 text-white   m-3 center outline text-center font-bold py-4 px-12 rounded-full  '
+                    >
+                      {preset}
+                    </div>{" "}
+                  </div>
+                )}{" "}
+                {minbudget !== preset && (
+                  <div
+                    key={preset.toString()}
+                    className='flex items-center justify-center '
+                  >
+                    <div
+                      onClick={() => {
+                        setminbudget(preset);
+                      }}
+                      className='   m-3 center outline text-center font-bold py-4 px-12 rounded-full  '
+                    >
+                      {preset}
+                    </div>{" "}
+                  </div>
+                )}
+              </>
+            ))}
+          </div>{" "}
+          <div>
+            <div className='flex items-center justify-center '>
+              <div className='m-3 center flex items-center bg-green-400 text-white   text-center font-bold py-4 px-12 rounded-full '>
+                <RiMoneyPoundCircleLine />
+                Maximum Budget
+              </div>{" "}
+            </div>
+            {maxbudgetPRESETS!.map((preset) => (
+              <>
+                {maxbudget === preset && (
+                  <div
+                    key={preset.toString()}
+                    className='flex items-center justify-center '
+                  >
+                    <div
+                      onClick={() => {
+                        setmaxbudget(preset);
+                      }}
+                      className=' bg-green-400 text-white  m-3 center outline text-center font-bold py-4 px-12 rounded-full  '
+                    >
+                      {preset}
+                    </div>{" "}
+                  </div>
+                )}{" "}
+                {maxbudget !== preset && (
+                  <div
+                    key={preset.toString()}
+                    className='flex items-center justify-center '
+                  >
+                    <div
+                      onClick={() => {
+                        setmaxbudget(preset);
+                      }}
+                      className='   m-3 center outline text-center font-bold py-4 px-12 rounded-full  '
+                    >
+                      {preset}
+                    </div>{" "}
+                  </div>
+                )}
+              </>
+            ))}
           </div>
         </div>
       </div>
     );
   }
 
+  function Stepper() {
+    return (
+      <div className='flex flex-wrap  items-center justify-center w-screen'>
+        <div
+          className='bg-red-600  m-2 p-3 flex items-center text-white'
+          onClick={handleRefresh}
+        >
+          <VscDebugRestart className='mr-2' /> {restartText}
+        </div>
+
+        {stage === 1 && (
+          <div className='bg-red-400 text-white  outline  flex items-center p-3 m-2'>
+            <MdCategory /> Category Selection{" "}
+          </div>
+        )}
+        {stage !== 1 && (
+          <div
+            onClick={() => {
+              if (stage > 1) {
+                setstage(1);
+              }
+            }}
+            className='outline  flex items-center p-3 m-2'
+          >
+            <MdCategory /> Category Selection{" "}
+          </div>
+        )}
+        {stage === 2 && (
+          <div className='bg-red-400 text-white outline  flex items-center p-3 m-2'>
+            {" "}
+            <BiCategoryAlt />
+            Subcategory Selection{" "}
+          </div>
+        )}
+        {stage !== 2 && (
+          <div
+            onClick={() => {
+              if (stage > 2) {
+                setstage(2);
+              }
+            }}
+            className='outline  flex items-center p-3 m-2'
+          >
+            {" "}
+            <BiCategoryAlt />
+            Subcategory Selection{" "}
+          </div>
+        )}
+        {stage === 3 && (
+          <div className='bg-red-400 text-white  outline  flex items-center p-3 m-2'>
+            {" "}
+            <FaClipboardQuestion />
+            Questionare{" "}
+          </div>
+        )}
+        {stage !== 3 && (
+          <div
+            onClick={() => {
+              if (stage > 3) {
+                setstage(3);
+                GetData(2, category!.name);
+
+                setAnsweredQuestionsArray([]);
+                setAnsweredQuestionsArray1([]);
+              }
+            }}
+            className='outline  flex items-center p-3 m-2'
+          >
+            {" "}
+            <FaClipboardQuestion />
+            Questionare{" "}
+          </div>
+        )}
+        {stage === 3.4 && (
+          <div className='bg-red-400 text-white outline  flex items-center p-3 m-2'>
+            {" "}
+            <FcViewDetails />
+            Extra Details{" "}
+          </div>
+        )}
+        {stage !== 3.4 && (
+          <div
+            onClick={() => {
+              if (stage > 3.4) {
+                setstage(3.4);
+              }
+            }}
+            className='outline  flex items-center p-3 m-2'
+          >
+            {" "}
+            <FcViewDetails />
+            Extra Details{" "}
+          </div>
+        )}
+        {stage === 3.5 && (
+          <div className='bg-red-400 text-white outline  flex items-center p-3 m-2'>
+            {" "}
+            <FaImages />
+            Upload images (Optional){" "}
+          </div>
+        )}
+        {stage !== 3.5 && (
+          <div
+            onClick={() => {
+              if (stage > 3.5) {
+                setstage(3.5);
+              }
+            }}
+            className='outline  flex items-center p-3 m-2'
+          >
+            {" "}
+            <FaImages />
+            Upload images (Optional){" "}
+          </div>
+        )}
+        {stage === 4 && (
+          <div className='bg-red-400 text-white outline  flex items-center p-3 m-2'>
+            {" "}
+            <BiMailSend />
+            Submit{" "}
+          </div>
+        )}
+        {stage !== 4 && (
+          <div className='outline  flex items-center p-3 m-2'>
+            {" "}
+            <BiMailSend />
+            Submit{" "}
+          </div>
+        )}
+        {stage === 5 && (
+          <div className='bg-red-400 text-white outline  flex items-center p-3 m-2'>
+            {" "}
+            <ImCheckmark />
+            SUCCESS!{" "}
+          </div>
+        )}
+        {stage !== 5 && (
+          <div className='outline  flex items-center p-3 m-2'>
+            {" "}
+            <ImCheckmark />
+            SUCCESS!{" "}
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div>
+      <Stepper />
       {stage === 1 && <CategoryBOX />}
       {stage === 2 && <SubcategoryBOX />}
       {stage === 3 && <QuestionBOX />}

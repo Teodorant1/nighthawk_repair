@@ -32,7 +32,7 @@ async function registerAccount(role: string) {
 const Details = () => {
   return (
     <div>
-      <div className=' bg-green-800 text-yellow-300 justify-items-center  px-[40%]'>
+      <div className=' bg-green-400 text-yellow-300 justify-items-center  px-[40%]'>
         {" "}
         <div className='p-5 m-5'>
           {" "}
