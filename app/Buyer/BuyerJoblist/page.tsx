@@ -67,7 +67,7 @@ const BuyerJoblist = () => {
     }, []);
 
     return (
-      <div className='m-3 flex flex-wrap center  font-bold p-2 rounded-md '>
+      <div className='m-3 flex flex-wrap items-center justify-center w-screen center  font-bold p-2 rounded-md '>
         {" "}
         {applications.length === 0 && (
           <div className='flex items-center justify-center w-[100%]'>

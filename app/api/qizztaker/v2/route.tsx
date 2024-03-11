@@ -145,6 +145,8 @@ export async function POST(req: NextRequest) {
       where: { userID: parcel1.userID },
       orderBy: { dateCreated: "desc" },
     });
+    console.log("AppliedJobs");
+    console.log(AppliedJobs);
 
     return NextResponse.json(AppliedJobs);
   }

@@ -112,7 +112,7 @@ export interface submitted_job_SANS_Email {
   maxBudget: number;
   status?: string;
   finalWorkerID?: string;
-  pictures: JobPicture[];
+  pictures?: JobPicture[];
 }
 
 export interface submitted_job_WITH_Email {
