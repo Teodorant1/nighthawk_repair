@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { trpc } from "@/app/_trpc/client";
 import {
   MyComponentProps,
   parcel,
@@ -9,6 +8,8 @@ import {
 } from "@/projecttypes";
 import { appliedJob } from "@prisma/client";
 import axios from "axios";
+import { ImProfile } from "react-icons/im";
+import { CiCirclePlus } from "react-icons/ci";
 
 const BuyerJoblist = () => {
   const [currentJob, setcurrentJob] = useState<string>("none");
@@ -57,6 +58,7 @@ const BuyerJoblist = () => {
         let applicationsparcel: parcel = {
           method: "GetBuyerJobApplications",
           userID: session?.user.sub,
+          SubmittedJobID: IDprops.myStringProp,
         };
 
         axios.post("/api/alttrpc", applicationsparcel).then((resp) => {
@@ -67,49 +69,68 @@ const BuyerJoblist = () => {
     }, []);
 
     return (
-      <div className='m-3 flex flex-wrap items-center justify-center w-screen center  font-bold p-2 rounded-md '>
+      <div className=' flex flex-wrap items-center justify-center w-auto center  font-bold  rounded-md '>
         {" "}
         {applications.length === 0 && (
-          <div className='flex items-center justify-center w-[100%]'>
-            <button className='m-3 center bg-green-400 text-white    font-bold p-2 rounded-md '>
+          <div className='flex items-center justify-center w-fit'>
+            <button className=' center bg-green-400 text-white font-bold my-5  p-2 rounded-md '>
               NO APPLICATIONS YET
             </button>{" "}
           </div>
         )}
-        {applications.length! > 0 && (
-          <div className='flex items-center justify-center w-[100%]'>
-            {" "}
-            <button className='m-3 p-5 rounded-md bg-green-400 text-white'>
-              APPLICATIONS
-            </button>{" "}
-          </div>
-        )}
-        {applications.length! > 0 &&
-          applications.map((application) => (
-            <>
+        <div>
+          {" "}
+          {applications.length! > 0 && (
+            <div
+              onClick={() => {
+                if (IDprops.myStringProp !== currentJobApplications) {
+                  setcurrentJobApplications(IDprops.myStringProp);
+                } else if (IDprops.myStringProp === currentJobApplications) {
+                  setcurrentJobApplications("  ");
+                }
+              }}
+              className='flex flex-wrap items-center justify-center w-fit'
+            >
               {" "}
-              <div
-                className='flex items-center justify-center w-[100%]'
-                key={application.userID}
-              >
-                <a
-                  key={application.id}
-                  href={"/Both/ProfilePage/" + application.userID}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  className='m-3 center bg-green-400  text-white font-bold p-2 rounded-md '
-                >
-                  PROFILE{""}
-                </a>{" "}
-              </div>
-              <div className='flex items-center justify-center w-[100%]'>
-                {" "}
-                <button className='m-3 center bg-green-400  text-white font-bold p-2 rounded-md '>
-                  E-MAIL: {application.submitterEmail}{" "}
-                </button>
-              </div>
-            </>
-          ))}
+              <button className='flex items-center justify-center content m-2 p-2 rounded-md bg-green-400 text-white'>
+                APPLICATIONS - {applications.length}{" "}
+                <CiCirclePlus className='ml-2 w-8 h-8' />
+              </button>{" "}
+            </div>
+          )}{" "}
+          {currentJobApplications === IDprops.myStringProp && (
+            <div>
+              {" "}
+              {applications.length! > 0 &&
+                applications.map((application) => (
+                  <div
+                    className='flex'
+                    key={application.userID}
+                  >
+                    {" "}
+                    <div className='flex flex-wrap items-center justify-center'>
+                      <a
+                        key={application.id}
+                        href={"/Both/ProfilePage/" + application.userID}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        className='m-2 center bg-blue-400  text-white font-bold p-2 rounded-md '
+                      >
+                        <ImProfile />
+                        {""}
+                      </a>{" "}
+                    </div>
+                    <div className='flex items-center justify-center'>
+                      {" "}
+                      <div className='m-2 center bg-green-400  text-white font-bold p-2 rounded-md '>
+                        {application.submitterEmail}{" "}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          )}
+        </div>
       </div>
     );
   }
@@ -139,12 +160,12 @@ const BuyerJoblist = () => {
           <>
             {mypostedjobs.map((job) => (
               <div
-                className='m-2  outline  font-bold p-2 rounded-md '
+                className='w-fit m-2  outline  font-bold p-2 rounded-md '
                 key={job.id}
               >
-                <div className='items-center justify-center w-[50%]'>
+                <div className='items-center justify-center'>
                   {" "}
-                  <button className='whitespace-normal m-3 center  bg-green-400 text-white   font-bold p-2 rounded-md '>
+                  <button className='w-fit whitespace-normal m-3 center  bg-green-400 text-white   font-bold p-2 rounded-md '>
                     TITLE:{job.title}
                   </button>{" "}
                 </div>
@@ -176,7 +197,7 @@ const BuyerJoblist = () => {
                       }
                     }}
                   >
-                    CLICK HERE TO MAKE IT VISIBLE
+                    TOGGLE VISIBILITY
                   </button>
                 )}{" "}
                 {job.isVisible === true && (
@@ -191,15 +212,16 @@ const BuyerJoblist = () => {
                       }
                     }}
                   >
-                    CLICK HERE TO MAKE IT INVISIBLE
+                    TOGGLE VISIBILITY
                   </button>
                 )}
                 <div>
                   {" "}
                   {true && (
-                    <div className=' m-3 center   font-bold p-2 rounded-md '>
+                    <div className=' m-3 center   font-bold rounded-md '>
                       {" "}
-                      <div className=' whitespace-normal'>ID:{job.id}</div>
+                      {/* <div className='flex flex-wrap items-center justify-center w-full bg-green-400 text-white rounded-sm'> */}
+                      <div> ID:{job.id}</div>
                       <div>
                         1ST TO BUY: {job.first_to_buy === true && <>true</>}
                         {job.first_to_buy === false && <>false</>}
@@ -219,10 +241,15 @@ const BuyerJoblist = () => {
                       {job.extrainfo !== "undefined" && (
                         <div>EXTRA INFO: {job.extrainfo}</div>
                       )}{" "}
+                      <div>
+                        <AppliedJobBox myStringProp={job.id} />
+                      </div>
                       {/* {job.id === currentJobApplications &&
-                    currentJobApplications !== "none" && ( */}
-                      <AppliedJobBox myStringProp={job.id} />
-                      {/* )} */}
+                        currentJobApplications !== "none" && (
+                          <div>
+                            <AppliedJobBox myStringProp={job.id} />
+                          </div>
+                        )} */}
                     </div>
                   )}
                 </div>

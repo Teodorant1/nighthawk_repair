@@ -27,6 +27,8 @@ interface AppState {
   setpictures: Dispatch<SetStateAction<string[]>>;
   clickPosition: ClickedPosition;
   setclickPosition: Dispatch<SetStateAction<ClickedPosition>>;
+  currentdropdown: string;
+  setcurrentdropdown: Dispatch<SetStateAction<string>>;
 }
 
 const AppContext = createContext<AppState | undefined>(undefined);
@@ -56,6 +58,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     lat: 0,
     lng: 0,
   });
+  const [currentdropdown, setcurrentdropdown] = useState<string>("");
 
   const state: AppState = {
     title1,
@@ -76,6 +79,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     setpictures,
     clickPosition,
     setclickPosition,
+    currentdropdown,
+    setcurrentdropdown,
   };
 
   return <AppContext.Provider value={state}>{children}</AppContext.Provider>;

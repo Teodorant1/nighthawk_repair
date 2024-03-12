@@ -54,13 +54,13 @@ const NavBar = () => {
             <div className=''>
               {" "}
               {/* <div> {session?.user.email} </div> */}
-              <div
+              {/* <div
                 className=' bg-black text-white rounded-sm p-2'
                 onClick={() => toggleShow()}
               >
                 My Account -{" "}
-              </div>{" "}
-              <div>{show === true && <AccountDropdown />}</div>{" "}
+              </div>{" "} */}
+              <div>{true && <AccountDropdown />}</div>{" "}
             </div>
           )}
         </div>
@@ -68,11 +68,12 @@ const NavBar = () => {
       // </div>
     );
   }
+
   function AccountDropdown() {
     // const profileURL = "/Both/ProfilePage/" + session?.user.sub;
 
     return (
-      <div className=' ml-3  text-center font-bold py-2 px-4 my-1 center'>
+      <div className=' flex flex-wrap m-5 p-10  text-center font-bold py-2 px-4 my-1 center'>
         <Link
           className=' bg-black text-white rounded-sm flex px-3 py-1 m-2 font-bold'
           href={"/Both/ProfilePage/" + session?.user.sub}
@@ -102,7 +103,7 @@ const NavBar = () => {
   }
   function USERBOX() {
     return (
-      <div className='m-5 p-5'>
+      <div className=''>
         <div className='p-5 flex flex-wrap'>
           <Link
             href='/Seller/QuoteBrowser'
@@ -206,11 +207,11 @@ const NavBar = () => {
   }
 
   return (
-    <div className='flex  bg-green-400 h-fit w-[100%] right-0 top-0'>
+    <div className='flex  bg-green-400  w-[100%] right-0 top-0'>
       {" "}
       <Link
         href='/'
-        className='mr-5 w-[11%] h-[11%]'
+        className='mr-5 w-[6%] h-[6%]'
       >
         <div className='w-[100%]'>
           {" "}

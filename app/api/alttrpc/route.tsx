@@ -151,6 +151,7 @@ export async function POST(req: NextRequest) {
           userID: true,
         },
       });
+      console.log(subjob_applications);
       return NextResponse.json(subjob_applications);
     }
   }

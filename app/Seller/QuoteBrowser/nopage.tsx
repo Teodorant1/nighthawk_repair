@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
-import { answer, appliedJob, submitted_job } from "@prisma/client";
+import { answer, appliedJob } from "@prisma/client";
 import { useJobContext } from "./JobContext";
 import {
   parcel,
@@ -11,7 +11,8 @@ import {
 } from "@/projecttypes";
 import { CldImage } from "next-cloudinary";
 import { FaArrowCircleDown } from "react-icons/fa";
-import { CiFilter } from "react-icons/ci";
+import { CiFilter, CiCirclePlus } from "react-icons/ci";
+import { IoCloseCircleSharp } from "react-icons/io5";
 
 const IQBrowser = () => {
   const { status, data: session } = useSession();
@@ -253,7 +254,7 @@ const IQBrowser = () => {
                           BuyAlead(job.id);
                         }}
                       >
-                        CLICK HERE TO APPLY
+                        APPLY
                       </button>
                     )}{" "}
                     {context.currentJobID !== job.id && (
@@ -263,7 +264,7 @@ const IQBrowser = () => {
                           toggleShow(job.id);
                         }}
                       >
-                        EXPAND LEAD{" "}
+                        <CiCirclePlus className='w-8 h-8' />
                       </button>
                     )}{" "}
                     {context.currentJobID === job.id && (
@@ -273,7 +274,7 @@ const IQBrowser = () => {
                           toggleShow(job.id);
                         }}
                       >
-                        CLOSE LEAD{" "}
+                        <IoCloseCircleSharp className='w-8 h-8' />
                       </button>
                     )}
                     <h1>TITLE:{job?.title}</h1>
@@ -394,8 +395,8 @@ const IQBrowser = () => {
     }
 
     return (
-      <div className='flex  justify-center m-3 center flex-wrap text-center font-bold p-2 w-full h-screen'>
-        <div className='m-3 center w-1/5 text-center font-bold p-2 rounded-md'>
+      <div className='flex  justify-center m-3 center flex-wrap text-center font-bold p-2 w-[90%] h-screen'>
+        <div className='m-3 center w-[15%] text-center font-bold p-2 rounded-md'>
           <h1>SORT BY</h1>{" "}
           <div className='m-3 center  text-center font-bold p-2 rounded-md'>
             <div
@@ -462,7 +463,7 @@ const IQBrowser = () => {
           </div>
         </div>
 
-        <div className='m-3 center w-1/5 text-center font-bold p-2 rounded-md'>
+        <div className='m-3 center w-[15%] text-center font-bold p-2 rounded-md'>
           <h1>TIMING</h1>{" "}
           {context.timingPresets.map((preset) => (
             <div key={preset.toString()}>
@@ -494,19 +495,19 @@ const IQBrowser = () => {
             </div>
           ))}
         </div>
-        <div className='flex-1 w-1/5 m-3 center  text-center font-bold p-2 rounded-md'>
-          <div className='flex'>
+        <div className='flex-1  center  text-center font-bold  rounded-md'>
+          <div className='flex '>
             {" "}
-            <div className='flex-1 m-5 center  text-center font-bold p-2 rounded-md'>
+            <div className='flex-1 w-[10%] m-1 center  text-center font-bold p-1 rounded-md'>
               {" "}
               <h1
                 onClick={() => {
                   context.setcurrentdropdown("minbudget");
                 }}
-                className='flex outline items-center justify-center'
+                className=' flex outline items-center justify-center'
               >
-                MINIMAL BUDGET <FaArrowCircleDown />{" "}
-                <div className='ml-5'>{context.minBudget}</div>
+                MINIMAL BUDGET <FaArrowCircleDown />
+                <div className='ml-2'>{context.minBudget}</div>
               </h1>
               {context.currentdropdown === "minbudget" && (
                 <div className=' relative top-5'>
@@ -530,7 +531,7 @@ const IQBrowser = () => {
                             context.setMinBudget(preset);
                             context.setcurrentdropdown("");
                           }}
-                          className='my-1 p-2 z-10 w-full hover:bg-blue-600 hover:text-white center outline text-center font-bold '
+                          className='my-1 p-2 w-full hover:bg-blue-600 hover:text-white center outline text-center font-bold '
                         >
                           Set minimum budget to {preset}
                         </button>
@@ -540,20 +541,19 @@ const IQBrowser = () => {
                 </div>
               )}
             </div>
-            <div className='flex-1 m-5 center  text-center font-bold p-2 rounded-md'>
+            <div className='flex-1 w-[10%] m-1 center  text-center font-bold p-1 rounded-md'>
               {" "}
               <h1
                 onClick={() => {
                   context.setcurrentdropdown("maxbudget");
                 }}
-                className='flex outline items-center justify-center'
+                className=' flex outline items-center justify-center'
               >
                 MAXIMUM BUDGET <FaArrowCircleDown />
                 <div className='ml-5'>{context.maxBudget}</div>
               </h1>
               {context.currentdropdown === "maxbudget" && (
-                <div>
-                  {" "}
+                <div className=' relative top-5'>
                   {context.budgetPresets.map((preset) => (
                     <div key={preset.toString()}>
                       {" "}
@@ -565,7 +565,7 @@ const IQBrowser = () => {
                           }}
                           className='my-1 p-2 z-10 w-full hover:bg-blue-600 hover:text-white center outline text-center font-bold '
                         >
-                          Maximum budget is set to {preset}{" "}
+                          {preset}{" "}
                         </button>
                       )}
                       {/* {preset !== context.maxBudget && (
@@ -658,7 +658,7 @@ const IQBrowser = () => {
   function NewLeads() {
     return (
       <>
-        <div>
+        <div className=' flex flex-wrap items-center justify-center w-screen'>
           {context.stage === 3 && (
             <div className='flex flex-wrap items-center justify-center w-screen'>
               <div className='flex flex-wrap items-center justify-center w-screen'>
@@ -745,11 +745,11 @@ const IQBrowser = () => {
 
     return (
       <div
-        className='m-3 center outline  text-center font-bold p-2 rounded-md break-words'
+        className='m-3 center text-center font-bold p-2 rounded-md '
         key={job?.id}
       >
         {job && (
-          <>
+          <div className='outline p-5'>
             {" "}
             {context.currentJobID !== job?.id && (
               <button
@@ -759,7 +759,7 @@ const IQBrowser = () => {
                   toggleShow(job?.id!);
                 }}
               >
-                EXPAND LEAD{" "}
+                <CiCirclePlus className='w-8 h-8' />
               </button>
             )}{" "}
             {context.currentJobID === job?.id && (
@@ -769,7 +769,7 @@ const IQBrowser = () => {
                   toggleShow(job?.id!);
                 }}
               >
-                CLOSE LEAD{" "}
+                <IoCloseCircleSharp className='w-8 h-8' />
               </button>
             )}{" "}
             {context.currentJobID === job?.id && (
@@ -802,9 +802,9 @@ const IQBrowser = () => {
                 ))}
               </>
             )}
-            <div className='flex items-center justify-center w-screen'>
+            <div className='flex items-center justify-center'>
               {" "}
-              <div className=' rounded bg-green-400 text-white px-14 py-5'>
+              <div className=' flex items-center justify-center w-full rounded bg-green-400 text-white p-2'>
                 ID:{job?.id}
               </div>
             </div>
@@ -861,7 +861,7 @@ const IQBrowser = () => {
                 <AnsweredQuestionBox qstns={job?.answeredQuestions} />
               </div>
             )} */}
-          </>
+          </div>
         )}
       </div>
     );
@@ -869,99 +869,117 @@ const IQBrowser = () => {
 
   function MyLeads() {
     return (
-      <div className=' flex flex-wrap items-center justify-center w-screen'>
-        {" "}
-        <button
-          onClick={() => {
-            context.setleads_to_look_at("newleads");
-          }}
-          className='m-3 center bg-green-400 text-white text-center font-bold p-2 rounded-full'
-        >
-          GO TO FRESH JOBS
-        </button>{" "}
-        {context.myLead_filter_Presets.map((preset) => (
-          <div key={preset}>
-            {" "}
-            {context.myLead_filter_Current_Setting === preset && (
-              <button
-                onClick={() => {
-                  context.setmyLead_filter_Current_Setting(preset);
-                }}
-                className='m-3  bg-green-600 text-white center text-center font-bold p-2 rounded-full '
-              >
-                {" "}
-                {preset}
-              </button>
-            )}{" "}
-            {context.myLead_filter_Current_Setting !== preset && (
-              <button
-                onClick={() => {
-                  context.setmyLead_filter_Current_Setting(preset);
-                }}
-                className='m-3  bg-red-400 text-white center text-center font-bold p-2 rounded-full '
-              >
-                {" "}
-                DISPLAY{""} {preset}
-              </button>
-            )}
-          </div>
-        ))}
-        <div className='m-3 center text-center font-bold p-2 rounded-full '>
+      <div className=' items-center justify-center w-screen'>
+        <div className=' items-center justify-center p-5 m-5'>
+          {" "}
           <div className='flex items-center justify-center w-screen'>
-            <div className='m-3 center text-center font-bold p-2 rounded-full'>
-              MY LEADS
-            </div>{" "}
+            {" "}
+            <button
+              onClick={() => {
+                context.setleads_to_look_at("newleads");
+              }}
+              className='m-3 center bg-green-400 text-white text-center font-bold p-2 rounded-full'
+            >
+              GO TO FRESH JOBS
+            </button>{" "}
+          </div>{" "}
+          <div className='flex items-center justify-center w-screen'>
+            {" "}
+            {context.myLead_filter_Presets.map((preset) => (
+              <div key={preset}>
+                {" "}
+                {context.myLead_filter_Current_Setting === preset && (
+                  <button
+                    onClick={() => {
+                      context.setmyLead_filter_Current_Setting(preset);
+                    }}
+                    className='m-3  bg-green-600 text-white center text-center font-bold p-2 rounded-full '
+                  >
+                    {" "}
+                    {preset}
+                  </button>
+                )}{" "}
+                {context.myLead_filter_Current_Setting !== preset && (
+                  <button
+                    onClick={() => {
+                      context.setmyLead_filter_Current_Setting(preset);
+                    }}
+                    className='m-3  bg-red-400 text-white center text-center font-bold p-2 rounded-full '
+                  >
+                    {" "}
+                    DISPLAY{""} {preset}
+                  </button>
+                )}
+              </div>
+            ))}
           </div>
-          {context.appliedJobs.length === 0 && (
-            <div className='flex items-center justify-center w-screen'>
+          <div className='m-3 center text-center font-bold p-2 rounded-full '>
+            <div className='flex items-center justify-center'>
               <div className='m-3 center text-center font-bold p-2 rounded-full'>
-                NO JOBS{" "}
+                MY LEADS
               </div>{" "}
             </div>
-          )}
-          {context.appliedJobs.length > 0 && (
-            <>
+
+            {context.appliedJobs.length === 0 && (
+              <div className='flex items-center justify-center'>
+                <div className='m-3 center text-center font-bold p-2 rounded-full'>
+                  NO JOBS{" "}
+                </div>{" "}
+              </div>
+            )}
+            <div className='flex flex-wrap'>
               {" "}
-              {context.appliedJobs.map((appliedJob) => (
-                <div key={appliedJob.id}>
-                  {context.myLead_filter_Current_Setting ===
-                    appliedJob.status &&
-                    context.myLead_filter_Current_Setting !== "ALL" && (
-                      <>
-                        {" "}
+              {context.appliedJobs.length > 0 && (
+                <div
+                  className="flex flex-wrap m-3 center text-center font-bold p-2 rounded-md'
+            "
+                >
+                  {" "}
+                  {context.appliedJobs.map((appliedJob) => (
+                    <div
+                      className='m-3 center text-center font-bold p-2 rounded-md'
+                      key={appliedJob.id}
+                    >
+                      {context.myLead_filter_Current_Setting ===
+                        appliedJob.status &&
+                        context.myLead_filter_Current_Setting !== "ALL" && (
+                          <>
+                            {" "}
+                            <>
+                              {" "}
+                              <AppliedJobBox
+                                id={appliedJob.id}
+                                submittedJob_ID={appliedJob.submittedJob_ID}
+                                submitterEmail={appliedJob.submitterEmail}
+                                status={appliedJob.status}
+                                userID={appliedJob.userID}
+                                dateCreated={appliedJob.dateCreated}
+                              />{" "}
+                            </>
+                          </>
+                        )}{" "}
+                      {context.myLead_filter_Current_Setting === "ALL" && (
                         <>
                           {" "}
-                          <AppliedJobBox
-                            id={appliedJob.id}
-                            submittedJob_ID={appliedJob.submittedJob_ID}
-                            submitterEmail={appliedJob.submitterEmail}
-                            status={appliedJob.status}
-                            userID={appliedJob.userID}
-                            dateCreated={appliedJob.dateCreated}
-                          />{" "}
+                          <>
+                            {" "}
+                            <AppliedJobBox
+                              id={appliedJob.id}
+                              submittedJob_ID={appliedJob.submittedJob_ID}
+                              submitterEmail={appliedJob.submitterEmail}
+                              status={appliedJob.status}
+                              userID={appliedJob.userID}
+                              dateCreated={appliedJob.dateCreated}
+                            />{" "}
+                          </>
                         </>
-                      </>
-                    )}{" "}
-                  {context.myLead_filter_Current_Setting === "ALL" && (
-                    <>
-                      {" "}
-                      <>
-                        {" "}
-                        <AppliedJobBox
-                          id={appliedJob.id}
-                          submittedJob_ID={appliedJob.submittedJob_ID}
-                          submitterEmail={appliedJob.submitterEmail}
-                          status={appliedJob.status}
-                          userID={appliedJob.userID}
-                          dateCreated={appliedJob.dateCreated}
-                        />{" "}
-                      </>
-                    </>
-                  )}
+                      )}
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </>
-          )}
+              )}
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -970,11 +988,11 @@ const IQBrowser = () => {
   return (
     <>
       {session?.user.isRepairman === true && (
-        <>
+        <div className='flex flex-wrap items-center justify-center w-screen m-5 p-5'>
           {" "}
           {context.leads_to_look_at === "newleads" && <NewLeads />}
           {context.leads_to_look_at === "myleads" && <MyLeads />}
-        </>
+        </div>
       )}
     </>
   );

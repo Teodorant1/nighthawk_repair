@@ -13,11 +13,12 @@ import { MdCategory, MdDriveFolderUpload } from "react-icons/md";
 import { BiCategoryAlt, BiMailSend } from "react-icons/bi";
 import { FaClipboardQuestion, FaRegHourglass } from "react-icons/fa6";
 import { FcViewDetails } from "react-icons/fc";
-import { FaImages } from "react-icons/fa";
+import { FaImages, FaArrowCircleDown } from "react-icons/fa";
 import { ImCheckmark } from "react-icons/im";
 import { PiNumberCircleOneFill } from "react-icons/pi";
 import { BsListOl, BsArrowRightSquareFill } from "react-icons/bs";
 import { RiMoneyPoundCircleLine } from "react-icons/ri";
+
 import { useRouter } from "next/navigation";
 
 const QIZZTAKER = () => {
@@ -55,6 +56,8 @@ const QIZZTAKER = () => {
     setpictures,
     clickPosition,
     setclickPosition,
+    currentdropdown,
+    setcurrentdropdown,
   } = useAppState();
   const mapContainerStyle = {
     width: "100%",
@@ -89,16 +92,6 @@ const QIZZTAKER = () => {
     0, 100, 250, 500, 1000, 2000, 4000, 8000, 15000, 30000,
   ]);
 
-  // const [timing, settiming1] = useState<String>("URGENTLY");
-  // const [hiringstage, sethiringstage1] = useState<String>("Insurance Quote");
-  // const [first_to_buy, setfirst_to_buy1] = useState<boolean>(false);
-  // const [minbudget, setminbudget1] = useState<number>(0);
-  // const [maxbudget, setmaxbudget1] = useState<number>(0);
-  // const [pictures, setpictures] = useState<String[]>([]);
-
-  // const [userLocation, setUserLocation] = useState<any>(null);
-  // const [longitude, setLongitude] = useState<number>(0);
-  // const [latitude, setLatitude] = useState<number>(0);
   const [coordsTouched, setcoordsTouched] = useState<boolean>(false);
 
   const { status, data: session } = useSession();
@@ -848,22 +841,28 @@ const QIZZTAKER = () => {
             {" "}
             <div className='justify-center'>
               {" "}
-              <input
-                type='text'
-                className='mx-20 my-10  h-[10%] outline text-center font-bold text-xl py-10 px-10  '
-                id='title2'
-                placeholder=''
-                defaultValue={title1}
-                onBlur={(e) => {
-                  settitle1(e.target.value);
-                }}
-                onMouseMove={(e) => {
-                  const thetitle = (
-                    document.getElementById("title2") as HTMLInputElement
-                  )?.value;
-                  settitle1(thetitle);
-                }}
-              />{" "}
+              <div className='justify-center items-center'>
+                {" "}
+                <h1 className='flex flex-wrap  justify-center items-center text-5xl'>
+                  TITLE
+                </h1>{" "}
+                <input
+                  type='text'
+                  className='  h-[10%] outline text-center font-bold text-xl py-10 px-10  '
+                  id='title2'
+                  placeholder=''
+                  defaultValue={title1}
+                  onBlur={(e) => {
+                    settitle1(e.target.value);
+                  }}
+                  onMouseMove={(e) => {
+                    const thetitle = (
+                      document.getElementById("title2") as HTMLInputElement
+                    )?.value;
+                    settitle1(thetitle);
+                  }}
+                />
+              </div>
             </div>
           </div>{" "}
           {first_to_buy === true && (
@@ -905,174 +904,166 @@ const QIZZTAKER = () => {
         </div>
         <div> </div>{" "}
         <div className='flex flex-wrap justify-center w-screen'>
-          <div>
+          <div className='w-[20%]'>
             <div className='flex items-center justify-center '>
-              <div className='m-3 center flex items-center  bg-green-400 text-white    text-center font-bold py-4 px-12 rounded-full '>
+              <div
+                onClick={() => {
+                  setcurrentdropdown("timing");
+                }}
+                className=' w-full flex flex-wrap items-center justify-center  m-3 center bg-green-400 text-white    text-center font-bold py-4 px-12 rounded-full '
+              >
                 <FaRegHourglass />
-                Timing
+                Timing <FaArrowCircleDown className='ml-2' />{" "}
+                <div className='ml-2'>{timing}</div>
               </div>
             </div>
-            {timingPRESETS!.map((preset) => (
-              <>
-                {" "}
-                {timing === preset && (
-                  <div
-                    key={preset.toString()}
-                    className='flex items-center justify-center '
-                  >
-                    <div
-                      onClick={() => {
-                        settiming(preset.toString());
-                      }}
-                      className=' bg-green-400 text-white   m-3 center outline text-center font-bold py-4 px-12 rounded-full  '
-                    >
-                      {preset}
-                    </div>{" "}
-                  </div>
-                )}
-                {timing !== preset && (
-                  <div
-                    key={preset.toString()}
-                    className='flex items-center justify-center '
-                  >
-                    <div
-                      onClick={() => {
-                        settiming(preset.toString());
-                      }}
-                      className='    m-3 center outline text-center font-bold py-4 px-12 rounded-full  '
-                    >
-                      {preset}
-                    </div>{" "}
-                  </div>
-                )}
-              </>
-            ))}
+            <div>
+              {" "}
+              {currentdropdown === "timing" && (
+                <div>
+                  {" "}
+                  {timingPRESETS!.map((preset) => (
+                    <>
+                      {" "}
+                      {timing !== preset && (
+                        <div
+                          key={preset.toString()}
+                          className='flex items-center justify-center '
+                        >
+                          <div
+                            onClick={() => {
+                              settiming(preset.toString());
+                            }}
+                            className=' hover:bg-blue-600 hover:text-white w-full   m-3 center outline text-center font-bold py-4 px-12 rounded-full  '
+                          >
+                            {preset}
+                          </div>{" "}
+                        </div>
+                      )}
+                    </>
+                  ))}
+                </div>
+              )}{" "}
+            </div>
           </div>
-          <div>
-            <div className='flex items-center justify-center '>
-              <div className='m-3 flex items-center  center bg-green-400 text-white    text-center font-bold py-4 px-12 rounded-full '>
+          <div className='w-[20%] '>
+            <div className=' flex items-center justify-center '>
+              <div
+                onClick={() => {
+                  setcurrentdropdown("hiringstage");
+                }}
+                className=' w-full flex flex-wrap items-center justify-center  m-3 center bg-green-400 text-white    text-center font-bold py-4 px-12 rounded-full '
+              >
                 <BsListOl />
-                Hiring Stage
+                Hiring Stage <FaArrowCircleDown className='ml-2' />{" "}
+                <div className='ml-2'>{hiringstage}</div>
               </div>{" "}
+            </div>{" "}
+            <div>
+              {" "}
+              {currentdropdown === "hiringstage" && (
+                <div>
+                  {" "}
+                  {hiringstagePRESETS!.map((preset) => (
+                    <>
+                      {hiringstage !== preset && (
+                        <div
+                          key={preset.toString()}
+                          className='flex items-center justify-center '
+                        >
+                          <div
+                            onClick={() => {
+                              sethiringstage(preset.toString());
+                              setcurrentdropdown("");
+                            }}
+                            className='w-full  hover:bg-blue-600 hover:text-white  m-3 center outline text-center font-bold py-4 px-12 rounded-full  '
+                          >
+                            {preset}
+                          </div>{" "}
+                        </div>
+                      )}
+                    </>
+                  ))}
+                </div>
+              )}{" "}
             </div>
-            {hiringstagePRESETS!.map((preset) => (
-              <>
-                {hiringstage === preset && (
-                  <div
-                    key={preset.toString()}
-                    className='flex items-center justify-center '
-                  >
-                    <div
-                      onClick={() => {
-                        sethiringstage(preset.toString());
-                      }}
-                      className='bg-green-400 text-white   m-3 center outline text-center font-bold py-4 px-12 rounded-full  '
-                    >
-                      {preset}
-                    </div>{" "}
-                  </div>
-                )}{" "}
-                {hiringstage !== preset && (
-                  <div
-                    key={preset.toString()}
-                    className='flex items-center justify-center '
-                  >
-                    <div
-                      onClick={() => {
-                        sethiringstage(preset.toString());
-                      }}
-                      className='   m-3 center outline text-center font-bold py-4 px-12 rounded-full  '
-                    >
-                      {preset}
-                    </div>{" "}
-                  </div>
-                )}
-              </>
-            ))}
           </div>
-          <div>
+          <div className='w-[20%]'>
             <div className='flex items-center justify-center '>
-              <div className='m-3 center flex items-center bg-green-400 text-white    text-center font-bold py-4 px-12 rounded-full '>
+              <div
+                onClick={() => {
+                  setcurrentdropdown("minbudget");
+                }}
+                className=' w-full flex flex-wrap items-center justify-center  m-3 center bg-green-400 text-white    text-center font-bold py-4 px-12 rounded-full '
+              >
                 <RiMoneyPoundCircleLine />
-                Minimum Budget
+                Minimum Budget <FaArrowCircleDown className='ml-2' />
+                <div className='ml-2'>{minbudget}</div>
               </div>{" "}
-            </div>
-            {minbudgetPRESETS!.map((preset) => (
-              <>
-                {minbudget === preset && (
-                  <div
-                    key={preset.toString()}
-                    className='flex items-center justify-center '
-                  >
-                    <div
-                      onClick={() => {
-                        setminbudget(preset);
-                      }}
-                      className='  bg-green-400 text-white   m-3 center outline text-center font-bold py-4 px-12 rounded-full  '
-                    >
-                      {preset}
-                    </div>{" "}
-                  </div>
-                )}{" "}
-                {minbudget !== preset && (
-                  <div
-                    key={preset.toString()}
-                    className='flex items-center justify-center '
-                  >
-                    <div
-                      onClick={() => {
-                        setminbudget(preset);
-                      }}
-                      className='   m-3 center outline text-center font-bold py-4 px-12 rounded-full  '
-                    >
-                      {preset}
-                    </div>{" "}
-                  </div>
-                )}
-              </>
-            ))}
+            </div>{" "}
+            {currentdropdown === "minbudget" && (
+              <div className=' relative top-5'>
+                {minbudgetPRESETS!.map((preset) => (
+                  <>
+                    {minbudget !== preset && (
+                      <div
+                        key={preset.toString()}
+                        className='flex items-center justify-center '
+                      >
+                        <div
+                          onClick={() => {
+                            setminbudget(preset);
+                            setcurrentdropdown("");
+                          }}
+                          className='w-full m-3 hover:bg-blue-600 hover:text-white rounded-full  center outline text-center font-bold py-4 px-5   '
+                        >
+                          {preset}
+                        </div>{" "}
+                      </div>
+                    )}
+                  </>
+                ))}
+              </div>
+            )}
           </div>{" "}
-          <div>
+          <div className='w-[20%]'>
             <div className='flex items-center justify-center '>
-              <div className='m-3 center flex items-center bg-green-400 text-white   text-center font-bold py-4 px-12 rounded-full '>
+              <div
+                onClick={() => {
+                  setcurrentdropdown("maxbudget");
+                }}
+                className=' w-full flex flex-wrap items-center justify-center  m-3 center bg-green-400 text-white    text-center font-bold py-4 px-12 rounded-full '
+              >
                 <RiMoneyPoundCircleLine />
-                Maximum Budget
+                Maximum Budget <FaArrowCircleDown className='ml-2' />
+                <div className='ml-2'>{maxbudget}</div>
               </div>{" "}
             </div>
-            {maxbudgetPRESETS!.map((preset) => (
-              <>
-                {maxbudget === preset && (
-                  <div
-                    key={preset.toString()}
-                    className='flex items-center justify-center '
-                  >
-                    <div
-                      onClick={() => {
-                        setmaxbudget(preset);
-                      }}
-                      className=' bg-green-400 text-white  m-3 center outline text-center font-bold py-4 px-12 rounded-full  '
-                    >
-                      {preset}
-                    </div>{" "}
-                  </div>
-                )}{" "}
-                {maxbudget !== preset && (
-                  <div
-                    key={preset.toString()}
-                    className='flex items-center justify-center '
-                  >
-                    <div
-                      onClick={() => {
-                        setmaxbudget(preset);
-                      }}
-                      className='   m-3 center outline text-center font-bold py-4 px-12 rounded-full  '
-                    >
-                      {preset}
-                    </div>{" "}
-                  </div>
-                )}
-              </>
-            ))}
+            {currentdropdown === "maxbudget" && (
+              <div className=' relative top-5'>
+                {" "}
+                {maxbudgetPRESETS!.map((preset) => (
+                  <>
+                    {maxbudget !== preset && (
+                      <div
+                        key={preset.toString()}
+                        className='flex items-center justify-center '
+                      >
+                        <div
+                          onClick={() => {
+                            setmaxbudget(preset);
+                            setcurrentdropdown("");
+                          }}
+                          className='w-full m-3 rounded-full hover:bg-blue-600 hover:text-white center outline text-center font-bold py-4 px-12   '
+                        >
+                          {preset}
+                        </div>{" "}
+                      </div>
+                    )}
+                  </>
+                ))}{" "}
+              </div>
+            )}
           </div>
         </div>
       </div>
