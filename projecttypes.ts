@@ -174,6 +174,10 @@ export interface UserLoc {
   isRepairman: boolean;
 }
 
+export interface ImageCarouselProps {
+  images: JobPicture[];
+}
+
 export interface Props1 {
   params: { id: string };
 }

@@ -320,7 +320,7 @@ const QIZZTAKER = () => {
             {category_Array!.map((category) => (
               <div
                 key={category.id}
-                className='flex items-center justify-center w-screen'
+                className='flex items-center justify-center w-full'
               >
                 <div
                   onClick={() => {
@@ -342,7 +342,7 @@ const QIZZTAKER = () => {
   function SubcategoryBOX() {
     return (
       <div>
-        <div className='flex items-center justify-center w-screen'>
+        <div className='flex items-center justify-center w-full'>
           <div className='m-3 py-4 px-12  center outline  bg-green-400 text-white   text-center font-bold  rounded-full '>
             STEP 2. PICK A SUBCATEGORY{" "}
           </div>{" "}
@@ -352,7 +352,7 @@ const QIZZTAKER = () => {
             {sub_category_Array!.map((sub_category) => (
               <div
                 key={sub_category.id}
-                className='flex items-center justify-center w-screen'
+                className='flex items-center justify-center w-full'
               >
                 <div
                   onClick={() => {
@@ -434,7 +434,7 @@ const QIZZTAKER = () => {
   function QuestionBOX() {
     return (
       <div>
-        <div className='flex items-center justify-center w-screen'>
+        <div className='flex items-center justify-center w-full'>
           {/* <div className='m-3 py-4 px-12 center outline bg-green-400 text-white    text-center font-bold  rounded-full '>
             {" "}
             Questionare Stage
@@ -446,7 +446,7 @@ const QIZZTAKER = () => {
           </div>
         </div>
         {AnsweredQuestionsArray?.length! >= Question_Array?.length! && (
-          <div className='flex items-center justify-center w-screen'>
+          <div className='flex items-center justify-center w-full'>
             {" "}
             <div
               onClick={() => {
@@ -471,7 +471,7 @@ const QIZZTAKER = () => {
                         key={question.id}
                         className='m-3 center   text-center font-bold py-4 px-12 rounded-sm '
                       >
-                        <div className='flex items-center justify-center w-screen'>
+                        <div className='flex items-center justify-center w-full'>
                           <div className='m-3 center outline bg-green-400 text-white    text-center font-bold py-4 px-12 rounded-full '>
                             {" "}
                             {question.text_Question}?
@@ -528,7 +528,7 @@ const QIZZTAKER = () => {
                   {answers?.map((answer) => (
                     <div
                       key={answer.text_answer}
-                      className='flex items-center justify-center w-screen'
+                      className='flex items-center justify-center w-full'
                     >
                       <div
                         onClick={() => {
@@ -579,7 +579,7 @@ const QIZZTAKER = () => {
                   <>
                     {" "}
                     <GeolocationBox />
-                    <div className='flex items-center justify-center w-screen'>
+                    <div className='flex items-center justify-center w-full'>
                       <div
                         onClick={() => {
                           setcoordsTouched(true);
@@ -607,7 +607,7 @@ const QIZZTAKER = () => {
                             placeholder='Extra details go here'
                           />{" "}
                         </div>{" "}
-                        <div className='flex items-center justify-center w-screen'>
+                        <div className='flex items-center justify-center w-full'>
                           <button
                             onClick={() => {
                               GetData(5);
@@ -720,7 +720,7 @@ const QIZZTAKER = () => {
     return (
       <>
         {" "}
-        <div className='flex items-center justify-center w-screen'>
+        <div className='flex items-center justify-center w-full'>
           <button className='m-3 center  text-center font-bold py-4 px-12 rounded-full '>
             {" "}
             You have uploaded {pictures2.length} pictures so far.
@@ -835,22 +835,21 @@ const QIZZTAKER = () => {
     return (
       <div>
         {" "}
-        <div className='flex justify-center w-screen '>
+        <div className='flex justify-center w-full '>
           {" "}
           <div className='flex flex-wrap  justify-center items-center '>
             {" "}
-            <div className='justify-center'>
+            <div className='justify-center m-3 p-3'>
               {" "}
               <div className='justify-center items-center'>
                 {" "}
-                <h1 className='flex flex-wrap  justify-center items-center text-5xl'>
+                <h1 className=' m-5 flex flex-wrap  justify-center items-center text-5xl'>
                   TITLE
                 </h1>{" "}
                 <input
                   type='text'
                   className='  h-[10%] outline text-center font-bold text-xl py-10 px-10  '
                   id='title2'
-                  placeholder=''
                   defaultValue={title1}
                   onBlur={(e) => {
                     settitle1(e.target.value);
@@ -903,7 +902,7 @@ const QIZZTAKER = () => {
           </div>
         </div>
         <div> </div>{" "}
-        <div className='flex flex-wrap justify-center w-screen'>
+        <div className='flex flex-wrap justify-center w-full'>
           <div className='w-[20%]'>
             <div className='flex items-center justify-center '>
               <div
@@ -928,11 +927,12 @@ const QIZZTAKER = () => {
                       {timing !== preset && (
                         <div
                           key={preset.toString()}
-                          className='flex items-center justify-center '
+                          className=' relative top-5 flex items-center justify-center '
                         >
                           <div
                             onClick={() => {
                               settiming(preset.toString());
+                              setcurrentdropdown("");
                             }}
                             className=' hover:bg-blue-600 hover:text-white w-full   m-3 center outline text-center font-bold py-4 px-12 rounded-full  '
                           >
@@ -969,7 +969,7 @@ const QIZZTAKER = () => {
                       {hiringstage !== preset && (
                         <div
                           key={preset.toString()}
-                          className='flex items-center justify-center '
+                          className=' relative top-5 flex items-center justify-center '
                         >
                           <div
                             onClick={() => {
@@ -1072,7 +1072,7 @@ const QIZZTAKER = () => {
 
   function Stepper() {
     return (
-      <div className='flex flex-wrap  items-center justify-center w-screen'>
+      <div className='flex flex-wrap  items-center justify-center w-full'>
         <div
           className='bg-red-600  m-2 p-3 flex items-center text-white'
           onClick={handleRefresh}

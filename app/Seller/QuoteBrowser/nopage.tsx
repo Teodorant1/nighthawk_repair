@@ -14,6 +14,8 @@ import { FaArrowCircleDown } from "react-icons/fa";
 import { CiFilter, CiCirclePlus } from "react-icons/ci";
 import { IoCloseCircleSharp } from "react-icons/io5";
 
+import ImageCarousel from "@/components/ImageCarousel";
+
 const IQBrowser = () => {
   const { status, data: session } = useSession();
   const context = useJobContext();
@@ -244,39 +246,43 @@ const IQBrowser = () => {
               (job) =>
                 isJobVisible(job) && (
                   <div
-                    className='m-3 center outline text-center font-bold p-2 rounded-md'
+                    className='h-fit m-3 center outline text-center font-bold p-2 rounded-md'
                     key={job.id}
                   >
-                    {context.COINS > 20 && (
-                      <button
-                        className='m-3 center bg-green-400 text-white text-center font-bold p-2 rounded-full'
-                        onClick={() => {
-                          BuyAlead(job.id);
-                        }}
-                      >
-                        APPLY
-                      </button>
-                    )}{" "}
-                    {context.currentJobID !== job.id && (
-                      <button
-                        className='m-3 center bg-green-400 text-white text-center font-bold p-2 rounded-full'
-                        onClick={() => {
-                          toggleShow(job.id);
-                        }}
-                      >
-                        <CiCirclePlus className='w-8 h-8' />
-                      </button>
-                    )}{" "}
-                    {context.currentJobID === job.id && (
-                      <button
-                        className='m-3 center bg-green-400 text-white text-center font-bold p-2 rounded-full'
-                        onClick={() => {
-                          toggleShow(job.id);
-                        }}
-                      >
-                        <IoCloseCircleSharp className='w-8 h-8' />
-                      </button>
-                    )}
+                    <div className='flex items-center justify-center'>
+                      {" "}
+                      {context.COINS > 20 && (
+                        <button
+                          className='m-3 center bg-green-400 text-white text-center font-bold p-2 rounded-full'
+                          onClick={() => {
+                            BuyAlead(job.id);
+                          }}
+                        >
+                          APPLY
+                        </button>
+                      )}{" "}
+                      {context.currentJobID !== job.id && (
+                        <button
+                          className='m-3 center bg-green-400 text-white text-center font-bold p-2 rounded-full'
+                          onClick={() => {
+                            toggleShow(job.id);
+                          }}
+                        >
+                          <CiCirclePlus className='w-8 h-8' />
+                        </button>
+                      )}{" "}
+                      {context.currentJobID === job.id && (
+                        <button
+                          className='m-3 center bg-green-400 text-white text-center font-bold p-2 rounded-full'
+                          onClick={() => {
+                            toggleShow(job.id);
+                          }}
+                        >
+                          <IoCloseCircleSharp className='w-8 h-8' />
+                        </button>
+                      )}
+                    </div>
+
                     <h1>TITLE:{job?.title}</h1>
                     <div>ID:{job.id}</div>
                     <div>
@@ -308,26 +314,14 @@ const IQBrowser = () => {
                         </div>
                         <div className='flex flex-wrap p-2 m-2'>
                           {job.pictures && (
-                            <>
+                            <div className='flex flex-wrap'>
                               {" "}
                               {job.pictures.length > 0 && (
                                 <>
-                                  {job.pictures.map((picture) => (
-                                    <div
-                                      className='m-2 p-2'
-                                      key={picture.id}
-                                    >
-                                      <CldImage
-                                        src={picture.cloudinaryID}
-                                        width={300}
-                                        height={200}
-                                        alt={picture.cloudinaryID}
-                                      />
-                                    </div>
-                                  ))}
+                                  <ImageCarousel images={job.pictures} />
                                 </>
                               )}
-                            </>
+                            </div>
                           )}
                         </div>
                       </div>
@@ -836,20 +830,8 @@ const IQBrowser = () => {
                   {" "}
                   {context.currentJobID === job?.id &&
                     job.pictures.length > 0 && (
-                      <div className='flex flex-wrap'>
-                        {job.pictures.map((picture) => (
-                          <div
-                            className='m-2 p-2'
-                            key={picture.id}
-                          >
-                            <CldImage
-                              src={picture.cloudinaryID}
-                              width={300}
-                              height={200}
-                              alt={picture.cloudinaryID}
-                            />
-                          </div>
-                        ))}
+                      <div className='flex items-center justify-center w-full'>
+                        <ImageCarousel images={job.pictures} />
                       </div>
                     )}
                 </>

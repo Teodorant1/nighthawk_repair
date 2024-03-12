@@ -227,7 +227,6 @@ const BuyerJoblist = () => {
                         {job.first_to_buy === false && <>false</>}
                       </div>
                       <div>DATE OF CREATION: {String(job.date_created)}</div>
-                      <div> Calculated distance: {job.distance} </div>
                       {/* <div>Email:{job.submittterEmail}</div> */}
                       <div>Expected cost: {job.moneycost}</div>
                       <div>Minimal Budget: {job.minBudget}</div>

@@ -110,16 +110,16 @@ const NavBar = () => {
             className=' bg-black text-white rounded-sm   text-center font-bold  py-2 px-4 m-5 center'
           >
             {" "}
-            GO TO QUOTE BROWSER
+            QUOTE BROWSER
           </Link>
-          <Link
+          {/* <Link
             href='/LIVELEADS'
             className=' bg-black text-white rounded-sm   text-center font-bold py-2 px-4 m-5 center'
           >
             {" "}
             LIVE LEADS
-          </Link>
-          <Link
+          </Link> */}
+          {/* <Link
             href='/MYLEADS'
             className=' bg-black text-white rounded-sm  center  text-center font-bold py-2 px-4 m-5'
           >
@@ -143,7 +143,7 @@ const NavBar = () => {
             className=' bg-black text-white rounded-sm  center  text-center font-bold py-2 px-4 m-5'
           >
             CHAT{" "}
-          </Link>{" "}
+          </Link>{" "} */}
         </div>
       </div>
     );
@@ -151,25 +151,25 @@ const NavBar = () => {
 
   function BUYERBOX() {
     return (
-      <div className='m-5 p-5'>
+      <div className=''>
         {" "}
         <div className='p-5 flex flex-wrap'>
           {" "}
           <Link
-            href='/FindaTrade'
+            href='/Buyer/IQTest'
             className=' bg-black text-white rounded-sm   text-center font-bold  py-2 px-4 m-5 center'
           >
             {" "}
-            Find a Trade
+            IQTest
           </Link>
           <Link
-            href='/Ask'
+            href='/Buyer/BuyerJoblist'
             className=' bg-black text-white rounded-sm   text-center font-bold  py-2 px-4 m-5 center'
           >
             {" "}
-            Ask
+            My Projects
           </Link>
-          <Link
+          {/* <Link
             href='/TrendsReport'
             className=' bg-black text-white rounded-sm   text-center font-bold  py-2 px-4 m-5 center'
           >
@@ -200,7 +200,7 @@ const NavBar = () => {
             className=' bg-black text-white rounded-sm   text-center font-bold  py-2 px-4 m-5 center'
           >
             CHAT{" "}
-          </Link>
+          </Link> */}
         </div>
       </div>
     );
@@ -221,8 +221,8 @@ const NavBar = () => {
           />
         </div>
       </Link>
-      {session?.user.role === "USER" && <USERBOX />}
-      {session?.user.role === "BUYER" && <BUYERBOX />}
+      {session?.user.isRepairman && <USERBOX />}
+      {session?.user.isClient && <BUYERBOX />}
       <MyAccount />
     </div>
   );
