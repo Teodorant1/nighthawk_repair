@@ -22,15 +22,15 @@ const NavBar = () => {
   function MyAccount() {
     return (
       // <div>
-      <div className=' bg-green-400 center  text-center font-bold py-2 px-4   ml-auto top-[5%]  right-[10%]'>
+      <div className='ml-auto right-[10%]'>
         {" "}
         {status === "unauthenticated" && (
-          <div>
+          <div className='p-5 flex flex-wrap '>
             <Link
               className=' p-2 font-bold'
               href='/register'
             >
-              <button className=' bg-black text-white rounded-sm p-2'>
+              <button className=' bg-black text-white rounded-sm   text-center font-bold  py-2 px-4 m-5 center'>
                 {" "}
                 Register
               </button>
@@ -41,7 +41,7 @@ const NavBar = () => {
               href='/api/auth/signin'
             >
               {" "}
-              <button className=' bg-black text-white rounded-sm p-2'>
+              <button className=' bg-black text-white rounded-sm   text-center font-bold  py-2 px-4 m-5 center'>
                 {" "}
                 Login
               </button>
@@ -51,16 +51,40 @@ const NavBar = () => {
         <div>
           {" "}
           {status === "authenticated" && (
-            <div className=''>
-              {" "}
+            <div className='p-5 flex flex-wrap '>
+              <Link
+                className=' bg-black text-white rounded-sm   text-center font-bold  py-2 px-4 m-5 center'
+                href={"/Both/ProfilePage/" + session?.user.sub}
+              >
+                My Profile
+              </Link>
+              <Link
+                className=' bg-black text-white rounded-sm   text-center font-bold  py-2 px-4 m-5 center'
+                href='/MyJobs'
+              >
+                My Jobs
+              </Link>
+              <Link
+                className=' bg-black text-white rounded-sm   text-center font-bold  py-2 px-4 m-5 center'
+                href='/Settings'
+              >
+                Settings
+              </Link>
+              <Link
+                href='/api/auth/signout'
+                className=' bg-black text-white rounded-sm   text-center font-bold  py-2 px-4 m-5 center'
+              >
+                Log Out
+              </Link>{" "}
               {/* <div> {session?.user.email} </div> */}
               {/* <div
-                className=' bg-black text-white rounded-sm p-2'
+                            className=' bg-black text-white rounded-sm   text-center font-bold  py-2 px-4 m-5 center'
+
                 onClick={() => toggleShow()}
               >
                 My Account -{" "}
               </div>{" "} */}
-              <div>{true && <AccountDropdown />}</div>{" "}
+              <div>{false && <AccountDropdown />}</div>{" "}
             </div>
           )}
         </div>
@@ -73,28 +97,28 @@ const NavBar = () => {
     // const profileURL = "/Both/ProfilePage/" + session?.user.sub;
 
     return (
-      <div className=' flex flex-wrap m-5 p-10  text-center font-bold py-2 px-4 my-1 center'>
+      <div className=' '>
         <Link
-          className=' bg-black text-white rounded-sm flex px-3 py-1 m-2 font-bold'
+          className=' bg-black text-white rounded-sm   text-center font-bold  py-2 px-4 m-5 center'
           href={"/Both/ProfilePage/" + session?.user.sub}
         >
           My Profile
         </Link>
         <Link
-          className=' bg-black text-white rounded-sm flex px-3 py-1 m-2 font-bold'
+          className=' bg-black text-white rounded-sm   text-center font-bold  py-2 px-4 m-5 center'
           href='/MyJobs'
         >
           My Jobs
         </Link>
         <Link
-          className=' bg-black text-white rounded-sm flex px-3 py-1 m-2 font-bold'
+          className=' bg-black text-white rounded-sm   text-center font-bold  py-2 px-4 m-5 center'
           href='/Settings'
         >
           Settings
         </Link>
         <Link
           href='/api/auth/signout'
-          className=' bg-black text-white rounded-sm flex px-3 py-1 m-2 font-bold'
+          className=' bg-black text-white rounded-sm   text-center font-bold  py-2 px-4 m-5 center'
         >
           Log Out
         </Link>

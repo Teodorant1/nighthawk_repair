@@ -160,7 +160,7 @@ const IQBrowser = () => {
                   context.setStage(2);
                   GetData(2, category.name);
                 }}
-                className='m-3 center  text-center font-bold p-2 rounded-full'
+                className='m-3 center  text-center font-bold p-2 rounded-md'
               >
                 {category.name}
               </div>
@@ -184,7 +184,7 @@ const IQBrowser = () => {
                   context.setStage(3);
                   GetData(3, sub_category!.name);
                 }}
-                className='m-3 center  text-center font-bold p-2 rounded-full '
+                className='m-3 center  text-center font-bold p-2 rounded-md '
               >
                 {sub_category.name}
               </div>
@@ -251,19 +251,9 @@ const IQBrowser = () => {
                   >
                     <div className='flex items-center justify-center'>
                       {" "}
-                      {context.COINS > 20 && (
-                        <button
-                          className='m-3 center bg-green-400 text-white text-center font-bold p-2 rounded-full'
-                          onClick={() => {
-                            BuyAlead(job.id);
-                          }}
-                        >
-                          APPLY
-                        </button>
-                      )}{" "}
                       {context.currentJobID !== job.id && (
                         <button
-                          className='m-3 center bg-green-400 text-white text-center font-bold p-2 rounded-full'
+                          className='m-3 center bg-green-400 text-white text-center font-bold p-2 rounded-md'
                           onClick={() => {
                             toggleShow(job.id);
                           }}
@@ -273,7 +263,7 @@ const IQBrowser = () => {
                       )}{" "}
                       {context.currentJobID === job.id && (
                         <button
-                          className='m-3 center bg-green-400 text-white text-center font-bold p-2 rounded-full'
+                          className='m-3 center bg-green-400 text-white text-center font-bold p-2 rounded-md'
                           onClick={() => {
                             toggleShow(job.id);
                           }}
@@ -282,7 +272,6 @@ const IQBrowser = () => {
                         </button>
                       )}
                     </div>
-
                     <h1>TITLE:{job?.title}</h1>
                     <div>ID:{job.id}</div>
                     <div>
@@ -326,6 +315,16 @@ const IQBrowser = () => {
                         </div>
                       </div>
                     )}
+                    {context.COINS > 20 && (
+                      <button
+                        className='m-3 center bg-green-400 text-white text-center font-bold p-2 rounded-md'
+                        onClick={() => {
+                          BuyAlead(job.id);
+                        }}
+                      >
+                        APPLY
+                      </button>
+                    )}{" "}
                     <div></div>
                   </div>
                 )
@@ -389,12 +388,12 @@ const IQBrowser = () => {
     }
 
     return (
-      <div className='flex  justify-center m-3 center flex-wrap text-center font-bold p-2 w-[90%] h-screen'>
+      <div className='flex  justify-center m-3 center flex-wrap text-center font-bold p-3 w-full h-fit'>
         <div className='m-3 center w-[15%] text-center font-bold p-2 rounded-md'>
           <h1>SORT BY</h1>{" "}
           <div className='m-3 center  text-center font-bold p-2 rounded-md'>
             <div
-              className='m-3 center bg-blue-400 text-white text-center font-bold p-2 rounded-full'
+              className='m-3 center bg-blue-400 text-white text-center font-bold p-5 rounded-md'
               onClick={() => {
                 filterSubjobs("budget", false);
               }}
@@ -403,7 +402,7 @@ const IQBrowser = () => {
               ASCENDING VALUE{" "}
             </div>
             <div
-              className='m-3 center bg-blue-400 text-white text-center font-bold p-2 rounded-full'
+              className='m-3 center bg-blue-400 text-white text-center font-bold p-5 rounded-md'
               onClick={() => {
                 filterSubjobs("budget", true);
               }}
@@ -419,7 +418,7 @@ const IQBrowser = () => {
                 onClick={() => {
                   context.setFirstToBuy(true);
                 }}
-                className='m-3 center bg-red-400 text-white text-center font-bold p-2 rounded-full'
+                className='m-3 center bg-red-400 text-white text-center font-bold p-2 rounded-md'
               >
                 ENABLE FIRST TO BUY FILTER
               </div>
@@ -429,7 +428,7 @@ const IQBrowser = () => {
                 onClick={() => {
                   context.setFirstToBuy(false);
                 }}
-                className='m-3 center bg-green-600 text-white text-center font-bold p-2 rounded-full'
+                className='m-3 center bg-green-600 text-white text-center font-bold p-2 rounded-md'
               >
                 DISABLE FIRST TO BUY FILTER
               </div>
@@ -439,7 +438,7 @@ const IQBrowser = () => {
                 onClick={() => {
                   context.setPicturesRequired(true);
                 }}
-                className='m-3 center bg-red-400 text-white text-center font-bold p-2 rounded-full'
+                className='m-3 center bg-red-400 text-white text-center font-bold p-2 rounded-md'
               >
                 ENABLE LEADS WITH IMAGES
               </div>
@@ -449,7 +448,7 @@ const IQBrowser = () => {
                 onClick={() => {
                   context.setPicturesRequired(false);
                 }}
-                className='m-3 center bg-green-600 text-white text-center font-bold p-2 rounded-full'
+                className='m-3 center bg-green-600 text-white text-center font-bold p-2 rounded-md'
               >
                 DISABLE LEADS WITH IMAGES
               </div>
@@ -470,7 +469,7 @@ const IQBrowser = () => {
                     );
                     context.setTimingCriteria(newcriteria);
                   }}
-                  className='m-3 center bg-green-600 text-white text-center font-bold p-2 rounded-full'
+                  className='m-3 center bg-green-600 text-white text-center font-bold p-2 rounded-md'
                 >
                   DISABLE {preset} CRITERIA
                 </button>
@@ -481,7 +480,7 @@ const IQBrowser = () => {
                     const newcriteria = [...context.timingCriteria, preset];
                     context.setTimingCriteria(newcriteria);
                   }}
-                  className='m-3 center bg-red-400 text-white text-center font-bold p-2 rounded-full'
+                  className='m-3 center bg-red-400 text-white text-center font-bold p-2 rounded-md'
                 >
                   ENABLE {preset} CRITERIA
                 </button>
@@ -514,7 +513,7 @@ const IQBrowser = () => {
                       // onClick={() => {
                       //   setminbudget(preset);
                       // }}
-                      className='m-3 center bg-green-600 text-white text-center font-bold p-2 rounded-full'
+                      className='m-3 center bg-green-600 text-white text-center font-bold p-2 rounded-md'
                     >
                       Minimal budget is set to {preset}
                     </button>
@@ -568,7 +567,7 @@ const IQBrowser = () => {
                             context.setMaxBudget(preset);
                             context.setcurrentdropdown("minbudget");
                           }}
-                          className='m-3 center  text-center font-bold p-2 rounded-full'
+                          className='m-3 center  text-center font-bold p-2 rounded-md'
                         >
                           Set maximum budget to {preset}
                         </button>
@@ -608,11 +607,11 @@ const IQBrowser = () => {
       }
     };
     return (
-      <div className='m-3 center  text-center font-bold p-2 rounded-full'>
+      <div className='m-3 center  text-center font-bold p-2 rounded-md'>
         <h1> You can filter out jobs by radius </h1>
         {/* create a button that is mapped to the function which retrieves the users location */}
         <button
-          className=' bg-blue-600  hover:bg-blue-900 m-3  text-white center  text-center font-bold p-2 rounded-full'
+          className=' bg-blue-600  hover:bg-blue-900 m-3  text-white center  text-center font-bold p-2 rounded-md'
           onClick={getUserLocation}
         >
           Load User Location
@@ -637,7 +636,7 @@ const IQBrowser = () => {
 
         {context.userLocation !== null && (
           <button
-            className=' bg-blue-600  hover:bg-blue-900 m-3  text-white center  text-center font-bold p-2 rounded-full'
+            className=' bg-blue-600  hover:bg-blue-900 m-3  text-white center  text-center font-bold p-2 rounded-md'
             onClick={() => {
               context.setStage(1);
             }}
@@ -657,7 +656,7 @@ const IQBrowser = () => {
             <div className='flex flex-wrap items-center justify-center w-screen'>
               <div className='flex flex-wrap items-center justify-center w-screen'>
                 <button
-                  className='flex items-center justify-center m-3 center  -white text-white  bg-green-400  text-center font-bold p-2 rounded-full'
+                  className='flex items-center justify-center m-3 center  -white text-white  bg-green-400  text-center font-bold p-2 rounded-md'
                   onClick={() => {
                     if (context.filterBoxEnabled === false) {
                       context.setFilterBoxEnabled(true);
@@ -669,14 +668,14 @@ const IQBrowser = () => {
                   <CiFilter />
                   FILTERS
                 </button>{" "}
-                <button className='m-3 center  -whit text-white  bg-green-400  text-center font-bold p-2 rounded-full'>
+                <button className='m-3 center  -whit text-white  bg-green-400  text-center font-bold p-2 rounded-md'>
                   AVAILABLE CREDIT: £{context.COINS}
                 </button>
                 <button
                   onClick={() => {
                     context.setleads_to_look_at("myleads");
                   }}
-                  className='m-3 center  -white  text-white bg-green-400   text-center font-bold p-2 rounded-full'
+                  className='m-3 center  -white  text-white bg-green-400   text-center font-bold p-2 rounded-md'
                 >
                   APPLIED JOBS: {context.appliedJobs.length}
                 </button>
@@ -687,7 +686,7 @@ const IQBrowser = () => {
                   onClick={() => {
 
                   }}
-                  className=' m-3 center  -white text-white bg-green-400   text-center font-bold p-2 rounded-full'
+                  className=' m-3 center  -white text-white bg-green-400   text-center font-bold p-2 rounded-md'
                 >
                   A LIST OF FRESH JOBS {myjobs.length}
                 </div> */}
@@ -747,7 +746,7 @@ const IQBrowser = () => {
             {" "}
             {context.currentJobID !== job?.id && (
               <button
-                className='m-3 center bg-green-400 text-white text-center font-bold p-2 rounded-full'
+                className='m-3 center bg-green-400 text-white text-center font-bold p-2 rounded-md'
                 onClick={() => {
                   //console.log(job);
                   toggleShow(job?.id!);
@@ -758,7 +757,7 @@ const IQBrowser = () => {
             )}{" "}
             {context.currentJobID === job?.id && (
               <button
-                className='m-3 center bg-green-400 text-white text-center font-bold p-2 rounded-full'
+                className='m-3 center bg-green-400 text-white text-center font-bold p-2 rounded-md'
                 onClick={() => {
                   toggleShow(job?.id!);
                 }}
@@ -775,7 +774,7 @@ const IQBrowser = () => {
                     {appliedjob.status === preset && preset !== "ALL" && (
                       <button
                         onClick={() => {}}
-                        className='m-3  bg-green-600 text-white center text-center font-bold p-2 rounded-full '
+                        className='m-3  bg-green-600 text-white center text-center font-bold p-2 rounded-md '
                       >
                         {" "}
                         {preset}
@@ -786,7 +785,7 @@ const IQBrowser = () => {
                         onClick={async () => {
                           await handleTagJob(appliedjob.id, preset);
                         }}
-                        className='m-3  bg-red-400 text-white center text-center font-bold p-2 rounded-full '
+                        className='m-3  bg-red-400 text-white center text-center font-bold p-2 rounded-md '
                       >
                         {" "}
                         TAG AS{""} {preset}
@@ -860,7 +859,7 @@ const IQBrowser = () => {
               onClick={() => {
                 context.setleads_to_look_at("newleads");
               }}
-              className='m-3 center bg-green-400 text-white text-center font-bold p-2 rounded-full'
+              className='m-3 center bg-green-400 text-white text-center font-bold p-2 rounded-md'
             >
               GO TO FRESH JOBS
             </button>{" "}
@@ -875,7 +874,7 @@ const IQBrowser = () => {
                     onClick={() => {
                       context.setmyLead_filter_Current_Setting(preset);
                     }}
-                    className='m-3  bg-green-600 text-white center text-center font-bold p-2 rounded-full '
+                    className='m-3  bg-green-600 text-white center text-center font-bold p-2 rounded-md '
                   >
                     {" "}
                     {preset}
@@ -886,7 +885,7 @@ const IQBrowser = () => {
                     onClick={() => {
                       context.setmyLead_filter_Current_Setting(preset);
                     }}
-                    className='m-3  bg-red-400 text-white center text-center font-bold p-2 rounded-full '
+                    className='m-3  bg-red-400 text-white center text-center font-bold p-2 rounded-md '
                   >
                     {" "}
                     DISPLAY{""} {preset}
@@ -895,16 +894,16 @@ const IQBrowser = () => {
               </div>
             ))}
           </div>
-          <div className='m-3 center text-center font-bold p-2 rounded-full '>
+          <div className='m-3 center text-center font-bold p-2 rounded-md '>
             <div className='flex items-center justify-center'>
-              <div className='m-3 center text-center font-bold p-2 rounded-full'>
+              <div className='m-3 center text-center font-bold p-2 rounded-md'>
                 MY LEADS
               </div>{" "}
             </div>
 
             {context.appliedJobs.length === 0 && (
               <div className='flex items-center justify-center'>
-                <div className='m-3 center text-center font-bold p-2 rounded-full'>
+                <div className='m-3 center text-center font-bold p-2 rounded-md'>
                   NO JOBS{" "}
                 </div>{" "}
               </div>

@@ -222,7 +222,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
             className='m-2 center outline text-center font-bold p-2 rounded-sm '
           >
             {" "}
-            Click here to toggle the dropdown list of Interests{" "}
+            Toggle potential interests{" "}
           </button>
         )}
         {session?.user.sub === id && showSCadder === true && (
@@ -230,7 +230,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
             {context.all_subcategories.length > 0 && (
               <div className=' m-2  center  text-center font-bold p-2 rounded-sm '>
                 <button className='bg-green-400 text-white p-5 rounded-md'>
-                  ADD NEW SUBCATEGORIES HERE
+                  AVAILABLE SUBCATEGORIES
                 </button>
                 <div className='flex flex-wrap'>
                   {" "}
@@ -381,6 +381,10 @@ const SellerProfile = ({ params: { id } }: Props1) => {
           <>
             {" "}
             <div className='flex flex-wrap items-center justify-center'>
+              <div>
+                {" "}
+                {currentImageIndex + 1}/{images.length}{" "}
+              </div>
               <button
                 className='m-2 bg-green-400 text-white center   text-center font-bold p-2 rounded-sm '
                 onClick={handlePrevImage}
@@ -410,7 +414,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                   }}
                   className='m-2 center  bg-red-400  text-white text-center font-bold p-2 rounded-sm '
                 >
-                  DELETE THIS PICTURE
+                  DELETE
                 </button>
               )}
             </div>{" "}
@@ -418,8 +422,9 @@ const SellerProfile = ({ params: { id } }: Props1) => {
             <CldImage
               src={images[currentImageIndex].cloudinaryID}
               alt={`Image ${currentImageIndex + 1}`}
-              width={600}
-              height={600}
+              width={1000}
+              height={1000}
+              style={{ width: "1000px", height: "1000px" }}
             />
           </>
         )}
@@ -623,7 +628,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
               className='m-2 center   text-center font-bold p-2 rounded-sm bg-green-400  text-white p-5'
             >
               {" "}
-              Click here to add a new certificate to your profile{" "}
+              ADD CERTIFICATE{" "}
             </button>
           </>
         )}
@@ -662,7 +667,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                     className='m-2 center bg-green-400 text-white text-center font-bold p-2 rounded-sm '
                   >
                     {" "}
-                    Click here to toggle the map{" "}
+                    TOGGLE MAP{" "}
                   </button>{" "}
                 </>
               </div>
@@ -706,7 +711,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
                     className='m-2 center  bg-blue-950  text-white text-center font-bold p-2 rounded-sm '
                   >
                     {" "}
-                    Click here to update Radius{" "}
+                    Update Radius{" "}
                   </button>
                 </div>
               </div>

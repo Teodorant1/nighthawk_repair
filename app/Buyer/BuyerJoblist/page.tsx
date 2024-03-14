@@ -93,7 +93,7 @@ const BuyerJoblist = () => {
             >
               {" "}
               <button className='flex items-center justify-center content m-2 p-2 rounded-md bg-green-400 text-white'>
-                APPLICATIONS - {applications.length}{" "}
+                APPLICATIONS : {applications.length}{" "}
                 <CiCirclePlus className='ml-2 w-8 h-8' />
               </button>{" "}
             </div>

@@ -9,10 +9,11 @@ import { CldImage, CldUploadWidget } from "next-cloudinary";
 import { useAppState } from "./iqtContext";
 import { ClickedPosition, CloudinaryResult, parcel } from "@/projecttypes";
 import { VscDebugRestart } from "react-icons/vsc";
-import { MdCategory, MdDriveFolderUpload } from "react-icons/md";
+import { MdCategory, MdDriveFolderUpload, MdLocationOn } from "react-icons/md";
+
 import { BiCategoryAlt, BiMailSend } from "react-icons/bi";
 import { FaClipboardQuestion, FaRegHourglass } from "react-icons/fa6";
-import { FcViewDetails } from "react-icons/fc";
+import { FcViewDetails, FcCheckmark } from "react-icons/fc";
 import { FaImages, FaArrowCircleDown } from "react-icons/fa";
 import { ImCheckmark } from "react-icons/im";
 import { PiNumberCircleOneFill } from "react-icons/pi";
@@ -26,10 +27,10 @@ const QIZZTAKER = () => {
   //   "Testing the alt tab error"
   // );
   const router = useRouter();
-  const [restartText, setrestartText] = useState<String>("RESTART TEST");
+  const [restartText, setrestartText] = useState<string>("Reset");
 
   const handleRefresh = () => {
-    if (restartText === "RESTART TEST") {
+    if (restartText === "Reset") {
       setrestartText("CLICK AGAIN TO CONFIRM");
     }
     // Reload the current page
@@ -751,7 +752,7 @@ const QIZZTAKER = () => {
               setstage(4);
               setpictures(pictures2);
             }}
-            className='m-3 flex items-center center outline bg-red-400 text-white    text-center font-bold py-4 px-12 rounded-full '
+            className='m-3 flex items-center center outline bg-black text-white    text-center font-bold py-4 px-12 rounded-full '
           >
             {" "}
             Next step <BsArrowRightSquareFill className='ml-2' />
@@ -841,7 +842,7 @@ const QIZZTAKER = () => {
             {" "}
             <div className='justify-center m-3 p-3'>
               {" "}
-              <div className='justify-center items-center'>
+              <div className='flex justify-center items-center'>
                 {" "}
                 <h1 className=' m-5 flex flex-wrap  justify-center items-center text-5xl'>
                   TITLE
@@ -895,9 +896,9 @@ const QIZZTAKER = () => {
               onClick={() => {
                 uploadState();
               }}
-              className='m-3 center flex items-center   bg-red-400 text-white    text-center font-bold py-4 px-12 rounded-full '
+              className='m-3 center flex items-center   bg-black text-white    text-center font-bold py-4 px-12 rounded-full '
             >
-              Go to Upload Images <BsArrowRightSquareFill className='ml-2' />
+              Upload Images <BsArrowRightSquareFill className='ml-2' />
             </div>{" "}
           </div>
         </div>
@@ -1081,7 +1082,7 @@ const QIZZTAKER = () => {
         </div>
 
         {stage === 1 && (
-          <div className='bg-red-400 text-white  outline  flex items-center p-3 m-2'>
+          <div className='bg-black text-white  outline  flex items-center p-3 m-2'>
             <MdCategory /> Category Selection{" "}
           </div>
         )}
@@ -1095,10 +1096,11 @@ const QIZZTAKER = () => {
             className='outline  flex items-center p-3 m-2'
           >
             <MdCategory /> Category Selection{" "}
+            {stage > 1 && <FcCheckmark className='w-8 h-8' />}
           </div>
         )}
         {stage === 2 && (
-          <div className='bg-red-400 text-white outline  flex items-center p-3 m-2'>
+          <div className='bg-black text-white outline  flex items-center p-3 m-2'>
             {" "}
             <BiCategoryAlt />
             Subcategory Selection{" "}
@@ -1116,10 +1118,11 @@ const QIZZTAKER = () => {
             {" "}
             <BiCategoryAlt />
             Subcategory Selection{" "}
+            {stage > 2 && <FcCheckmark className='w-8 h-8' />}
           </div>
         )}
         {stage === 3 && (
-          <div className='bg-red-400 text-white  outline  flex items-center p-3 m-2'>
+          <div className='bg-black text-white  outline  flex items-center p-3 m-2'>
             {" "}
             <FaClipboardQuestion />
             Questionare{" "}
@@ -1140,11 +1143,11 @@ const QIZZTAKER = () => {
           >
             {" "}
             <FaClipboardQuestion />
-            Questionare{" "}
+            Questionare {stage > 3 && <FcCheckmark className='w-8 h-8' />}
           </div>
         )}
         {stage === 3.4 && (
-          <div className='bg-red-400 text-white outline  flex items-center p-3 m-2'>
+          <div className='bg-black text-white outline  flex items-center p-3 m-2'>
             {" "}
             <FcViewDetails />
             Extra Details{" "}
@@ -1161,11 +1164,11 @@ const QIZZTAKER = () => {
           >
             {" "}
             <FcViewDetails />
-            Extra Details{" "}
+            Extra Details {stage > 3.4 && <FcCheckmark className='w-8 h-8' />}
           </div>
         )}
         {stage === 3.5 && (
-          <div className='bg-red-400 text-white outline  flex items-center p-3 m-2'>
+          <div className='bg-black text-white outline  flex items-center p-3 m-2'>
             {" "}
             <FaImages />
             Upload images (Optional){" "}
@@ -1183,10 +1186,25 @@ const QIZZTAKER = () => {
             {" "}
             <FaImages />
             Upload images (Optional){" "}
+            {stage > 3.5 && <FcCheckmark className='w-8 h-8' />}
+          </div>
+        )}
+        {stage === 3.6 && (
+          <div className='bg-black text-white outline  flex items-center p-3 m-2'>
+            {" "}
+            <MdLocationOn />
+            Location{" "}
+          </div>
+        )}
+        {stage !== 3.6 && (
+          <div className='outline  flex items-center p-3 m-2'>
+            {" "}
+            <MdLocationOn />
+            Location {stage > 3.6 && <FcCheckmark className='w-8 h-8' />}
           </div>
         )}
         {stage === 4 && (
-          <div className='bg-red-400 text-white outline  flex items-center p-3 m-2'>
+          <div className='bg-black text-white outline  flex items-center p-3 m-2'>
             {" "}
             <BiMailSend />
             Submit{" "}
@@ -1196,11 +1214,11 @@ const QIZZTAKER = () => {
           <div className='outline  flex items-center p-3 m-2'>
             {" "}
             <BiMailSend />
-            Submit{" "}
+            Submit {stage > 4 && <FcCheckmark className='w-8 h-8' />}
           </div>
         )}
-        {stage === 5 && (
-          <div className='bg-red-400 text-white outline  flex items-center p-3 m-2'>
+        {/* {stage === 5 && (
+          <div className='bg-black text-white outline  flex items-center p-3 m-2'>
             {" "}
             <ImCheckmark />
             SUCCESS!{" "}
@@ -1212,7 +1230,7 @@ const QIZZTAKER = () => {
             <ImCheckmark />
             SUCCESS!{" "}
           </div>
-        )}
+        )} */}
       </div>
     );
   }
