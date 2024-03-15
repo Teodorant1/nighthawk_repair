@@ -210,6 +210,7 @@ const QIZZTAKER = () => {
             minbudget: minbudget,
             maxbudget: maxbudget,
             pictures: pictures,
+            postalCode: postalcode,
           };
           axios.post("/api/qizztaker", parcel4).then((resp) => {
             setstage(5);
@@ -233,6 +234,7 @@ const QIZZTAKER = () => {
             minbudget: minbudget,
             maxbudget: maxbudget,
             pictures: pictures,
+            postalCode: postalcode,
           };
           axios.post("/api/qizztaker", parcel4).then((resp) => {
             setstage(5);
@@ -279,6 +281,7 @@ const QIZZTAKER = () => {
             minbudget: minbudget,
             maxbudget: maxbudget,
             pictures: pictures,
+            postalCode: postalcode,
           };
           axios.post("/api/qizztaker", parcel4).then((resp) => {
             setstage(5);
@@ -302,6 +305,7 @@ const QIZZTAKER = () => {
             minbudget: minbudget,
             maxbudget: maxbudget,
             pictures: pictures,
+            postalCode: postalcode,
           };
           axios.post("/api/qizztaker", parcel4).then((resp) => {
             setstage(5);
@@ -573,8 +577,29 @@ const QIZZTAKER = () => {
 
   function MapBox() {
     return (
-      <div className='p-10 justify-center items-center'>
+      <div className='p-10 m-1 justify-center items-center'>
         {" "}
+        <div className='flex m-5 justify-center items-center'>
+          {" "}
+          <h1 className=' m-5 flex flex-wrap  justify-center items-center text-5xl'>
+            POSTAL CODE
+          </h1>{" "}
+          <input
+            type='text'
+            className='  h-[10%] outline text-center font-bold text-xl py-10 px-10  '
+            id='postalcode2'
+            defaultValue={postalcode}
+            onBlur={(e) => {
+              setpostalcode(e.target.value);
+            }}
+            onMouseMove={(e) => {
+              const thepostalcode = (
+                document.getElementById("postalcode2") as HTMLInputElement
+              )?.value;
+              setpostalcode(thepostalcode);
+            }}
+          />
+        </div>
         {coordsTouched === false && (
           <>
             {" "}

@@ -803,10 +803,7 @@ const IQBrowser = () => {
             </div>
             <h1>TITLE:{job?.title}</h1>
             <div>CLIENT EMAIL:{job?.submittterEmail}</div>
-            <div>
-              1ST TO BUY: {job?.first_to_buy === true && <>true</>}
-              {job?.first_to_buy === false && <>false</>}
-            </div>
+            <div>Postal Code: {}</div>
             <div>DATE OF CREATION: {String(job?.date_created)}</div>
             <div> Calculated distance: {job?.distance} </div>
             {/* <div>Email:{job?.submittterEmail}</div> */}

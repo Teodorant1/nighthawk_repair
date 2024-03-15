@@ -71,6 +71,7 @@ export async function POST(req: NextRequest) {
               status: true,
               finalWorkerID: true,
               pictures: true,
+              postalCode: true,
             },
             // Add other options if needed (e.g., select, orderBy, etc.)
           });
@@ -536,6 +537,7 @@ export async function POST(req: NextRequest) {
           status: true,
           finalWorkerID: true,
           pictures: true,
+          postalCode: true,
         },
       })) as submitted_job_SANS_Email[];
 

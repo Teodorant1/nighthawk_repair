@@ -222,12 +222,9 @@ const BuyerJoblist = () => {
                       {" "}
                       {/* <div className='flex flex-wrap items-center justify-center w-full bg-green-400 text-white rounded-sm'> */}
                       <div> ID:{job.id}</div>
-                      <div>
-                        1ST TO BUY: {job.first_to_buy === true && <>true</>}
-                        {job.first_to_buy === false && <>false</>}
-                      </div>
                       <div>DATE OF CREATION: {String(job.date_created)}</div>
                       {/* <div>Email:{job.submittterEmail}</div> */}
+                      <div>Postal Code: {job.postalCode}</div>
                       <div>Expected cost: {job.moneycost}</div>
                       <div>Minimal Budget: {job.minBudget}</div>
                       <div>Maximal Budget: {job.maxBudget}</div>

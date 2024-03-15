@@ -109,6 +109,7 @@ export async function POST(req: NextRequest) {
           first_to_buy: parcel1.firstToBuy,
           minBudget: parcel1.minbudget,
           maxBudget: parcel1.maxbudget,
+          postalCode: parcel1.postalCode,
           // submittterEmail : parcel1.email
         },
       });
@@ -162,6 +163,13 @@ export async function POST(req: NextRequest) {
           submittterEmail: parcel1.email!,
           latitude: parcel1.lat,
           longitude: parcel1.long,
+          title: parcel1.title,
+          timing: parcel1.timing,
+          hiringstage: parcel1.hiringstage,
+          first_to_buy: parcel1.firstToBuy,
+          minBudget: parcel1.minbudget,
+          maxBudget: parcel1.maxbudget,
+          postalCode: parcel1.postalCode,
         },
       });
       if (parcel1.pictures?.length! > 0) {

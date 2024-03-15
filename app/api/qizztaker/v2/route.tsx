@@ -69,6 +69,7 @@ export async function POST(req: NextRequest) {
           status: true,
           finalWorkerID: true,
           pictures: true,
+          postalCode: true,
         },
       })) as submitted_job_SANS_Email[];
 

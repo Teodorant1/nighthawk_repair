@@ -115,6 +115,7 @@ export interface submitted_job_SANS_Email {
   status?: string;
   finalWorkerID?: string;
   pictures?: JobPicture[];
+  postalCode: string;
 }
 
 export interface submitted_job_WITH_Email {
@@ -140,6 +141,7 @@ export interface submitted_job_WITH_Email {
   status?: string;
   finalWorkerID?: string;
   pictures: JobPicture[];
+  postalCode: string;
 }
 
 export interface tradesmanCandidateWSubcategories {
