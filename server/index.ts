@@ -79,6 +79,7 @@ export const appRouter = t.router({
                 status: true,
                 finalWorkerID: true,
                 pictures: true,
+                postalCode: true,
               },
               // Add other options if needed (e.g., select, orderBy, etc.)
             });
