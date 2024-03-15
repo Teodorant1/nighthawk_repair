@@ -24,6 +24,8 @@ export type MobileSession = {
 };
 
 export type parcel = {
+  postalCode?: string;
+
   session?: MobileSession;
   is_phone?: string;
   id?: string;

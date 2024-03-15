@@ -114,12 +114,13 @@ export const JobProvider: React.FC<JobContextProps> = ({ children }) => {
     "WITHIN 2 DAYS",
     "WITHIN 2 WEEKS",
     "WITHIN 2 MONTHS",
-    "2 MONTHS+",
-    "FLEXIBLE START DATE",
+    "WITHIN 6 MONTHS",
+    "6 MONTHS PLUS",
   ]);
   const [hiringStagePresets, setHiringStagePresets] = useState<string[]>([
     "Ready to hire",
     "Insurance Quote",
+    "Just Looking",
   ]);
   const [currentJobID, setCurrentJobID] = useState<string>("1");
   const [timingCriteria, setTimingCriteria] = useState<string[]>([
@@ -127,8 +128,8 @@ export const JobProvider: React.FC<JobContextProps> = ({ children }) => {
     "WITHIN 2 DAYS",
     "WITHIN 2 WEEKS",
     "WITHIN 2 MONTHS",
-    "2 MONTHS+",
-    "FLEXIBLE START DATE",
+    "WITHIN 6 MONTHS",
+    "6 MONTHS PLUS",
   ]);
   const [hiringStageCriteria, setHiringStageCriteria] = useState<string[]>([
     "Ready to hire",

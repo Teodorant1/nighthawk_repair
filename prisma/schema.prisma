@@ -143,6 +143,8 @@ model submitted_job {
   maxBudget                  Int?         @default(10000)
   status                     String?
   finalWorkerID              String?
+  postalCode                 String          @default("defaultAddress")
+
   pictures                   JobPicture[]
 }
 

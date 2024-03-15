@@ -59,6 +59,8 @@ const QIZZTAKER = () => {
     setclickPosition,
     currentdropdown,
     setcurrentdropdown,
+    postalcode,
+    setpostalcode,
   } = useAppState();
   const mapContainerStyle = {
     width: "100%",
@@ -79,12 +81,13 @@ const QIZZTAKER = () => {
     "WITHIN 2 DAYS",
     "WITHIN 2 WEEKS",
     "WITHIN 2 MONTHS",
-    "2 MONTHS+",
-    "FLEXIBLE START DATE",
+    "WITHIN 6 MONTHS",
+    "6 MONTHS PLUS",
   ]);
   const [hiringstagePRESETS, sethiringstagePRESETS] = useState<String[]>([
     "Ready to hire",
     "Insurance Quote",
+    "Just Looking",
   ]);
   const [minbudgetPRESETS, setminbudgetPRESETS] = useState<number[]>([
     0, 100, 250, 500, 1000, 2000, 4000, 8000, 15000, 30000,
@@ -568,6 +571,32 @@ const QIZZTAKER = () => {
     );
   }
 
+  function MapBox() {
+    return (
+      <div className='p-10 justify-center items-center'>
+        {" "}
+        {coordsTouched === false && (
+          <>
+            {" "}
+            <GeolocationBox />
+            <div className='flex items-center justify-center w-full'>
+              <div
+                onClick={() => {
+                  setcoordsTouched(true);
+                  setstage(4);
+                }}
+                className='m-3 center bg-green-400 text-white   text-center font-bold py-4 px-12 rounded-full '
+              >
+                {" "}
+                Click here to finalize coordinates and go to the final page{" "}
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+    );
+  }
+
   function SubmitBox() {
     return (
       <div className='p-10 justify-center items-center'>
@@ -576,24 +605,6 @@ const QIZZTAKER = () => {
             {AnsweredQuestionsArray.length >= Question_Array.length && (
               <>
                 {" "}
-                {coordsTouched === false && (
-                  <>
-                    {" "}
-                    <GeolocationBox />
-                    <div className='flex items-center justify-center w-full'>
-                      <div
-                        onClick={() => {
-                          setcoordsTouched(true);
-                        }}
-                        className='m-3 center bg-green-400 text-white   text-center font-bold py-4 px-12 rounded-full '
-                      >
-                        {" "}
-                        Click here to finalize coordinates and go to the final
-                        page{" "}
-                      </div>
-                    </div>
-                  </>
-                )}
                 {coordsTouched && (
                   <div>
                     {" "}
@@ -749,7 +760,7 @@ const QIZZTAKER = () => {
           </CldUploadWidget>{" "}
           <button
             onClick={() => {
-              setstage(4);
+              setstage(3.6);
               setpictures(pictures2);
             }}
             className='m-3 flex items-center center outline bg-black text-white    text-center font-bold py-4 px-12 rounded-full '
@@ -865,7 +876,7 @@ const QIZZTAKER = () => {
               </div>
             </div>
           </div>{" "}
-          {first_to_buy === true && (
+          {/* {first_to_buy === true && (
             <div className='flex items-center justify-center '>
               <button
                 onClick={() => {
@@ -890,7 +901,7 @@ const QIZZTAKER = () => {
                 Enable first to buy
               </button>{" "}
             </div>
-          )}{" "}
+          )}{" "} */}
           <div className='flex items-center justify-center '>
             <div
               onClick={() => {
@@ -1243,6 +1254,8 @@ const QIZZTAKER = () => {
       {stage === 3 && <QuestionBOX />}
       {stage === 3.4 && <ExtraDetailsBox />}
       {stage === 3.5 && <UploadBox />}
+      {stage === 3.6 && <MapBox />}
+
       {stage === 4 && <SubmitBox />}
       {stage === 5 && <SuccessBox />}
     </div>

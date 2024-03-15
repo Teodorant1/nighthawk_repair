@@ -187,7 +187,7 @@ const BuyerJoblist = () => {
                 </button>{" "} */}
                 {job.isVisible === false && (
                   <button
-                    className='m-3 center bg-red-400 text-white  font-bold p-2 rounded-md '
+                    className='m-3 center bg-green-400 text-white  font-bold p-2 rounded-md '
                     onClick={() => {
                       if (job.isVisible === false) {
                         handle_ToggleVisibilityStatus_in_db(job.id, true);
@@ -197,10 +197,10 @@ const BuyerJoblist = () => {
                       }
                     }}
                   >
-                    TOGGLE VISIBILITY
+                    PUBLISH JOB
                   </button>
                 )}{" "}
-                {job.isVisible === true && (
+                {/* {job.isVisible === true && (
                   <button
                     className='m-3 center bg-green-400 text-white  font-bold p-2 rounded-md '
                     onClick={() => {
@@ -214,7 +214,7 @@ const BuyerJoblist = () => {
                   >
                     TOGGLE VISIBILITY
                   </button>
-                )}
+                )} */}
                 <div>
                   {" "}
                   {true && (

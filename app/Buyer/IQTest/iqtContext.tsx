@@ -29,6 +29,8 @@ interface AppState {
   setclickPosition: Dispatch<SetStateAction<ClickedPosition>>;
   currentdropdown: string;
   setcurrentdropdown: Dispatch<SetStateAction<string>>;
+  postalcode: string;
+  setpostalcode: Dispatch<SetStateAction<string>>;
 }
 
 const AppContext = createContext<AppState | undefined>(undefined);
@@ -44,9 +46,11 @@ export const useAppState = (): AppState => {
   return context;
 };
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
+  const [postalcode, setpostalcode] = useState<string>("default PostCode");
+
   const [title1, settitle1] = useState<string>("Title goes here");
-  const [timing, settiming] = useState<string>("FLEXIBLE START DATE");
-  const [hiringstage, sethiringstage] = useState<string>("Insurance Quote");
+  const [timing, settiming] = useState<string>("PICK A TIMING");
+  const [hiringstage, sethiringstage] = useState<string>("PICK A STAGE");
   const [first_to_buy, setfirst_to_buy] = useState<boolean>(false);
   const [minbudget, setminbudget] = useState<number>(0);
   const [maxbudget, setmaxbudget] = useState<number>(0);
@@ -81,6 +85,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     setclickPosition,
     currentdropdown,
     setcurrentdropdown,
+    postalcode,
+    setpostalcode,
   };
 
   return <AppContext.Provider value={state}>{children}</AppContext.Provider>;

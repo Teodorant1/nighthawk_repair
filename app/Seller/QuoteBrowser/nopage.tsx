@@ -413,7 +413,7 @@ const IQBrowser = () => {
           </div>{" "}
           <div className='m-3 center  text-center  font-bold p-4 rounded-md'>
             <h1>Enabled Filters</h1>
-            {context.firstTobuy === false && (
+            {/* {context.firstTobuy === false && (
               <div
                 onClick={() => {
                   context.setFirstToBuy(true);
@@ -432,7 +432,7 @@ const IQBrowser = () => {
               >
                 DISABLE FIRST TO BUY FILTER
               </div>
-            )}{" "}
+            )}{" "} */}
             {context.picturesRequired === false && (
               <div
                 onClick={() => {
