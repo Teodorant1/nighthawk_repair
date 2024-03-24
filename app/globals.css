@@ -8,6 +8,21 @@
   background-position: center;
 }
 
+/* Custom styles for the login button */
+button[name="provider"] {
+  background-color: white; /* Set background color to white */
+  color: black; /* Set text color to black */
+  border: 1px solid black; /* Add a black border */
+  border-radius: 4px; /* Add border radius for rounded corners */
+  padding: 8px 16px; /* Add padding for spacing */
+  cursor: pointer; /* Set cursor to pointer on hover */
+  transition: background-color 0.3s ease; /* Add smooth transition for background color change */
+}
+
+button[name="provider"]:hover {
+  background-color: #f0f0f0; /* Change background color on hover */
+}
+
 /* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;

@@ -86,8 +86,6 @@ export async function POST(req: NextRequest) {
           return NextResponse.json(resp.data);
         })
         .catch((error) => console.log(error));
-      //  return NextResponse.json(submitted_jobs);
-      //  return NextResponse.json(result);
       return result;
   }
 
@@ -146,8 +144,6 @@ export async function POST(req: NextRequest) {
       where: { userID: parcel1.userID },
       orderBy: { dateCreated: "desc" },
     });
-    console.log("AppliedJobs");
-    console.log(AppliedJobs);
 
     return NextResponse.json(AppliedJobs);
   }

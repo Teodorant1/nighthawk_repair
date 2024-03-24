@@ -103,6 +103,9 @@ export async function POST(req: NextRequest) {
         })
         .catch((error) => console.log(error));
 
+      console.log("getAggregatedJobsForUser");
+      console.log(result);
+
       return NextResponse.json(result);
     }
     const submitted_job_SANS_Email1111: submitted_job_SANS_Email[] = [];
@@ -114,11 +117,11 @@ export async function POST(req: NextRequest) {
         where: { id: parcel1.SubmittedJobID },
         include: { pictures: true },
       });
+
       return NextResponse.json(subjob);
     }
   }
   if (parcel1.method === "tag_Applied_Job") {
-    console.log(parcel1);
     if (session.user.sub === parcel1.userID) {
       const newappliedjob = await prisma.appliedJob.update({
         where: { id: parcel1.id },
@@ -152,7 +155,6 @@ export async function POST(req: NextRequest) {
           userID: true,
         },
       });
-      console.log(subjob_applications);
       return NextResponse.json(subjob_applications);
     }
   }

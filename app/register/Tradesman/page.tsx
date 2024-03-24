@@ -262,7 +262,7 @@ const Details = () => {
               />
             )}
             <CldUploadWidget
-              uploadPreset='wn6nts4f'
+              uploadPreset='bqhf0bxn'
               options={{
                 multiple: false,
               }}

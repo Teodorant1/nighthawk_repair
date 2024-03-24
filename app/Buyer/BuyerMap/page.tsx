@@ -60,7 +60,7 @@ const GoogleMapsComponent: React.FC = () => {
         )}
       </LoadScript>
       <CldUploadWidget
-        uploadPreset='wn6nts4f'
+        uploadPreset='bqhf0bxn'
         onUpload={(result, widget) => {
           if (result.event !== "success") {
             return;

@@ -4,6 +4,7 @@ import { category, question, sub_category, answer } from "@prisma/client";
 import { authOptions } from "../auth/authOptions";
 import { Session, getServerSession } from "next-auth";
 import { parcel } from "@/projecttypes";
+import bcrypt from "bcrypt";
 
 export async function POST(req: NextRequest) {
   const session = (await getServerSession(authOptions)) as Session;
@@ -183,10 +184,12 @@ export async function POST(req: NextRequest) {
         }
       }
       if (parcel1.method === "CREATEACCOUNT") {
+        const hashedpassword = await bcrypt.hash(parcel1.password!, 10);
+
         await prisma.user.create({
           data: {
             email: parcel1.email!,
-            password: parcel1.password!,
+            password: hashedpassword,
             role: "USER",
             phoneNum: parcel1.phonenum!,
             name: parcel1.name!,

@@ -347,7 +347,9 @@ const SellerProfile = ({ params: { id } }: Props1) => {
         {" "}
         {session?.user.sub === id && (
           <CldUploadWidget
-            uploadPreset='wn6nts4f'
+            // uploadPreset='wn6nts4f'
+            uploadPreset='bqhf0bxn'
+
             onUpload={(result, widget) => {
               if (result.event !== "success") {
                 return;

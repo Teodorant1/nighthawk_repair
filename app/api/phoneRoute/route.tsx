@@ -18,7 +18,6 @@ export async function POST(req: NextRequest) {
 
   if (parcel1.method === "getAggregatedJobsForUser") {
     if (session.user.sub === parcel1.userID) {
-      console.log(parcel1);
       const sevenDaysAgo = new Date();
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
@@ -215,7 +214,6 @@ export async function POST(req: NextRequest) {
         where: { Approved: false },
         include: { SubCategories: true },
       });
-      console.log(candidates);
       return NextResponse.json(candidates);
     }
   }
@@ -225,7 +223,6 @@ export async function POST(req: NextRequest) {
         where: { Approved: false },
         include: { SubCategories: true },
       });
-      console.log(candidates);
       return NextResponse.json(candidates);
     }
   }
@@ -323,8 +320,6 @@ export async function POST(req: NextRequest) {
     parcel1.method === "setTravelRange" &&
     session.user.sub === parcel1.userID
   ) {
-    // console.log("parcel1.radius");
-    // console.log(parcel1.radius);
     await prisma.user.update({
       where: { id: parcel1.userID },
       data: {
@@ -783,10 +778,12 @@ export async function POST(req: NextRequest) {
         }
       }
       if (parcel1.method === "CREATEACCOUNT") {
+        const hashedpassword = await bcrypt.hash(parcel1.password!, 10);
+
         await prisma.user.create({
           data: {
             email: parcel1.email!,
-            password: parcel1.password!,
+            password: hashedpassword,
             role: "USER",
             phoneNum: parcel1.phonenum!,
             name: parcel1.name!,
