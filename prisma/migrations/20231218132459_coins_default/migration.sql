@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE `user` MODIFY `coins` INTEGER NULL DEFAULT 0;
