@@ -118,7 +118,7 @@ export async function POST(req: NextRequest) {
         for (let i: number = 0; i < parcel1.pictures?.length!; i++) {
           await prisma.jobPicture.create({
             data: {
-              cloudinaryID: parcel1.pictures![i],
+              pictureID: parcel1.pictures![i],
               submitted_jobId: subjob.id,
             },
           });
@@ -177,7 +177,7 @@ export async function POST(req: NextRequest) {
         for (let i: number = 0; i < parcel1.pictures?.length!; i++) {
           await prisma.jobPicture.create({
             data: {
-              cloudinaryID: parcel1.pictures![i],
+              pictureID: parcel1.pictures![i],
               submitted_jobId: subjob1.id,
             },
           });

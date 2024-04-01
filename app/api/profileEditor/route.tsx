@@ -187,7 +187,7 @@ export async function POST(req: NextRequest) {
     session.user.sub === parcel1.userID
   ) {
     await prisma.workGalleryPicture.create({
-      data: { user_ID: parcel1.userID, cloudinaryID: parcel1.id! },
+      data: { user_ID: parcel1.userID, pictureID: parcel1.id! },
     });
     const workgallery = await prisma.workGalleryPicture.findMany({
       where: { user_ID: parcel1.userID },

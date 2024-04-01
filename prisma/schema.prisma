@@ -59,7 +59,7 @@ model Certificate {
 model workGalleryPicture {
   id           String @id @default(cuid())
   user_ID      String
-  cloudinaryID String
+  pictureID    String
 }
 
 model user {
@@ -162,7 +162,7 @@ model submitted_job {
 
 model JobPicture {
   id              String        @id @default(cuid())
-  cloudinaryID    String
+  pictureID       String
   submitted_job   submitted_job @relation(fields: [submitted_jobId], references: [id])
   submitted_jobId String
   @@index([submitted_jobId])

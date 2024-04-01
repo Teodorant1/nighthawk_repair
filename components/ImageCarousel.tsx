@@ -41,7 +41,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
           {}
           <CldImage
             className=''
-            src={images[currentImageIndex].cloudinaryID}
+            src={images[currentImageIndex].pictureID}
             alt={`Image ${currentImageIndex + 1}`}
             width={1000}
             height={1000}

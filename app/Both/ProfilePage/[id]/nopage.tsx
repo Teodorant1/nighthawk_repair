@@ -349,7 +349,6 @@ const SellerProfile = ({ params: { id } }: Props1) => {
           <CldUploadWidget
             // uploadPreset='wn6nts4f'
             uploadPreset='bqhf0bxn'
-
             onUpload={(result, widget) => {
               if (result.event !== "success") {
                 return;
@@ -422,7 +421,7 @@ const SellerProfile = ({ params: { id } }: Props1) => {
             </div>{" "}
             {}
             <CldImage
-              src={images[currentImageIndex].cloudinaryID}
+              src={images[currentImageIndex].pictureID}
               alt={`Image ${currentImageIndex + 1}`}
               width={1000}
               height={1000}
