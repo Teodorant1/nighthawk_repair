@@ -5,6 +5,7 @@ import {
   parcel,
   distanceParcel,
   submitted_job_SANS_Email,
+  MobileSession,
 } from "@/projecttypes";
 import { authOptions } from "../auth/authOptions";
 import { Session, getServerSession } from "next-auth";
@@ -12,9 +13,10 @@ import bcrypt from "bcrypt";
 import { answer, category, question, sub_category } from "@prisma/client";
 
 export async function POST(req: NextRequest) {
-  const session: Session = (await getServerSession(authOptions)) as Session;
   const body = await req.json();
   const parcel1: parcel = body;
+  //const session: Session = (await getServerSession(authOptions)) as Session;
+  const session: MobileSession = parcel1.session!;
 
   if (parcel1.method === "getAggregatedJobsForUser") {
     if (session.user.sub === parcel1.userID) {
